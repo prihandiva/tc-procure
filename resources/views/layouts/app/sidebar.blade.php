@@ -3,15 +3,24 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <flux:sidebar sticky collapsible="mobile" class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
-            <flux:sidebar.header>
+    <body class="min-h-screen bg-slate-50/70 text-slate-900 dark:bg-zinc-950 dark:text-zinc-100 antialiased selection:bg-indigo-500 selection:text-white font-sans">
+        <flux:sidebar sticky collapsible="mobile" class="border-e border-slate-200/80 bg-white dark:border-zinc-800 dark:bg-zinc-900 shadow-xs">
+            <flux:sidebar.header class="pb-2">
                 <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
                 <flux:sidebar.collapse class="lg:hidden" />
             </flux:sidebar.header>
 
+            <div class="px-3 pb-3">
+                <div class="flex items-center justify-between rounded-lg bg-indigo-50/80 px-2.5 py-1.5 text-xs dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50">
+                    <span class="font-medium text-indigo-900 dark:text-indigo-200 text-[11px]">Training Center</span>
+                    <span class="inline-flex items-center gap-1 text-[10px] font-semibold text-indigo-700 dark:text-indigo-300">
+                        <span class="size-1.5 rounded-full bg-emerald-500"></span> Live
+                    </span>
+                </div>
+            </div>
+
             <flux:sidebar.nav>
-                <flux:sidebar.group heading="Pengadaan & PO" class="grid">
+                <flux:sidebar.group heading="Operasional & Transaksi" class="grid">
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         Dashboard
                     </flux:sidebar.item>
@@ -38,7 +47,7 @@
                 </flux:sidebar.group>
 
                 @if (auth()->user()->isSuperAdmin() || auth()->user()->isSpv())
-                    <flux:sidebar.group heading="Master Data" class="grid">
+                    <flux:sidebar.group heading="Master Data & Konfigurasi" class="grid mt-2">
                         <flux:sidebar.item icon="building-storefront" :href="route('vendors.index')" :current="request()->routeIs('vendors.*')" wire:navigate>
                             Master Vendor
                         </flux:sidebar.item>
@@ -56,17 +65,19 @@
 
             <flux:spacer />
 
-            <flux:sidebar.nav>
-                <flux:sidebar.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                    {{ __('Repository') }}
-                </flux:sidebar.item>
+            <div class="px-2 pt-2">
+                <a href="https://github.com/prihandiva/tc-procure" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between px-3 py-2 text-xs font-medium text-slate-600 dark:text-zinc-400 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 transition">
+                    <span class="flex items-center gap-2">
+                        <flux:icon icon="folder-git-2" class="size-4 text-slate-500" />
+                        GitHub Repo
+                    </span>
+                    <span class="text-[10px] text-slate-400">v1.0</span>
+                </a>
+            </div>
 
-                <flux:sidebar.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                    {{ __('Documentation') }}
-                </flux:sidebar.item>
-            </flux:sidebar.nav>
-
-            <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
+            <div class="p-2">
+                <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
+            </div>
         </flux:sidebar>
 
         <!-- Mobile User Menu -->

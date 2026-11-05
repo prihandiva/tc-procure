@@ -1,83 +1,93 @@
-<div class="space-y-6">
+<div class="p-6 max-w-7xl mx-auto space-y-6">
     {{-- Header --}}
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <flux:heading size="xl" class="font-bold tracking-tight">Dokumen Posting SAP</flux:heading>
-            <flux:text class="text-xs text-zinc-500">
-                Pencatatan nomor dokumen akuntansi SAP dan konfirmasi pelunasan tagihan catering
-            </flux:text>
+            <div class="flex items-center gap-2.5">
+                <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Dokumen Posting SAP</h1>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/60">
+                    {{ $postings->total() }} Total
+                </span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-zinc-400 mt-1">
+                Pencatatan nomor dokumen akuntansi SAP dan konfirmasi pelunasan riil tagihan catering Training Center.
+            </p>
         </div>
 
         @if ($isSpv)
             <div class="flex items-center gap-2">
-                <flux:button variant="primary" icon="plus" href="{{ route('postings.create') }}" wire:navigate>
-                    Catat Posting Baru
-                </flux:button>
+                <a href="{{ route('postings.create') }}" wire:navigate class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/30 transition transform active:scale-95">
+                    <flux:icon icon="plus" class="size-4" />
+                    <span>Catat Posting Baru</span>
+                </a>
             </div>
         @endif
     </div>
 
     {{-- Filter Bar --}}
-    <flux:card class="space-y-4">
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 p-4 shadow-xs">
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <div>
-                <flux:input
-                    wire:model.live.debounce.300ms="search"
-                    placeholder="Cari No. Dokumen SAP, No. PR, atau Catatan..."
-                    icon="magnifying-glass"
-                />
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Pencarian</label>
+                <div class="relative">
+                    <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari No. Dokumen SAP, No. PR, atau Catatan..." class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl dark:bg-zinc-800 dark:border-zinc-700 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
+                    <flux:icon icon="magnifying-glass" class="size-4 text-slate-400 absolute left-3 top-2.5" />
+                </div>
             </div>
 
             <div>
-                <flux:input type="date" wire:model.live="date_from" label="Dari Tanggal" />
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Dari Tanggal</label>
+                <input type="date" wire:model.live="date_from" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl dark:bg-zinc-800 dark:border-zinc-700 dark:text-white">
             </div>
 
             <div>
-                <flux:input type="date" wire:model.live="date_to" label="Sampai Tanggal" />
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Sampai Tanggal</label>
+                <input type="date" wire:model.live="date_to" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl dark:bg-zinc-800 dark:border-zinc-700 dark:text-white">
             </div>
         </div>
-    </flux:card>
+    </div>
 
     {{-- Table of Postings --}}
-    <flux:card class="space-y-4">
-        <div class="overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-700">
-            <table class="min-w-full divide-y divide-zinc-200 text-left text-sm dark:divide-zinc-700">
-                <thead class="bg-zinc-50 dark:bg-zinc-800/60 text-xs uppercase font-medium text-zinc-500">
+    <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800">
+                <thead class="bg-slate-50/80 dark:bg-zinc-800/60 text-[11px] uppercase font-bold text-slate-500 dark:text-zinc-400 tracking-wider">
                     <tr>
-                        <th class="px-4 py-3">No. Dokumen SAP</th>
-                        <th class="px-4 py-3">Tgl Posting</th>
-                        <th class="px-4 py-3 text-right">Total Dibayar</th>
-                        <th class="px-4 py-3">Payment Request Terkait</th>
-                        <th class="px-4 py-3">Vendor</th>
-                        <th class="px-4 py-3 text-center">Bukti Bayar</th>
-                        <th class="px-4 py-3 text-center">Aksi</th>
+                        <th class="px-6 py-3.5">No. Dokumen SAP</th>
+                        <th class="px-6 py-3.5">Tgl Posting</th>
+                        <th class="px-6 py-3.5 text-right">Total Dibayar</th>
+                        <th class="px-6 py-3.5">Payment Request Terkait</th>
+                        <th class="px-6 py-3.5">Vendor</th>
+                        <th class="px-6 py-3.5 text-center">Bukti Bayar</th>
+                        <th class="px-6 py-3.5 text-center">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                <tbody class="divide-y divide-slate-100 dark:divide-zinc-800">
                     @forelse ($postings as $posting)
-                        <tr class="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/40">
-                            <td class="px-4 py-3 font-bold text-zinc-900 dark:text-white">
-                                {{ $posting->document_number }}
+                        <tr class="hover:bg-slate-50/60 dark:hover:bg-zinc-800/40 transition">
+                            <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">
+                                <a href="{{ route('postings.show', $posting) }}" wire:navigate class="hover:text-indigo-600 dark:hover:text-indigo-400 hover:underline">
+                                    {{ $posting->document_number }}
+                                </a>
                             </td>
-                            <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">
+                            <td class="px-6 py-4 text-xs text-slate-500">
                                 {{ $posting->posting_date?->format('d/m/Y') }}
                             </td>
-                            <td class="px-4 py-3 text-right font-semibold text-emerald-600 dark:text-emerald-400">
+                            <td class="px-6 py-4 text-right font-black text-emerald-600 dark:text-emerald-400">
                                 Rp {{ number_format($posting->total_paid, 0, ',', '.') }}
                             </td>
-                            <td class="px-4 py-3">
+                            <td class="px-6 py-4">
                                 <div class="space-y-1">
                                     @foreach ($posting->paymentRequests as $pr)
-                                        <div class="text-xs font-medium text-zinc-800 dark:text-zinc-200">
+                                        <div class="text-xs font-semibold text-slate-800 dark:text-zinc-200">
                                             {{ $pr->number }}
                                         </div>
                                     @endforeach
-                                    <div class="text-[11px] text-zinc-400">
+                                    <div class="text-[10px] text-slate-400">
                                         {{ $posting->paymentRequests->count() }} PR
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">
+                            <td class="px-6 py-4 text-xs font-semibold text-slate-800 dark:text-zinc-200">
                                 @php
                                     $vendorNames = $posting->paymentRequests
                                         ->flatMap->invoices
@@ -88,22 +98,27 @@
                                 @endphp
                                 {{ $vendorNames ?: '-' }}
                             </td>
-                            <td class="px-4 py-3 text-center">
+                            <td class="px-6 py-4 text-center">
                                 @if ($posting->documents->isNotEmpty())
-                                    <flux:badge color="green" size="sm">Ada ({{ $posting->documents->count() }})</flux:badge>
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/60">
+                                        <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                        Ada ({{ $posting->documents->count() }})
+                                    </span>
                                 @else
-                                    <flux:badge color="zinc" size="sm">Tidak Ada</flux:badge>
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs text-slate-400 bg-slate-100 dark:bg-zinc-800">
+                                        Tidak Ada
+                                    </span>
                                 @endif
                             </td>
-                            <td class="px-4 py-3 text-center">
-                                <flux:button variant="subtle" size="xs" href="{{ route('postings.show', $posting) }}" wire:navigate>
+                            <td class="px-6 py-4 text-center">
+                                <a href="{{ route('postings.show', $posting) }}" wire:navigate class="px-3 py-1.5 rounded-lg text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:text-indigo-300 transition">
                                     Detail
-                                </flux:button>
+                                </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-4 py-8 text-center text-zinc-500">
+                            <td colspan="7" class="px-6 py-12 text-center text-slate-400 text-xs">
                                 Belum ada dokumen posting SAP yang tercatat.
                             </td>
                         </tr>
@@ -112,9 +127,8 @@
             </table>
         </div>
 
-        <div class="mt-4">
+        <div class="p-4 border-t border-slate-100 dark:border-zinc-800">
             {{ $postings->links() }}
         </div>
-    </flux:card>
+    </div>
 </div>
-

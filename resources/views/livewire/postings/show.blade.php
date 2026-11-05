@@ -1,248 +1,258 @@
-<div class="space-y-6">
+<div class="p-6 max-w-7xl mx-auto space-y-6">
     {{-- Header --}}
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div class="flex items-center gap-3">
-            <flux:button variant="subtle" icon="arrow-left" href="{{ route('postings.index') }}" wire:navigate>
-                Kembali
-            </flux:button>
+            <a href="{{ route('postings.index') }}" wire:navigate class="flex size-10 items-center justify-center text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-100 bg-white dark:bg-zinc-900 rounded-xl border border-slate-200/80 dark:border-zinc-800 shadow-2xs hover:shadow-xs transition">
+                <flux:icon icon="arrow-left" class="size-4" />
+            </a>
             <div>
-                <div class="flex items-center gap-3">
-                    <flux:heading size="xl" class="font-bold tracking-tight">
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
                         Dokumen SAP #{{ $posting->document_number }}
-                    </flux:heading>
-                    <flux:badge color="green" size="sm">Posted SAP</flux:badge>
+                    </h1>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/60">
+                        <span class="size-1.5 rounded-full bg-emerald-500"></span>
+                        Posted SAP
+                    </span>
                 </div>
-                <flux:text class="text-xs text-zinc-500 mt-1">
-                    Tanggal Posting: {{ $posting->posting_date?->translatedFormat('d F Y') }}
-                </flux:text>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 mt-1">
+                    Tanggal Posting: <strong class="text-slate-800 dark:text-zinc-200">{{ $posting->posting_date?->translatedFormat('d F Y') }}</strong>
+                </p>
             </div>
         </div>
     </div>
 
     {{-- Flash Notifications --}}
     @if (session()->has('success'))
-        <div class="rounded-xl border border-emerald-500/20 bg-emerald-50/50 p-4 text-sm text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-300">
-            {{ session('success') }}
+        <div class="flex items-center gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm dark:bg-emerald-950/40 dark:border-emerald-800/60 dark:text-emerald-300 shadow-2xs">
+            <flux:icon.check-circle class="size-5 shrink-0 text-emerald-600" />
+            <span class="font-medium">{{ session('success') }}</span>
         </div>
     @endif
 
-    {{-- KPI Cards --}}
+    {{-- KPI Cards (4 Cards) --}}
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <flux:card class="space-y-1">
-            <flux:text class="text-xs font-medium uppercase text-zinc-500">Total Nominal Dibayar</flux:text>
-            <flux:heading size="xl" class="font-bold text-emerald-600 dark:text-emerald-400">
+        <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 p-5 shadow-xs">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Total Nominal Dibayar</span>
+            <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-2 tracking-tight">
                 Rp {{ number_format($posting->total_paid, 0, ',', '.') }}
-            </flux:heading>
-            <flux:text class="text-xs text-zinc-500">Nilai pelunasan di SAP</flux:text>
-        </flux:card>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Nilai pelunasan di kasir/SAP</p>
+        </div>
 
-        <flux:card class="space-y-1">
-            <flux:text class="text-xs font-medium uppercase text-zinc-500">Payment Request</flux:text>
-            <flux:heading size="xl" class="font-bold text-zinc-900 dark:text-white">
-                {{ $posting->paymentRequests->count() }}
-            </flux:heading>
-            <flux:text class="text-xs text-zinc-500">Berkas pengajuan</flux:text>
-        </flux:card>
+        <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 p-5 shadow-xs">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Payment Request Terkait</span>
+            <div class="text-2xl font-black text-slate-900 dark:text-white mt-2 tracking-tight">
+                {{ $posting->paymentRequests->count() }} PR
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Berkas pengajuan kasir</p>
+        </div>
 
-        <flux:card class="space-y-1">
-            <flux:text class="text-xs font-medium uppercase text-zinc-500">Total Invoice</flux:text>
-            <flux:heading size="xl" class="font-bold text-zinc-900 dark:text-white">
-                {{ $invoices->count() }}
-            </flux:heading>
-            <flux:text class="text-xs text-zinc-500">Semua berstatus LUNAS</flux:text>
-        </flux:card>
+        <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 p-5 shadow-xs">
+            <span class="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400">Total Invoice</span>
+            <div class="text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-2 tracking-tight">
+                {{ $invoices->count() }} Faktur
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Semua berstatus LUNAS</p>
+        </div>
 
-        <flux:card class="space-y-1">
-            <flux:text class="text-xs font-medium uppercase text-zinc-500">Vendor Terkait</flux:text>
-            <flux:heading size="sm" class="font-semibold text-zinc-800 dark:text-zinc-200">
+        <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 p-5 shadow-xs">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Vendor Terkait</span>
+            <div class="text-sm font-bold text-slate-800 dark:text-zinc-200 mt-2 truncate">
                 {{ $vendors->pluck('name')->implode(', ') ?: '-' }}
-            </flux:heading>
-            <flux:text class="text-xs text-zinc-500">{{ $vendors->count() }} Rekanan</flux:text>
-        </flux:card>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">{{ $vendors->count() }} Rekanan Catering</p>
+        </div>
     </div>
 
     {{-- Main Content --}}
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div class="space-y-6 lg:col-span-2">
             {{-- Linked Payment Requests Table --}}
-            <flux:card class="space-y-4">
-                <flux:heading size="lg" class="font-bold">Payment Request Terkait</flux:heading>
-                <div class="overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-700">
-                    <table class="min-w-full divide-y divide-zinc-200 text-left text-sm dark:divide-zinc-700">
-                        <thead class="bg-zinc-50 dark:bg-zinc-800/60 text-xs uppercase font-medium text-zinc-500">
+            <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
+                <div class="p-5 border-b border-slate-100 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-900/50">
+                    <h3 class="font-bold text-sm text-slate-900 dark:text-white">Payment Request Terkait</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800">
+                        <thead class="bg-slate-50/80 dark:bg-zinc-800/60 text-[11px] uppercase font-bold text-slate-500 dark:text-zinc-400 tracking-wider">
                             <tr>
-                                <th class="px-4 py-3">No. PR</th>
-                                <th class="px-4 py-3">Tgl Diajukan</th>
-                                <th class="px-4 py-3">Tahapan</th>
-                                <th class="px-4 py-3 text-center">Jml Invoice</th>
-                                <th class="px-4 py-3 text-right">Total Nilai</th>
-                                <th class="px-4 py-3 text-center">Aksi</th>
+                                <th class="px-5 py-3.5">No. PR</th>
+                                <th class="px-4 py-3.5">Tgl Diajukan</th>
+                                <th class="px-4 py-3.5">Tahapan</th>
+                                <th class="px-4 py-3.5 text-center">Jml Invoice</th>
+                                <th class="px-5 py-3.5 text-right">Total Nilai</th>
+                                <th class="px-4 py-3.5 text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                        <tbody class="divide-y divide-slate-100 dark:divide-zinc-800">
                             @foreach ($posting->paymentRequests as $pr)
-                                <tr class="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/40">
-                                    <td class="px-4 py-3 font-semibold text-zinc-900 dark:text-white">
+                                <tr class="hover:bg-slate-50/60 dark:hover:bg-zinc-800/40 transition">
+                                    <td class="px-5 py-4 font-bold text-slate-900 dark:text-white">
                                         {{ $pr->number }}
                                     </td>
-                                    <td class="px-4 py-3 text-zinc-500">
+                                    <td class="px-4 py-4 text-xs text-slate-500">
                                         {{ $pr->submitted_at?->format('d/m/Y H:i') }}
                                     </td>
-                                    <td class="px-4 py-3">
-                                        <flux:badge size="sm" color="indigo">
+                                    <td class="px-4 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/60">
                                             {{ $pr->currentStage?->name ?? '-' }}
-                                        </flux:badge>
+                                        </span>
                                     </td>
-                                    <td class="px-4 py-3 text-center text-zinc-600 dark:text-zinc-300">
+                                    <td class="px-4 py-4 text-center text-xs font-bold text-slate-700 dark:text-zinc-300">
                                         {{ $pr->invoices->count() }}
                                     </td>
-                                    <td class="px-4 py-3 text-right font-bold text-zinc-900 dark:text-white">
+                                    <td class="px-5 py-4 text-right font-black text-slate-900 dark:text-white">
                                         Rp {{ number_format($pr->total_amount, 0, ',', '.') }}
                                     </td>
-                                    <td class="px-4 py-3 text-center">
-                                        <flux:button variant="subtle" size="xs" href="{{ route('payment-requests.show', $pr) }}" wire:navigate>
+                                    <td class="px-4 py-4 text-center">
+                                        <a href="{{ route('payment-requests.show', $pr) }}" wire:navigate class="px-2.5 py-1 text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg dark:bg-indigo-950/60 dark:text-indigo-300 transition">
                                             Detail PR
-                                        </flux:button>
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-            </flux:card>
+            </div>
 
             {{-- Linked Invoices Table --}}
-            <flux:card class="space-y-4">
-                <flux:heading size="lg" class="font-bold">Daftar Invoice Lunas</flux:heading>
-                <div class="overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-700">
-                    <table class="min-w-full divide-y divide-zinc-200 text-left text-sm dark:divide-zinc-700">
-                        <thead class="bg-zinc-50 dark:bg-zinc-800/60 text-xs uppercase font-medium text-zinc-500">
+            <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
+                <div class="p-5 border-b border-slate-100 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-900/50">
+                    <h3 class="font-bold text-sm text-slate-900 dark:text-white">Daftar Invoice Lunas</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800">
+                        <thead class="bg-slate-50/80 dark:bg-zinc-800/60 text-[11px] uppercase font-bold text-slate-500 dark:text-zinc-400 tracking-wider">
                             <tr>
-                                <th class="px-4 py-3">No. Invoice</th>
-                                <th class="px-4 py-3">Vendor</th>
-                                <th class="px-4 py-3">No. PO</th>
-                                <th class="px-4 py-3 text-right">Nilai Tagihan</th>
-                                <th class="px-4 py-3 text-center">Status</th>
-                                <th class="px-4 py-3 text-center">Aksi</th>
+                                <th class="px-5 py-3.5">No. Invoice</th>
+                                <th class="px-4 py-3.5">Vendor</th>
+                                <th class="px-4 py-3.5">No. PO</th>
+                                <th class="px-5 py-3.5 text-right">Nilai Tagihan</th>
+                                <th class="px-4 py-3.5 text-center">Status</th>
+                                <th class="px-4 py-3.5 text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                        <tbody class="divide-y divide-slate-100 dark:divide-zinc-800">
                             @foreach ($invoices as $inv)
-                                <tr class="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/40">
-                                    <td class="px-4 py-3 font-semibold text-zinc-900 dark:text-white">
+                                <tr class="hover:bg-slate-50/60 dark:hover:bg-zinc-800/40 transition">
+                                    <td class="px-5 py-4 font-bold text-slate-900 dark:text-white">
                                         {{ $inv->invoice_number }}
                                     </td>
-                                    <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">
+                                    <td class="px-4 py-4 text-xs font-semibold text-slate-800 dark:text-zinc-200">
                                         {{ $inv->vendor->name ?? '-' }}
                                     </td>
-                                    <td class="px-4 py-3 text-zinc-600 dark:text-zinc-300">
+                                    <td class="px-4 py-4 text-xs font-mono text-slate-600 dark:text-zinc-400">
                                         {{ $inv->purchaseOrder?->po_number ?? '-' }}
                                     </td>
-                                    <td class="px-4 py-3 text-right font-semibold text-zinc-900 dark:text-white">
+                                    <td class="px-5 py-4 text-right font-black text-slate-900 dark:text-white">
                                         Rp {{ number_format($inv->total_amount, 0, ',', '.') }}
                                     </td>
-                                    <td class="px-4 py-3 text-center">
-                                        <flux:badge size="sm" color="green">
+                                    <td class="px-4 py-4 text-center">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/60">
+                                            <span class="size-1.5 rounded-full bg-emerald-500"></span>
                                             {{ $inv->status->label() }}
-                                        </flux:badge>
+                                        </span>
                                     </td>
-                                    <td class="px-4 py-3 text-center">
-                                        <flux:button variant="subtle" size="xs" href="{{ route('invoices.show', $inv) }}" wire:navigate>
+                                    <td class="px-4 py-4 text-center">
+                                        <a href="{{ route('invoices.show', $inv) }}" wire:navigate class="px-2.5 py-1 text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg dark:bg-indigo-950/60 dark:text-indigo-300 transition">
                                             Detail
-                                        </flux:button>
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-            </flux:card>
+            </div>
         </div>
 
         {{-- Right 1 col: Details & Documents --}}
         <div class="space-y-6">
-            <flux:card class="space-y-4">
-                <flux:heading size="base" class="font-bold">Informasi Dokumen</flux:heading>
+            <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 p-5 shadow-xs space-y-4">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-zinc-800 pb-3">Informasi Dokumen SAP</h3>
 
-                <div class="space-y-3 text-sm">
+                <div class="space-y-3 text-xs">
                     <div>
-                        <flux:text class="text-xs text-zinc-500">Nomor Dokumen SAP</flux:text>
-                        <flux:text class="font-bold text-zinc-900 dark:text-white">{{ $posting->document_number }}</flux:text>
+                        <span class="text-slate-400 block mb-0.5">Nomor Dokumen SAP:</span>
+                        <span class="font-mono font-bold text-slate-900 dark:text-white text-sm">{{ $posting->document_number }}</span>
                     </div>
                     <div>
-                        <flux:text class="text-xs text-zinc-500">Tanggal Posting</flux:text>
-                        <flux:text class="font-semibold text-zinc-800 dark:text-zinc-200">{{ $posting->posting_date?->format('d/m/Y') }}</flux:text>
+                        <span class="text-slate-400 block mb-0.5">Tanggal Posting:</span>
+                        <span class="font-semibold text-slate-800 dark:text-zinc-200">{{ $posting->posting_date?->format('d/m/Y') }}</span>
                     </div>
                     <div>
-                        <flux:text class="text-xs text-zinc-500">Total Dibayar</flux:text>
-                        <flux:text class="font-bold text-emerald-600 dark:text-emerald-400">Rp {{ number_format($posting->total_paid, 0, ',', '.') }}</flux:text>
+                        <span class="text-slate-400 block mb-0.5">Total Nominal Dibayar:</span>
+                        <span class="font-black text-emerald-600 dark:text-emerald-400 text-sm">Rp {{ number_format($posting->total_paid, 0, ',', '.') }}</span>
                     </div>
                     <div>
-                        <flux:text class="text-xs text-zinc-500">Dicatat Oleh</flux:text>
-                        <flux:text class="text-zinc-700 dark:text-zinc-300">{{ $posting->creator?->name ?? '-' }}</flux:text>
+                        <span class="text-slate-400 block mb-0.5">Dicatat Oleh:</span>
+                        <span class="font-medium text-slate-800 dark:text-zinc-200">{{ $posting->creator?->name ?? '-' }}</span>
                     </div>
                     @if ($posting->notes)
-                        <div>
-                            <flux:text class="text-xs text-zinc-500">Catatan</flux:text>
-                            <div class="rounded-lg bg-zinc-50 p-2 text-xs text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                        <div class="pt-2 border-t border-slate-100 dark:border-zinc-800">
+                            <span class="text-slate-400 block mb-1 font-medium">Catatan:</span>
+                            <div class="rounded-xl bg-slate-50 dark:bg-zinc-800/60 p-2.5 text-xs text-slate-700 dark:text-zinc-300 italic border border-slate-100 dark:border-zinc-800">
                                 {{ $posting->notes }}
                             </div>
                         </div>
                     @endif
                 </div>
-            </flux:card>
+            </div>
 
             {{-- Proof of Payment Document --}}
-            <flux:card class="space-y-4">
-                <flux:heading size="base" class="font-bold">Bukti Bayar / Dokumen SAP</flux:heading>
+            <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 p-5 shadow-xs space-y-4">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-zinc-800 pb-3">Bukti Bayar / Dokumen SAP</h3>
 
                 @if ($posting->documents->isNotEmpty())
-                    <div class="divide-y divide-zinc-200 rounded-lg border border-zinc-200 dark:divide-zinc-700 dark:border-zinc-700">
+                    <div class="divide-y divide-slate-100 dark:divide-zinc-800 rounded-xl border border-slate-200/70 dark:border-zinc-800 overflow-hidden">
                         @foreach ($posting->documents as $doc)
-                            <div class="flex items-center justify-between p-3">
-                                <div class="flex items-center gap-3">
-                                    <flux:icon.document-text class="size-5 text-zinc-400" />
+                            <div class="flex items-center justify-between p-3.5 bg-slate-50/60 dark:bg-zinc-800/40">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="text-[10px] font-black uppercase px-2 py-1 bg-indigo-100 text-indigo-700 dark:bg-indigo-950/80 dark:text-indigo-300 rounded-md">
+                                        {{ pathinfo($doc->original_name, PATHINFO_EXTENSION) }}
+                                    </span>
                                     <div>
-                                        <flux:text class="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+                                        <div class="text-xs font-semibold text-slate-800 dark:text-zinc-200 truncate max-w-[140px]">
                                             {{ $doc->original_name }}
-                                        </flux:text>
-                                        <flux:text class="text-xs text-zinc-500">
+                                        </div>
+                                        <div class="text-[10px] text-slate-400">
                                             {{ $doc->formatted_size }}
-                                        </flux:text>
+                                        </div>
                                     </div>
                                 </div>
-                                <flux:button variant="subtle" size="sm" icon="arrow-down-tray" href="{{ route('documents.show', $doc) }}" target="_blank">
-                                    Unduh
-                                </flux:button>
+                                <a href="{{ route('documents.show', $doc) }}" target="_blank" class="px-2.5 py-1 text-xs font-bold text-indigo-600 bg-white hover:bg-slate-100 dark:bg-zinc-800 dark:text-indigo-400 rounded-lg border border-slate-200 dark:border-zinc-700 transition">
+                                    Buka
+                                </a>
                             </div>
                         @endforeach
                     </div>
                 @else
-                    <flux:text class="text-sm text-zinc-500">Belum ada file bukti bayar yang diunggah.</flux:text>
+                    <div class="text-xs text-slate-400 text-center py-4">Belum ada file bukti bayar yang diunggah.</div>
                 @endif
 
                 @if ($isSpv)
-                    <div class="rounded-xl border border-dashed border-zinc-300 p-4 dark:border-zinc-700">
-                        <flux:heading size="sm" class="font-semibold mb-2">Unggah Bukti Bayar Tambahan</flux:heading>
+                    <div class="rounded-xl border border-dashed border-slate-300 dark:border-zinc-700 p-4 bg-slate-50/50 dark:bg-zinc-900/40">
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-zinc-200 mb-2">Unggah Bukti Bayar Tambahan</h4>
                         <form wire:submit="uploadDocument" class="space-y-3">
                             <div>
-                                <flux:input type="file" wire:model="document_file" label="File Bukti Bayar (PDF/JPG/PNG, Max 5MB)" />
-                                @error('document_file') <flux:text class="text-xs text-rose-500 mt-1">{{ $message }}</flux:text> @enderror
+                                <input type="file" wire:model="document_file" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                @error('document_file') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
                             </div>
                             <div>
-                                <flux:input wire:model="document_notes" label="Keterangan (Opsional)" placeholder="Contoh: Bukti transfer kasir / scan SAP" />
+                                <input type="text" wire:model="document_notes" placeholder="Keterangan bukti transfer..." class="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 dark:text-white">
                             </div>
                             <div class="flex justify-end">
-                                <flux:button type="submit" variant="primary" size="sm" wire:loading.attr="disabled">
+                                <button type="submit" class="px-4 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg shadow-2xs transition" wire:loading.attr="disabled">
                                     <span wire:loading.remove wire:target="uploadDocument">Unggah File</span>
                                     <span wire:loading wire:target="uploadDocument">Mengunggah...</span>
-                                </flux:button>
+                                </button>
                             </div>
                         </form>
                     </div>
                 @endif
-            </flux:card>
+            </div>
         </div>
     </div>
 </div>
-
