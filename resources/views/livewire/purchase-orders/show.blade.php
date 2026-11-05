@@ -1,8 +1,8 @@
-<div class="p-6 max-w-7xl mx-auto space-y-6">
+<div class="space-y-6 max-w-7xl mx-auto">
     <!-- Breadcrumb & Back -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div class="flex items-center gap-3">
-            <a href="{{ route('purchase-orders.index') }}" wire:navigate class="flex size-10 items-center justify-center text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-100 bg-white dark:bg-zinc-900 rounded-xl border border-slate-200/80 dark:border-zinc-800 shadow-2xs hover:shadow-xs transition">
+            <a href="{{ route('purchase-orders.index') }}" wire:navigate class="flex size-10 items-center justify-center text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-100 bg-white dark:bg-zinc-900 rounded-xl border border-slate-200/80 dark:border-zinc-800 shadow-2xs hover:shadow-xs transition shrink-0">
                 <flux:icon icon="arrow-left" class="size-4" />
             </a>
             <div>
@@ -42,9 +42,9 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
             @if ($canEdit)
-                <a href="{{ route('purchase-orders.edit', $purchaseOrder) }}" wire:navigate class="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-amber-700 bg-amber-50 rounded-xl border border-amber-200 hover:bg-amber-100 dark:bg-amber-950/40 dark:border-amber-800/60 dark:text-amber-300 transition shadow-2xs">
+                <a href="{{ route('purchase-orders.edit', $purchaseOrder) }}" wire:navigate class="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold text-amber-700 bg-amber-50 rounded-xl border border-amber-200 hover:bg-amber-100 dark:bg-amber-950/40 dark:border-amber-800/60 dark:text-amber-300 transition shadow-2xs">
                     <flux:icon icon="pencil-square" class="size-3.5" />
                     <span>Ubah PO</span>
                 </a>
@@ -147,29 +147,29 @@
     </div>
 
     <!-- Navigation Tabs -->
-    <div class="border-b border-slate-200 dark:border-zinc-800 flex items-center gap-2 overflow-x-auto">
-        <button wire:click="$set('activeTab', 'items')" class="flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition {{ $activeTab === 'items' ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
+    <div class="border-b border-slate-200 dark:border-zinc-800 flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-0.5 -mx-3 sm:mx-0 px-3 sm:px-0">
+        <button wire:click="$set('activeTab', 'items')" class="flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition shrink-0 {{ $activeTab === 'items' ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
             <flux:icon icon="cube" class="size-4" />
             <span>Daftar Item PO</span>
             <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300">
                 {{ $purchaseOrder->poItems->count() }}
             </span>
         </button>
-        <button wire:click="$set('activeTab', 'deliveries')" class="flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition {{ $activeTab === 'deliveries' ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
+        <button wire:click="$set('activeTab', 'deliveries')" class="flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition shrink-0 {{ $activeTab === 'deliveries' ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
             <flux:icon icon="truck" class="size-4" />
             <span>Riwayat Pengiriman (DO)</span>
             <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300">
                 {{ $purchaseOrder->deliveries->count() }}
             </span>
         </button>
-        <button wire:click="$set('activeTab', 'invoices')" class="flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition {{ $activeTab === 'invoices' ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
+        <button wire:click="$set('activeTab', 'invoices')" class="flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition shrink-0 {{ $activeTab === 'invoices' ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
             <flux:icon icon="document-text" class="size-4" />
             <span>Riwayat Tagihan (Invoice)</span>
             <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300">
                 {{ $purchaseOrder->invoices->count() }}
             </span>
         </button>
-        <button wire:click="$set('activeTab', 'documents')" class="flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition {{ $activeTab === 'documents' ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
+        <button wire:click="$set('activeTab', 'documents')" class="flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition shrink-0 {{ $activeTab === 'documents' ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
             <flux:icon icon="paper-clip" class="size-4" />
             <span>Dokumen Lampiran</span>
             <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300">
@@ -181,8 +181,8 @@
     <!-- Tab 1: Item PO -->
     @if ($activeTab === 'items')
         <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800">
+            <div class="overflow-x-auto -mx-3 sm:mx-0">
+                <table class="min-w-[640px] w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800 whitespace-nowrap">
                     <thead class="bg-slate-50/80 dark:bg-zinc-800/60 font-bold text-slate-500 dark:text-zinc-400 text-[11px] uppercase tracking-wider">
                         <tr>
                             <th class="px-6 py-3.5">Nama Item</th>
@@ -228,8 +228,8 @@
                     Belum ada riwayat pengiriman untuk PO ini.
                 </div>
             @else
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800">
+                <div class="overflow-x-auto -mx-3 sm:mx-0">
+                    <table class="min-w-[640px] w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800 whitespace-nowrap">
                         <thead class="bg-slate-50/80 dark:bg-zinc-800/60 font-bold text-slate-500 dark:text-zinc-400 text-[11px] uppercase tracking-wider">
                             <tr>
                                 <th class="px-6 py-3.5">Kode Pengiriman</th>
@@ -274,8 +274,8 @@
                     Belum ada tagihan/invoice yang diajukan untuk PO ini.
                 </div>
             @else
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800">
+                <div class="overflow-x-auto -mx-3 sm:mx-0">
+                    <table class="min-w-[640px] w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800 whitespace-nowrap">
                         <thead class="bg-slate-50/80 dark:bg-zinc-800/60 font-bold text-slate-500 dark:text-zinc-400 text-[11px] uppercase tracking-wider">
                             <tr>
                                 <th class="px-6 py-3.5">Nomor Invoice</th>

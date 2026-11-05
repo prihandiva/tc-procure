@@ -1,4 +1,4 @@
-<div class="p-6 max-w-7xl mx-auto space-y-6">
+<div class="space-y-6 max-w-7xl mx-auto">
     <!-- Header & Navigation -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div class="flex items-center gap-3">
@@ -69,7 +69,7 @@
 
     <!-- SPV Action Panel: Konfirmasi Penerimaan Barang -->
     @if ($canConfirm)
-        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-50 to-orange-50/50 dark:from-amber-950/30 dark:via-zinc-900 dark:to-zinc-900 p-6 rounded-2xl border border-amber-300/80 dark:border-amber-800/60 shadow-xs space-y-4">
+        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-50 to-orange-50/50 dark:from-amber-950/30 dark:via-zinc-900 dark:to-zinc-900 p-5 sm:p-6 border border-amber-300/80 dark:border-amber-800/60 shadow-xs space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div class="space-y-1">
                     <div class="flex items-center gap-2">
@@ -82,11 +82,11 @@
                         Periksa kesesuaian fisik makanan dan jumlah porsi aktual saat tiba di Training Center. Default kuantitas otomatis disamakan dengan DO vendor. Ubah angka pada kolom "Qty Diterima" jika ada kekurangan atau kerusakan fisik.
                     </p>
                 </div>
-                <div class="flex items-center gap-2.5 shrink-0">
-                    <button type="button" wire:click="$set('showRejectModal', true)" class="px-4 py-2.5 text-xs font-bold text-rose-700 bg-white hover:bg-rose-50 rounded-xl border border-rose-200 dark:bg-zinc-900 dark:text-rose-400 dark:border-rose-900/60 dark:hover:bg-rose-950/40 shadow-2xs transition">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto shrink-0">
+                    <button type="button" wire:click="$set('showRejectModal', true)" class="w-full sm:w-auto justify-center px-4 py-2.5 text-xs font-bold text-rose-700 bg-white hover:bg-rose-50 rounded-xl border border-rose-200 dark:bg-zinc-900 dark:text-rose-400 dark:border-rose-900/60 dark:hover:bg-rose-950/40 shadow-2xs transition">
                         Tolak Pengiriman
                     </button>
-                    <button type="button" wire:click="confirmDelivery" class="inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl shadow-md shadow-emerald-600/25 transition transform active:scale-95">
+                    <button type="button" wire:click="confirmDelivery" class="w-full sm:w-auto justify-center inline-flex items-center gap-1.5 px-5 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl shadow-md shadow-emerald-600/25 transition transform active:scale-95">
                         <flux:icon icon="check" class="size-4" />
                         <span>Konfirmasi Diterima</span>
                     </button>
@@ -110,8 +110,8 @@
                     </span>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800">
+                <div class="overflow-x-auto -mx-3 sm:mx-0">
+                    <table class="min-w-[640px] w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800 whitespace-nowrap">
                         <thead class="bg-slate-50/80 dark:bg-zinc-800/60 font-bold text-slate-500 dark:text-zinc-400 text-[11px] uppercase tracking-wider">
                             <tr>
                                 <th class="px-5 py-3.5">Item Makanan / Jasa</th>

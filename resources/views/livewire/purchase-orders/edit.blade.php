@@ -1,11 +1,12 @@
-<div class="p-6 max-w-6xl mx-auto space-y-6">
-    <div class="flex items-center justify-between">
+<div class="space-y-6 max-w-6xl mx-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Ubah Purchase Order {{ $purchaseOrder->po_number }}</h1>
-            <p class="text-sm text-zinc-500 dark:text-zinc-400">Pembaruan data PO sebelum ada pengiriman pertama yang terkonfirmasi.</p>
+            <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Ubah Purchase Order {{ $purchaseOrder->po_number }}</h1>
+            <p class="text-xs text-slate-500 dark:text-zinc-400 mt-1">Pembaruan data PO sebelum ada pengiriman pertama yang terkonfirmasi.</p>
         </div>
-        <a href="{{ route('purchase-orders.show', $purchaseOrder) }}" wire:navigate class="px-4 py-2 text-sm font-medium text-zinc-600 bg-zinc-100 rounded-lg hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 transition">
-            &larr; Kembali ke Detail PO
+        <a href="{{ route('purchase-orders.show', $purchaseOrder) }}" wire:navigate class="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold text-slate-600 bg-white hover:bg-slate-100 rounded-xl border border-slate-200/80 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700 transition shadow-2xs w-full sm:w-auto">
+            <flux:icon icon="arrow-left" class="size-3.5" />
+            <span>Kembali ke Detail PO</span>
         </a>
     </div>
 
@@ -80,8 +81,8 @@
 
             @error('items') <div class="text-xs text-red-600">{{ $message }}</div> @enderror
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm text-zinc-700 dark:text-zinc-300">
+            <div class="overflow-x-auto -mx-3 sm:mx-0">
+                <table class="min-w-[700px] w-full text-left text-sm text-zinc-700 dark:text-zinc-300 whitespace-nowrap">
                     <thead class="bg-zinc-50 dark:bg-zinc-800/60 text-xs font-semibold text-zinc-600 dark:text-zinc-300">
                         <tr>
                             <th class="px-3 py-2 w-1/4">Pilih Katalog</th>
@@ -144,11 +145,11 @@
             </div>
         </div>
 
-        <div class="flex items-center justify-end gap-3 pt-4">
-            <a href="{{ route('purchase-orders.show', $purchaseOrder) }}" wire:navigate class="px-5 py-2.5 text-sm font-medium text-zinc-600 bg-zinc-100 rounded-lg hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 transition">
+        <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-4">
+            <a href="{{ route('purchase-orders.show', $purchaseOrder) }}" wire:navigate class="inline-flex items-center justify-center px-5 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl dark:bg-zinc-800 dark:text-zinc-300 transition w-full sm:w-auto">
                 Batal
             </a>
-            <button type="submit" class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm transition">
+            <button type="submit" class="inline-flex items-center justify-center px-6 py-2.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl shadow-md shadow-indigo-600/30 transition transform active:scale-95 w-full sm:w-auto">
                 Simpan Perubahan PO
             </button>
         </div>

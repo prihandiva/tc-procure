@@ -44,8 +44,8 @@
                     @enderror
 
                     @if ($unpostedPrs->isNotEmpty())
-                        <div class="overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-700">
-                            <table class="min-w-full divide-y divide-zinc-200 text-left text-sm dark:divide-zinc-700">
+                        <div class="overflow-x-auto -mx-3 sm:mx-0 rounded-lg border border-zinc-200 dark:border-zinc-700">
+                            <table class="min-w-[620px] w-full divide-y divide-zinc-200 text-left text-sm dark:divide-zinc-700 whitespace-nowrap">
                                 <thead class="bg-zinc-50 dark:bg-zinc-800/60 text-xs uppercase font-medium text-zinc-500">
                                     <tr>
                                         <th class="px-4 py-3 text-center w-12">Pilih</th>

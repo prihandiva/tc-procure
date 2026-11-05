@@ -1,11 +1,12 @@
-<div class="p-6 max-w-5xl mx-auto space-y-6">
-    <div class="flex items-center justify-between">
+<div class="space-y-6 max-w-5xl mx-auto">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Input Pengiriman Makanan / DO</h1>
-            <p class="text-sm text-zinc-500 dark:text-zinc-400">Pilih PO aktif, isi rincian kuantitas pengiriman, nama training, varian makanan, dan lampirkan scan surat jalan.</p>
+            <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Input Pengiriman Makanan / DO</h1>
+            <p class="text-xs text-slate-500 dark:text-zinc-400 mt-1">Pilih PO aktif, isi rincian kuantitas pengiriman, nama training, varian makanan, dan lampirkan scan surat jalan.</p>
         </div>
-        <a href="{{ route('deliveries.index') }}" wire:navigate class="px-4 py-2 text-sm font-medium text-zinc-600 bg-zinc-100 rounded-lg hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 transition">
-            &larr; Kembali ke Daftar
+        <a href="{{ route('deliveries.index') }}" wire:navigate class="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold text-slate-600 bg-white hover:bg-slate-100 rounded-xl border border-slate-200/80 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700 transition shadow-2xs w-full sm:w-auto">
+            <flux:icon icon="arrow-left" class="size-3.5" />
+            <span>Kembali ke Daftar</span>
         </a>
     </div>
 
@@ -128,11 +129,11 @@
             </div>
         @endif
 
-        <div class="flex items-center justify-end gap-3 pt-4">
-            <a href="{{ route('deliveries.index') }}" wire:navigate class="px-5 py-2.5 text-sm font-medium text-zinc-600 bg-zinc-100 rounded-lg hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 transition">
+        <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-4">
+            <a href="{{ route('deliveries.index') }}" wire:navigate class="inline-flex items-center justify-center px-5 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl dark:bg-zinc-800 dark:text-zinc-300 transition w-full sm:w-auto">
                 Batal
             </a>
-            <button type="submit" class="px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm transition">
+            <button type="submit" class="inline-flex items-center justify-center px-6 py-2.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl shadow-md shadow-indigo-600/30 transition transform active:scale-95 w-full sm:w-auto">
                 Kirimkan Pengajuan Surat Jalan
             </button>
         </div>

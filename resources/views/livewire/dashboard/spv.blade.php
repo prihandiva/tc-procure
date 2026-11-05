@@ -1,6 +1,6 @@
 <div class="space-y-6">
     {{-- Header & Quick Actions (Executive Hero Banner) --}}
-    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 sm:p-8 text-white shadow-lg border border-slate-800">
+    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-5 sm:p-8 text-white shadow-lg border border-slate-800">
         {{-- Subtle ambient glow --}}
         <div class="absolute -right-12 -top-12 size-64 rounded-full bg-indigo-500/15 blur-3xl pointer-events-none"></div>
         <div class="absolute -left-12 -bottom-12 size-64 rounded-full bg-blue-500/10 blur-3xl pointer-events-none"></div>
@@ -16,17 +16,17 @@
                 <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
                     Dashboard Pengadaan Training Center
                 </h1>
-                <p class="text-sm text-slate-300 max-w-2xl leading-relaxed">
+                <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
                     Ringkasan eksekutif pemenuhan snack & catering external. Pantau batas kuota PO, verifikasi fisik Surat Jalan (DO), dan validasi 3-Way Match tagihan secara terpusat.
                 </p>
             </div>
 
-            <div class="flex flex-wrap items-center gap-3">
-                <a href="{{ route('purchase-orders.create') }}" wire:navigate class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm shadow-md shadow-indigo-600/30 transition transform active:scale-95 border border-indigo-400/30">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                <a href="{{ route('purchase-orders.create') }}" wire:navigate class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm shadow-md shadow-indigo-600/30 transition transform active:scale-95 border border-indigo-400/30">
                     <flux:icon icon="plus" class="size-4" />
                     <span>Terbitkan PO Baru</span>
                 </a>
-                <a href="{{ route('invoices.index') }}" wire:navigate class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm backdrop-blur-md border border-white/15 transition transform active:scale-95">
+                <a href="{{ route('invoices.index') }}" wire:navigate class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm backdrop-blur-md border border-white/15 transition transform active:scale-95">
                     <flux:icon icon="clipboard-document-check" class="size-4" />
                     <span>Verifikasi Tagihan</span>
                 </a>
@@ -229,8 +229,8 @@
             </a>
         </div>
 
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800">
+        <div class="overflow-x-auto -mx-3 sm:mx-0">
+            <table class="min-w-[760px] w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800 whitespace-nowrap">
                 <thead class="bg-slate-50/80 dark:bg-zinc-800/60 text-[11px] uppercase font-bold text-slate-500 dark:text-zinc-400 tracking-wider">
                     <tr>
                         <th class="px-5 py-3.5">Nama Vendor</th>

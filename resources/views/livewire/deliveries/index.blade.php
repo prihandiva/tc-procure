@@ -1,4 +1,4 @@
-<div class="p-6 max-w-7xl mx-auto space-y-6">
+<div class="space-y-6 max-w-7xl mx-auto">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <div class="flex items-center gap-2.5">
@@ -12,7 +12,7 @@
             </p>
         </div>
         @can('create', App\Models\Delivery::class)
-            <a href="{{ route('deliveries.create') }}" wire:navigate class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-600/30 transition transform active:scale-95">
+            <a href="{{ route('deliveries.create') }}" wire:navigate class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-600/30 transition transform active:scale-95 w-full sm:w-auto">
                 <flux:icon icon="plus" class="size-4" />
                 <span>Input Pengiriman Baru</span>
             </a>
@@ -74,8 +74,8 @@
 
     <!-- Table -->
     <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800">
+        <div class="overflow-x-auto -mx-3 sm:mx-0">
+            <table class="min-w-[720px] w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800 whitespace-nowrap">
                 <thead class="bg-slate-50/80 dark:bg-zinc-800/60 font-bold text-slate-500 dark:text-zinc-400 text-[11px] uppercase tracking-wider">
                     <tr>
                         <th class="px-6 py-3.5">Kode Pengiriman</th>

@@ -1,4 +1,4 @@
-<div class="p-6 max-w-7xl mx-auto space-y-6">
+<div class="space-y-6 max-w-7xl mx-auto">
     {{-- Header --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div class="flex items-center gap-3">
@@ -73,8 +73,8 @@
                 <div class="p-5 border-b border-slate-100 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-900/50">
                     <h3 class="font-bold text-sm text-slate-900 dark:text-white">Payment Request Terkait</h3>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800">
+                <div class="overflow-x-auto -mx-3 sm:mx-0">
+                    <table class="min-w-[600px] w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800 whitespace-nowrap">
                         <thead class="bg-slate-50/80 dark:bg-zinc-800/60 text-[11px] uppercase font-bold text-slate-500 dark:text-zinc-400 tracking-wider">
                             <tr>
                                 <th class="px-5 py-3.5">No. PR</th>
@@ -122,8 +122,8 @@
                 <div class="p-5 border-b border-slate-100 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-900/50">
                     <h3 class="font-bold text-sm text-slate-900 dark:text-white">Daftar Invoice Lunas</h3>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800">
+                <div class="overflow-x-auto -mx-3 sm:mx-0">
+                    <table class="min-w-[600px] w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800 whitespace-nowrap">
                         <thead class="bg-slate-50/80 dark:bg-zinc-800/60 text-[11px] uppercase font-bold text-slate-500 dark:text-zinc-400 tracking-wider">
                             <tr>
                                 <th class="px-5 py-3.5">No. Invoice</th>

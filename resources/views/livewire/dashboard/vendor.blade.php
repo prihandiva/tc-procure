@@ -20,12 +20,12 @@
                 </p>
             </div>
 
-            <div class="flex flex-wrap items-center gap-3">
-                <a href="{{ route('deliveries.create') }}" wire:navigate class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm shadow-md shadow-emerald-600/30 transition transform active:scale-95 border border-emerald-400/30">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
+                <a href="{{ route('deliveries.create') }}" wire:navigate class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm shadow-md shadow-emerald-600/30 transition transform active:scale-95 border border-emerald-400/30">
                     <flux:icon icon="plus" class="size-4" />
                     <span>Input Surat Jalan (DO)</span>
                 </a>
-                <a href="{{ route('invoices.create') }}" wire:navigate class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm backdrop-blur-md border border-white/15 transition transform active:scale-95">
+                <a href="{{ route('invoices.create') }}" wire:navigate class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm backdrop-blur-md border border-white/15 transition transform active:scale-95">
                     <flux:icon icon="document-plus" class="size-4" />
                     <span>Buat Tagihan (Invoice)</span>
                 </a>
@@ -166,8 +166,8 @@
             </span>
         </div>
 
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800">
+        <div class="overflow-x-auto -mx-3 sm:mx-0">
+            <table class="min-w-[700px] w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800 whitespace-nowrap">
                 <thead class="bg-slate-50/80 dark:bg-zinc-800/60 text-[11px] uppercase font-bold text-slate-500 dark:text-zinc-400 tracking-wider">
                     <tr>
                         <th class="px-5 py-3.5">No. PO</th>
