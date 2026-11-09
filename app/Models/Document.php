@@ -54,5 +54,17 @@ class Document extends Model
 
         return $bytes.' B';
     }
+
+    public function isImage(): bool
+    {
+        return str_starts_with($this->mime ?? '', 'image/')
+            || in_array(strtolower(pathinfo($this->original_name, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'webp', 'gif']);
+    }
+
+    public function isPdf(): bool
+    {
+        return ($this->mime === 'application/pdf')
+            || strtolower(pathinfo($this->original_name, PATHINFO_EXTENSION)) === 'pdf';
+    }
 }
 

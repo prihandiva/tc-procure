@@ -138,15 +138,12 @@
                         </div>
 
                         <div>
-                            <flux:input
-                                type="file"
-                                wire:model="payment_proof"
-                                label="Upload Bukti Bayar / Dokumen SAP"
+                            <x-file-upload-camera
+                                model="payment_proof"
+                                :file="$payment_proof"
+                                label="Upload Bukti Bayar / Slip Transfer SAP (Foto / PDF)"
+                                help="Ambil foto slip transfer kasir fisik atau pilih berkas PDF/JPG dari galeri."
                             />
-                            <flux:text class="text-[11px] text-zinc-400 mt-1">
-                                Format: PDF, JPG, PNG (Maksimal 5MB)
-                            </flux:text>
-                            @error('payment_proof') <flux:text class="text-xs text-rose-500 mt-1">{{ $message }}</flux:text> @enderror
                         </div>
 
                         <div>

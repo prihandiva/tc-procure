@@ -272,30 +272,7 @@
                     </h3>
                 </div>
 
-                @forelse ($delivery->documents as $doc)
-                    <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-zinc-800/50 border border-slate-200/70 dark:border-zinc-700/60 space-y-3">
-                        <div class="flex items-center gap-2.5">
-                            <span class="text-[10px] font-black uppercase px-2 py-1 bg-indigo-100 text-indigo-700 dark:bg-indigo-950/80 dark:text-indigo-300 rounded-md">
-                                {{ pathinfo($doc->original_name, PATHINFO_EXTENSION) }}
-                            </span>
-                            <span class="text-xs font-semibold text-slate-800 dark:text-zinc-200 truncate flex-1" title="{{ $doc->original_name }}">
-                                {{ $doc->original_name }}
-                            </span>
-                        </div>
-                        <div class="flex items-center gap-2 pt-1 border-t border-slate-200/50 dark:border-zinc-700/50">
-                            <a href="{{ route('documents.show', $doc) }}" target="_blank" class="flex-1 text-center py-1.5 text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg dark:bg-indigo-950/60 dark:text-indigo-300 transition">
-                                Buka
-                            </a>
-                            <a href="{{ route('documents.show', ['document' => $doc, 'download' => 1]) }}" class="flex-1 text-center py-1.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700 transition">
-                                Unduh
-                            </a>
-                        </div>
-                    </div>
-                @empty
-                    <div class="text-xs text-slate-400 text-center py-6">
-                        Tidak ada berkas DO fisik dilampirkan.
-                    </div>
-                @endforelse
+                <x-document-preview-card :documents="$delivery->documents" />
             </div>
         </div>
     </div>

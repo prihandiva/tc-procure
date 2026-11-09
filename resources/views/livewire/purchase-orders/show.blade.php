@@ -315,62 +315,42 @@
         <div class="space-y-6">
             @if (! $isVendor)
                 <!-- Form Upload Tambahan Dokumen -->
-                <div class="rounded-2xl bg-white dark:bg-zinc-900 p-6 border border-slate-200/80 dark:border-zinc-800 shadow-xs">
-                    <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-3">Unggah Berkas Lampiran PO Baru</h3>
-                    <form wire:submit="uploadDocument" class="flex flex-col sm:flex-row items-end gap-3">
-                        <div class="w-full sm:w-48">
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Jenis Dokumen</label>
-                            <select wire:model="document_type" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl dark:bg-zinc-800 dark:border-zinc-700 dark:text-white">
-                                <option value="po">Dokumen PO Resmi</option>
-                                <option value="other">Lampiran Tambahan</option>
-                            </select>
+                <div class="rounded-2xl bg-white dark:bg-zinc-900 p-6 border border-slate-200/80 dark:border-zinc-800 shadow-xs space-y-4">
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">Unggah Berkas Lampiran PO Baru</h3>
+                    <form wire:submit="uploadDocument" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Jenis Dokumen</label>
+                                <select wire:model="document_type" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl dark:bg-zinc-800 dark:border-zinc-700 dark:text-white">
+                                    <option value="po">Dokumen PO Resmi</option>
+                                    <option value="other">Lampiran Tambahan</option>
+                                </select>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <x-file-upload-camera
+                                    model="new_document"
+                                    :file="$new_document"
+                                    label="Pilih Berkas / Foto Dokumen"
+                                    help="Foto langsung dokumen PO atau unggah file PDF/JPG dari galeri."
+                                />
+                            </div>
                         </div>
-                        <div class="flex-1 w-full">
-                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Pilih File (PDF, JPG, PNG &bull; Maks 5 MB)</label>
-                            <input type="file" wire:model="new_document" class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 dark:file:bg-zinc-800 dark:file:text-zinc-300">
-                            @error('new_document') <span class="text-xs text-rose-600 mt-1 block">{{ $message }}</span> @enderror
+                        <div class="flex justify-end">
+                            <button type="submit" class="w-full sm:w-auto px-5 py-2.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl shadow-xs transition" wire:loading.attr="disabled">
+                                <span wire:loading.remove wire:target="uploadDocument">Unggah Dokumen</span>
+                                <span wire:loading wire:target="uploadDocument">Mengunggah...</span>
+                            </button>
                         </div>
-                        <button type="submit" class="w-full sm:w-auto px-5 py-2.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl shadow-xs transition">
-                            Unggah Dokumen
-                        </button>
                     </form>
                 </div>
             @endif
 
             <!-- List of Documents -->
-            <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
-                <div class="p-4 border-b border-slate-100 dark:border-zinc-800 font-bold text-xs uppercase tracking-wider text-slate-500">
-                    Berkas Terlampir (Tersimpan Aman di Private Storage)
+            <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs p-5 space-y-3">
+                <div class="font-bold text-xs uppercase tracking-wider text-slate-500 border-b border-slate-100 dark:border-zinc-800 pb-2.5">
+                    Berkas Terlampir (Tersimpan Aman di Storage)
                 </div>
-                <div class="divide-y divide-slate-100 dark:divide-zinc-800">
-                    @forelse ($purchaseOrder->documents as $doc)
-                        <div class="p-4 flex items-center justify-between hover:bg-slate-50/60 dark:hover:bg-zinc-800/40 transition">
-                            <div class="flex items-center gap-3">
-                                <div class="px-2.5 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs font-black uppercase">
-                                    {{ pathinfo($doc->original_name, PATHINFO_EXTENSION) }}
-                                </div>
-                                <div>
-                                    <div class="font-bold text-sm text-slate-900 dark:text-white">{{ $doc->original_name }}</div>
-                                    <div class="text-xs text-slate-400">
-                                        {{ $doc->formatted_size }} &bull; Diunggah oleh {{ $doc->uploader->name ?? 'User' }} &bull; {{ $doc->created_at->format('d M Y H:i') }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <a href="{{ route('documents.show', $doc) }}" target="_blank" class="px-3 py-1.5 text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg dark:bg-indigo-950/60 dark:text-indigo-300 transition">
-                                    Buka File
-                                </a>
-                                <a href="{{ route('documents.show', ['document' => $doc, 'download' => 1]) }}" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700 transition">
-                                    Unduh
-                                </a>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="p-8 text-center text-slate-400 text-xs">
-                            Tidak ada berkas dokumen terlampir pada PO ini.
-                        </div>
-                    @endforelse
-                </div>
+                <x-document-preview-card :documents="$purchaseOrder->documents" />
             </div>
         </div>
     @endif

@@ -59,11 +59,13 @@
                     @error('notes') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Unggah Berkas Scan / PDF PO (Opsional)</label>
-                    <input type="file" wire:model="document_file" class="w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-zinc-800 dark:file:text-zinc-300">
-                    <p class="text-[11px] text-zinc-400 mt-1">Format PDF, JPG, PNG. Maksimal 5 MB.</p>
-                    @error('document_file') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
+                <div class="sm:col-span-2">
+                    <x-file-upload-camera
+                        model="document_file"
+                        :file="$document_file"
+                        label="Unggah Berkas Scan / PDF PO (Opsional)"
+                        help="Ambil foto berkas kontrak PO fisik atau pilih dokumen PDF/JPG dari galeri."
+                    />
                 </div>
             </div>
         </div>

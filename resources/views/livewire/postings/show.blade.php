@@ -205,47 +205,26 @@
             <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 p-5 shadow-xs space-y-4">
                 <h3 class="text-sm font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-zinc-800 pb-3">Bukti Bayar / Dokumen SAP</h3>
 
-                @if ($posting->documents->isNotEmpty())
-                    <div class="divide-y divide-slate-100 dark:divide-zinc-800 rounded-xl border border-slate-200/70 dark:border-zinc-800 overflow-hidden">
-                        @foreach ($posting->documents as $doc)
-                            <div class="flex items-center justify-between p-3.5 bg-slate-50/60 dark:bg-zinc-800/40">
-                                <div class="flex items-center gap-2.5">
-                                    <span class="text-[10px] font-black uppercase px-2 py-1 bg-indigo-100 text-indigo-700 dark:bg-indigo-950/80 dark:text-indigo-300 rounded-md">
-                                        {{ pathinfo($doc->original_name, PATHINFO_EXTENSION) }}
-                                    </span>
-                                    <div>
-                                        <div class="text-xs font-semibold text-slate-800 dark:text-zinc-200 truncate max-w-[140px]">
-                                            {{ $doc->original_name }}
-                                        </div>
-                                        <div class="text-[10px] text-slate-400">
-                                            {{ $doc->formatted_size }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href="{{ route('documents.show', $doc) }}" target="_blank" class="px-2.5 py-1 text-xs font-bold text-indigo-600 bg-white hover:bg-slate-100 dark:bg-zinc-800 dark:text-indigo-400 rounded-lg border border-slate-200 dark:border-zinc-700 transition">
-                                    Buka
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
-                @else
-                    <div class="text-xs text-slate-400 text-center py-4">Belum ada file bukti bayar yang diunggah.</div>
-                @endif
+                <x-document-preview-card :documents="$posting->documents" />
 
                 @if ($isSpv)
-                    <div class="rounded-xl border border-dashed border-slate-300 dark:border-zinc-700 p-4 bg-slate-50/50 dark:bg-zinc-900/40">
-                        <h4 class="text-xs font-bold text-slate-800 dark:text-zinc-200 mb-2">Unggah Bukti Bayar Tambahan</h4>
+                    <div class="rounded-2xl border border-dashed border-slate-300 dark:border-zinc-700 p-4 bg-slate-50/50 dark:bg-zinc-900/40 space-y-3">
+                        <h4 class="text-xs font-bold text-slate-800 dark:text-zinc-200">Unggah Bukti Bayar Tambahan</h4>
                         <form wire:submit="uploadDocument" class="space-y-3">
                             <div>
-                                <input type="file" wire:model="document_file" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                                @error('document_file') <span class="text-xs text-rose-500 mt-1 block">{{ $message }}</span> @enderror
+                                <x-file-upload-camera
+                                    model="document_file"
+                                    :file="$document_file"
+                                    label="Pilih Foto / Berkas Bukti Transfer"
+                                    help="Foto bukti transfer kasir atau pilih file PDF/JPG dari galeri."
+                                />
                             </div>
                             <div>
-                                <input type="text" wire:model="document_notes" placeholder="Keterangan bukti transfer..." class="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 dark:text-white">
+                                <input type="text" wire:model="document_notes" placeholder="Keterangan bukti transfer (opsional)..." class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl dark:bg-zinc-800 dark:border-zinc-700 dark:text-white">
                             </div>
                             <div class="flex justify-end">
-                                <button type="submit" class="px-4 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg shadow-2xs transition" wire:loading.attr="disabled">
-                                    <span wire:loading.remove wire:target="uploadDocument">Unggah File</span>
+                                <button type="submit" class="w-full sm:w-auto px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl shadow-xs transition" wire:loading.attr="disabled">
+                                    <span wire:loading.remove wire:target="uploadDocument">Unggah File Bukti</span>
                                     <span wire:loading wire:target="uploadDocument">Mengunggah...</span>
                                 </button>
                             </div>

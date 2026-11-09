@@ -22,6 +22,9 @@
             </div>
         </div>
 
+        <!-- SweetAlert Style Toast Notification -->
+        <x-sweet-alert />
+
         @persist('toast')
             <flux:toast.group>
                 <flux:toast />
