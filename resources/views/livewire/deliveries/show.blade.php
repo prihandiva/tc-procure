@@ -13,7 +13,7 @@
                     @if ($delivery->isConfirmed())
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/60">
                             <span class="size-1.5 rounded-full bg-emerald-500"></span>
-                            Terkonfirmasi SPV
+                            Terkonfirmasi Tim TC
                         </span>
                     @elseif ($delivery->isRejected())
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 border border-rose-200/60">
@@ -23,7 +23,7 @@
                     @else
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200/60">
                             <span class="size-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-                            Menunggu Verifikasi SPV
+                            Menunggu Verifikasi Tim TC
                         </span>
                     @endif
 
@@ -67,16 +67,16 @@
         </div>
     @endif
 
-    <!-- SPV Action Panel: Konfirmasi Penerimaan Barang -->
+    <!-- Tim TC Action Panel: Konfirmasi Penerimaan Barang -->
     @if ($canConfirm)
         <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-500/10 via-amber-50 to-orange-50/50 dark:from-amber-950/30 dark:via-zinc-900 dark:to-zinc-900 p-5 sm:p-6 border border-amber-300/80 dark:border-amber-800/60 shadow-xs space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div class="space-y-1">
                     <div class="flex items-center gap-2">
                         <div class="flex size-7 items-center justify-center rounded-lg bg-amber-500 text-white font-bold text-xs">
-                            SPV
+                            TC
                         </div>
-                        <h2 class="text-base font-bold text-amber-950 dark:text-amber-200">Verifikasi & Konfirmasi Penerimaan Fisik (SPV)</h2>
+                        <h2 class="text-base font-bold text-amber-950 dark:text-amber-200">Verifikasi & Konfirmasi Penerimaan Fisik (Tim TC)</h2>
                     </div>
                     <p class="text-xs text-amber-800/90 dark:text-amber-300/90 max-w-2xl leading-relaxed">
                         Periksa kesesuaian fisik makanan dan jumlah porsi aktual saat tiba di Training Center. Default kuantitas otomatis disamakan dengan DO vendor. Ubah angka pada kolom "Qty Diterima" jika ada kekurangan atau kerusakan fisik.
@@ -247,7 +247,7 @@
                     @if ($delivery->isConfirmed())
                         <div class="flex items-center justify-between">
                             <span class="text-slate-400">Dikonfirmasi Oleh:</span>
-                            <span class="font-bold text-emerald-600 dark:text-emerald-400">{{ $delivery->confirmer->name ?? 'SPV' }}</span>
+                            <span class="font-bold text-emerald-600 dark:text-emerald-400">{{ $delivery->confirmer->name ?? 'Tim TC' }}</span>
                         </div>
                         <div class="flex items-center justify-between">
                             <span class="text-slate-400">Waktu Konfirmasi:</span>

@@ -91,7 +91,7 @@
                 class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm whitespace-nowrap transition cursor-pointer"
             >
                 <flux:icon icon="clipboard-document-check" class="size-4" />
-                <span>🏢 Panduan Tim TC (Pengadaan & SPV)</span>
+                <span>🏢 Panduan Operasional Tim TC</span>
             </button>
 
             <button
@@ -111,7 +111,7 @@
                 class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm whitespace-nowrap transition cursor-pointer"
             >
                 <flux:icon icon="question-mark-circle" class="size-4" />
-                <span>❓ FAQ & Troubleshooting</span>
+                <span>❓ FAQ & Solusi Kendala</span>
             </button>
         </div>
     </div>
@@ -129,12 +129,13 @@
                         Siklus Tahapan Pengadaan Snack & Catering
                     </h2>
                     <p class="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 mt-1">
-                        Sistem dirancang dengan tata kelola akuntansi ketat (*strict governance*) menggunakan verifikasi fisik, validasi 3-Way Match otomatis, dan integrasi Dokumen Posting SAP.
+                        Sistem dirancang dengan tata kelola akuntansi ketat (*strict governance*) menggunakan verifikasi fisik, validasi 3-Way Match otomatis dengan toleransi pembulatan wajar, dan integrasi Dokumen Posting SAP.
                     </p>
                 </div>
+                <!-- Unified Legend: Tim TC, Vendor Rekanan, Bagian Finance -->
                 <div class="flex items-center gap-3 text-xs font-medium">
                     <span class="flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 font-bold">
-                        <span class="size-3 rounded-full bg-indigo-600"></span> Tim TC / SPV
+                        <span class="size-3 rounded-full bg-indigo-600"></span> Tim TC
                     </span>
                     <span class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-bold">
                         <span class="size-3 rounded-full bg-emerald-600"></span> Vendor Rekanan
@@ -143,6 +144,17 @@
                         <span class="size-3 rounded-full bg-purple-600"></span> Bagian Finance
                     </span>
                 </div>
+            </div>
+
+            <!-- Deliberate Decision Callout: PO Standing Agreement -->
+            <div class="p-4 rounded-xl bg-gradient-to-r from-indigo-50 to-blue-50/60 dark:from-indigo-950/40 dark:to-zinc-900 border border-indigo-200/80 dark:border-indigo-900/60 text-xs sm:text-sm space-y-1.5">
+                <div class="flex items-center gap-2 font-bold text-indigo-950 dark:text-indigo-200">
+                    <flux:icon icon="information-circle" class="size-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
+                    <span>💡 Keputusan Desain Sistem: PO Sebagai Standing Contract / Blanket PO Aktif</span>
+                </div>
+                <p class="text-slate-600 dark:text-zinc-400 leading-relaxed text-xs">
+                    Di TC-Procure, Purchase Order yang diterbitkan Tim TC merupakan <strong>Kontrak Payung (Blanket PO)</strong> yang tarif dan plafon anggarannya telah disepakati secara resmi di awal kontrak kerja sama. Oleh karena itu, sistem secara sengaja merancang PO langsung berstatus <strong>Aktif</strong> tanpa memerlukan tombol konfirmasi penerimaan manual dari vendor, sehingga vendor dapat langsung menjadwalkan pengantaran makanan harian sesuai kebutuhan kelas pelatihan. Vendor mengonfirmasi PO dengan cara me-review kuota plafon dan daftar item di dashboard sebelum memulai pengiriman pertama.
+                </p>
             </div>
 
             <!-- Visual Flow Stepper Cards -->
@@ -157,7 +169,7 @@
                     </div>
                     <h3 class="font-bold text-slate-900 dark:text-white text-base">Penerbitan PO Kontrak</h3>
                     <p class="text-xs text-slate-600 dark:text-zinc-400 mt-2 leading-relaxed">
-                        TC menerbitkan Purchase Order resmi yang berisi daftar item snack, harga flat satuan, dan batas kuota plafon pemesanan maksimal.
+                        Tim TC menerbitkan Purchase Order resmi yang berisi daftar item snack, harga flat satuan, dan batas kuota plafon pemesanan maksimal yang disepakati.
                     </p>
                     <div class="mt-4 pt-3 border-t border-slate-200/80 dark:border-zinc-700/60 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500">Output:</span>
@@ -170,7 +182,7 @@
                     <div class="flex items-center justify-between mb-3">
                         <span class="inline-flex items-center justify-center size-8 rounded-lg bg-emerald-600 text-white font-extrabold text-sm shadow-xs">02</span>
                         <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200">
-                            Aktor: Vendor
+                            Aktor: Vendor Rekanan
                         </span>
                     </div>
                     <h3 class="font-bold text-slate-900 dark:text-white text-base">Pengiriman & Foto Surat Jalan</h3>
@@ -179,7 +191,7 @@
                     </p>
                     <div class="mt-4 pt-3 border-t border-slate-200/80 dark:border-zinc-700/60 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500">Output:</span>
-                        <span class="font-bold text-amber-600 dark:text-amber-400">DO Menunggu Verifikasi</span>
+                        <span class="font-bold text-amber-600 dark:text-amber-400">DO Menunggu Verifikasi Tim TC</span>
                     </div>
                 </div>
 
@@ -188,16 +200,16 @@
                     <div class="flex items-center justify-between mb-3">
                         <span class="inline-flex items-center justify-center size-8 rounded-lg bg-indigo-600 text-white font-extrabold text-sm shadow-xs">03</span>
                         <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-100 text-indigo-800 dark:bg-indigo-950/80 dark:text-indigo-300 border border-indigo-200">
-                            Aktor: SPV TC
+                            Aktor: Tim TC
                         </span>
                     </div>
                     <h3 class="font-bold text-slate-900 dark:text-white text-base">Verifikasi Fisik & Selisih</h3>
                     <p class="text-xs text-slate-600 dark:text-zinc-400 mt-2 leading-relaxed">
-                        SPV TC menghitung fisik makanan riil yang diterima. Jika ada yang rusak/kurang, sistem mencatat selisih. Kuota PO otomatis terpotong riil.
+                        Tim TC menghitung fisik makanan riil yang diterima. Jika ada yang rusak/kurang, sistem mencatat selisih. Kuota PO otomatis terpotong riil.
                     </p>
                     <div class="mt-4 pt-3 border-t border-slate-200/80 dark:border-zinc-700/60 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500">Output:</span>
-                        <span class="font-bold text-emerald-600 dark:text-emerald-400">DO Terkonfirmasi & Realisasi Masuk</span>
+                        <span class="font-bold text-emerald-600 dark:text-emerald-400">DO Terkonfirmasi Tim TC</span>
                     </div>
                 </div>
 
@@ -206,16 +218,16 @@
                     <div class="flex items-center justify-between mb-3">
                         <span class="inline-flex items-center justify-center size-8 rounded-lg bg-emerald-600 text-white font-extrabold text-sm shadow-xs">04</span>
                         <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200">
-                            Aktor: Vendor
+                            Aktor: Vendor Rekanan
                         </span>
                     </div>
                     <h3 class="font-bold text-slate-900 dark:text-white text-base">Pengajuan Tagihan (Invoice)</h3>
                     <p class="text-xs text-slate-600 dark:text-zinc-400 mt-2 leading-relaxed">
-                        Vendor memilih DO yang sudah <strong>Terkonfirmasi</strong>, memasukkan nomor faktur resmi vendor, jatuh tempo, serta mengunggah bukti invoice fisik.
+                        Vendor memilih DO yang sudah <strong>Terkonfirmasi Tim TC</strong>, memasukkan nomor faktur resmi vendor, tanggal invoice, dan mengunggah berkas tagihan.
                     </p>
                     <div class="mt-4 pt-3 border-t border-slate-200/80 dark:border-zinc-700/60 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500">Output:</span>
-                        <span class="font-bold text-amber-600 dark:text-amber-400">Invoice Submitted</span>
+                        <span class="font-bold text-amber-600 dark:text-amber-400">Invoice Submitted (TOP 14 Hari)</span>
                     </div>
                 </div>
 
@@ -229,7 +241,7 @@
                     </div>
                     <h3 class="font-bold text-slate-900 dark:text-white text-base">Validasi 3-Way Match</h3>
                     <p class="text-xs text-slate-600 dark:text-zinc-400 mt-2 leading-relaxed">
-                        Sistem mengaudit kesesuaian nilai 3 berkas: <strong>PO Acuan</strong> vs <strong>DO Fisik Diterima</strong> vs <strong>Invoice Vendor</strong>. Jika cocok, TC menyetujui tagihan.
+                        Sistem mengaudit kesesuaian nilai 3 berkas: <strong>PO Acuan</strong> vs <strong>DO Fisik Diterima</strong> vs <strong>Invoice Vendor</strong> (toleransi pembulatan $\le$ Rp 1.000). Jika cocok, Tim TC menyetujui tagihan.
                     </p>
                     <div class="mt-4 pt-3 border-t border-slate-200/80 dark:border-zinc-700/60 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500">Output:</span>
@@ -242,18 +254,110 @@
                     <div class="flex items-center justify-between mb-3">
                         <span class="inline-flex items-center justify-center size-8 rounded-lg bg-purple-600 text-white font-extrabold text-sm shadow-xs">06</span>
                         <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-purple-100 text-purple-800 dark:bg-purple-950/80 dark:text-purple-300 border border-purple-200">
-                            Aktor: TC & Finance
+                            Aktor: Tim TC & Finance
                         </span>
                     </div>
                     <h3 class="font-bold text-slate-900 dark:text-white text-base">Payment Request & SAP</h3>
                     <p class="text-xs text-slate-600 dark:text-zinc-400 mt-2 leading-relaxed">
-                        TC membundel invoice ke berkas PR untuk diajukan ke Finance. Setelah dana cair, nomor Dokumen SAP diinput dan tagihan berstatus Lunas.
+                        Tim TC membundel invoice ke berkas PR untuk diajukan ke Finance. Setelah dana cair, nomor Dokumen SAP diinput dan tagihan berstatus Lunas.
                     </p>
                     <div class="mt-4 pt-3 border-t border-slate-200/80 dark:border-zinc-700/60 flex items-center justify-between text-[11px]">
                         <span class="text-slate-500">Output:</span>
                         <span class="font-bold text-emerald-600 dark:text-emerald-400">Invoice Lunas (Paid)</span>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Skenario Penyimpangan & Exception Handling -->
+        <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-slate-200 dark:border-zinc-800 shadow-xs space-y-4">
+            <div class="border-b border-slate-100 dark:border-zinc-800 pb-3">
+                <h3 class="font-bold text-slate-900 dark:text-white text-base flex items-center gap-2">
+                    <flux:icon icon="exclamation-triangle" class="size-5 text-amber-500" />
+                    Prosedur Penanganan Skenario Penyimpangan (Exception Handling)
+                </h3>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">
+                    Panduan tindak lanjut saat terjadi anomali di lapangan seperti barang kurang/rusak, tagihan ditolak, atau penutupan sisa kuota PO.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+                <!-- Exception 1: Barang Kurang / Rusak -->
+                <div class="p-4 rounded-xl border border-rose-200/80 bg-rose-50/40 dark:bg-rose-950/20 dark:border-rose-900/50 space-y-2.5">
+                    <div class="flex items-center gap-2 font-bold text-rose-900 dark:text-rose-200 text-xs">
+                        <span class="flex size-5 items-center justify-center rounded-full bg-rose-200 text-rose-800 dark:bg-rose-900 dark:text-rose-200 text-[10px]">A</span>
+                        Barang Kurang / Rusak di DO Fisik
+                    </div>
+                    <div class="text-[11px] text-slate-600 dark:text-zinc-400 space-y-1.5 leading-relaxed">
+                        <p><strong>1. Pencatatan:</strong> Tim TC menginput angka fisik riil yang layak konsumsi di kolom <em>Qty Diterima</em>. Sistem mencatat badge merah <em>Kurang [X]</em>.</p>
+                        <p><strong>2. Opsi Pengganti:</strong> Vendor dapat mengirimkan kekurangan snack pada sesi training berikutnya via Surat Jalan DO baru (selama kuota PO masih ada).</p>
+                        <p><strong>3. Opsi Tanpa Pengganti:</strong> Jika tidak diganti, vendor <strong>hanya boleh menagihkan barang yang diterima layak</strong>. Sisa kuota PO tetap tersimpan dan tidak terpotong untuk barang rusak.</p>
+                    </div>
+                </div>
+
+                <!-- Exception 2: Tagihan Ditolak -->
+                <div class="p-4 rounded-xl border border-amber-200/80 bg-amber-50/40 dark:bg-amber-950/20 dark:border-amber-900/50 space-y-2.5">
+                    <div class="flex items-center gap-2 font-bold text-amber-900 dark:text-amber-200 text-xs">
+                        <span class="flex size-5 items-center justify-center rounded-full bg-amber-200 text-amber-800 dark:bg-amber-900 dark:text-amber-200 text-[10px]">B</span>
+                        Invoice Ditolak (Revisi & Re-Submit)
+                    </div>
+                    <div class="text-[11px] text-slate-600 dark:text-zinc-400 space-y-1.5 leading-relaxed">
+                        <p><strong>1. Alasan Penolakan:</strong> Jika terdapat anomali nilai/kuantitas, Tim TC menolak tagihan disertai alasan tertulis yang tersimpan di riwayat audit.</p>
+                        <p><strong>2. Pembukaan Kembali DO:</strong> Item Surat Jalan DO yang bersangkutan otomatis terbuka kembali (*unlocked*) dan siap ditagihkan ulang.</p>
+                        <p><strong>3. Tindak Lanjut Vendor:</strong> Vendor membaca catatan evaluasi dari Tim TC, merevisi berkas tagihan, lalu <strong>mengajukan ulang invoice baru yang sudah sesuai</strong>.</p>
+                    </div>
+                </div>
+
+                <!-- Exception 3: Penutupan PO Manual -->
+                <div class="p-4 rounded-xl border border-slate-200/80 bg-slate-50/60 dark:bg-zinc-800/40 dark:border-zinc-700/60 space-y-2.5">
+                    <div class="flex items-center gap-2 font-bold text-slate-800 dark:text-zinc-200 text-xs">
+                        <span class="flex size-5 items-center justify-center rounded-full bg-slate-200 text-slate-800 dark:bg-zinc-700 dark:text-zinc-200 text-[10px]">C</span>
+                        Penutupan Sisa Kuota PO (Close PO)
+                    </div>
+                    <div class="text-[11px] text-slate-600 dark:text-zinc-400 space-y-1.5 leading-relaxed">
+                        <p><strong>1. Kondisi:</strong> Periode pelatihan berakhir, tutup buku anggaran, atau jadwal kelas dibatalkan sementara kuota plafon PO masih bersisa.</p>
+                        <p><strong>2. Aksi Tim TC:</strong> Tim TC dapat mengubah status PO dari <em>Aktif</em> menjadi <strong>Selesai (Completed)</strong> atau <strong>Dibatalkan (Cancelled)</strong>.</p>
+                        <p><strong>3. Dampak Akuntansi:</strong> Sisa kuota tidak lagi menjadi komitmen berjalan di dashboard, dan vendor tidak dapat lagi membuat pengiriman baru atas PO tersebut.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toleransi 3-Way Match & Sistem Jatuh Tempo Overdue -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Card Toleransi 3-Way Match -->
+            <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-slate-200 dark:border-zinc-800 shadow-xs space-y-3">
+                <div class="flex items-center gap-2">
+                    <div class="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400">
+                        <flux:icon icon="scale" class="size-5" />
+                    </div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-sm">Toleransi Selisih Pembulatan pada 3-Way Match</h3>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
+                    Agar sistem tidak kaku terhadap perbedaan pembulatan desimal atau potongan administrasi kas:
+                </p>
+                <ul class="text-xs text-slate-600 dark:text-zinc-400 space-y-1.5 list-disc pl-5">
+                    <li><strong>Toleransi Kuantitas Desimal:</strong> Presisi floating-point sebesar <code class="font-mono text-indigo-600 font-bold">0.001</code> sehingga pecahan porsi snack tidak terblokir oleh kesalahan floating number di browser.</li>
+                    <li><strong>Toleransi Nilai Rupiah:</strong> Selisih pembulatan kas/pajak hingga $\le$ <strong>Rp 1.000</strong> (<code class="font-mono text-indigo-600 font-bold">ROUNDING_TOLERANCE_RUPIAH</code>) tetap diizinkan lolos audit agar tidak menghambat pembayaran atas selisih receh pembulatan bank.</li>
+                </ul>
+            </div>
+
+            <!-- Card Jatuh Tempo & Overdue Alert -->
+            <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-slate-200 dark:border-zinc-800 shadow-xs space-y-3">
+                <div class="flex items-center gap-2">
+                    <div class="p-2 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400">
+                        <flux:icon icon="calendar-days" class="size-5" />
+                    </div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-sm">Sistem Jatuh Tempo Pembayaran (TOP) & Overdue</h3>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
+                    Pengendalian arus kas dan komitmen pembayaran rekanan:
+                </p>
+                <ul class="text-xs text-slate-600 dark:text-zinc-400 space-y-1.5 list-disc pl-5">
+                    <li><strong>Term of Payment (TOP):</strong> Standar waktu pembayaran adalah <strong>14 hari kalender</strong> sejak tanggal pengajuan invoice oleh vendor.</li>
+                    <li><strong>Indikator Overdue Otomatis:</strong> Jika tagihan yang belum lunas melewati tanggal jatuh tempo, sistem otomatis menampilkan lencana peringatan merah <span class="px-2 py-0.5 rounded font-bold bg-rose-100 text-rose-700 text-[10px]">⚠️ Overdue (X hari)</span> di daftar invoice.</li>
+                    <li><strong>Tindakan Prioritas:</strong> Tagihan yang berstatus Overdue diprioritaskan oleh Tim TC untuk segera diterbitkan lembar Payment Request (PR) ke Finance.</li>
+                </ul>
             </div>
         </div>
 
@@ -270,7 +374,7 @@
                         <tr class="border-b border-slate-200 dark:border-zinc-800 text-slate-500 dark:text-zinc-400 bg-slate-50/50 dark:bg-zinc-800/40">
                             <th class="py-3 px-4 font-bold">Aktivitas / Modul</th>
                             <th class="py-3 px-4 font-bold text-center">Super Admin</th>
-                            <th class="py-3 px-4 font-bold text-center">Supervisor (SPV)</th>
+                            <th class="py-3 px-4 font-bold text-center">Tim TC</th>
                             <th class="py-3 px-4 font-bold text-center">Vendor Rekanan</th>
                         </tr>
                     </thead>
@@ -279,7 +383,7 @@
                             <td class="py-3 px-4 font-semibold text-slate-900 dark:text-white">Penerbitan PO & Master Data Item/Vendor</td>
                             <td class="py-3 px-4 text-center text-emerald-600 font-bold">✓ Penuh</td>
                             <td class="py-3 px-4 text-center text-emerald-600 font-bold">✓ Penuh</td>
-                            <td class="py-3 px-4 text-center text-slate-400">- Hanya Lihat</td>
+                            <td class="py-3 px-4 text-center text-slate-400">- Hanya Pantau</td>
                         </tr>
                         <tr>
                             <td class="py-3 px-4 font-semibold text-slate-900 dark:text-white">Pembuatan Surat Jalan Pengiriman (DO)</td>
@@ -318,7 +422,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- TAB 2: PANDUAN TIM TC (PENGADAAN & SPV)    -->
+    <!-- TAB 2: PANDUAN TIM TC                       -->
     <!-- ========================================== -->
     <div x-show="activeTab === 'tc'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-6">
         <!-- Subheader -->
@@ -327,9 +431,9 @@
                 <flux:icon icon="shield-check" class="size-5" />
             </div>
             <div>
-                <h3 class="font-bold text-indigo-950 dark:text-indigo-200 text-sm">SOP & Panduan Khusus Tim Training Center (TC & SPV)</h3>
+                <h3 class="font-bold text-indigo-950 dark:text-indigo-200 text-sm">SOP & Panduan Khusus Tim TC (Training Center)</h3>
                 <p class="text-xs text-indigo-800/80 dark:text-indigo-300/80 mt-1 leading-relaxed">
-                    Sebagai pengelola pengadaan, tugas utama Anda adalah memastikan kepatuhan plafon kontrak PO, menjaga integritas penerimaan fisik di lapangan, dan memverifikasi kelayakan pembayaran vendor secara akuntabel.
+                    Sebagai pengelola pengadaan, tugas utama Anda adalah memastikan kepatuhan plafon kontrak PO, menjaga integritas penerimaan fisik di lapangan, memverifikasi kelayakan pembayaran vendor secara akuntabel, dan mengawal pencairan hingga posting SAP.
                 </p>
             </div>
         </div>
@@ -348,7 +452,7 @@
                     <p>3. Tambahkan rincian item snack/makanan: pilih nama item, masukkan kuantitas plafon total (contoh: 500 porsi snack box), dan tentukan harga satuan flat.</p>
                     <p>4. Unggah salinan dokumen kontrak PO (PDF/Foto) sebagai arsip digital pengadaan.</p>
                     <div class="p-3 bg-amber-50 dark:bg-amber-950/40 rounded-lg border border-amber-200/60 dark:border-amber-900/40 text-amber-900 dark:text-amber-200 text-xs">
-                        <strong>📌 Aturan Plafon:</strong> Total nilai PO menjadi pagu anggaran maksimal. Vendor tidak akan bisa membuat Surat Jalan melebihi sisa kuota yang terdaftar pada PO ini.
+                        <strong>📌 Aturan Plafon & Penutupan PO:</strong> Total nilai PO menjadi pagu anggaran maksimal. Jika pelatihan telah selesai dan sisa kuota tidak lagi dikirim, Tim TC dapat menutup PO dengan mengubah status menjadi <strong>Selesai (Completed)</strong> atau <strong>Dibatalkan (Cancelled)</strong>.
                     </div>
                 </div>
             </div>
@@ -361,15 +465,15 @@
                 </div>
                 <div class="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-zinc-400 pl-10">
                     <p>1. Ketika kurir/driver katering tiba di lokasi Training Center, buka menu <strong>Pengiriman (DO)</strong>.</p>
-                    <p>2. Pilih pengiriman yang berstatus <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-800">Menunggu Verifikasi SPV</span>.</p>
+                    <p>2. Pilih pengiriman yang berstatus <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-800">Menunggu Verifikasi Tim TC</span>.</p>
                     <p>3. Periksa fisik makanan yang tiba di meja resepsi/training:
                         <ul class="list-disc pl-5 mt-1 space-y-1">
                             <li>Jika kuantitas pas dan bagus: Biarkan nilai di kolom <strong>Qty Diterima</strong> sama dengan Qty Kirim (Selisih otomatis <span class="text-emerald-600 font-bold">0,00 Sesuai</span>).</li>
                             <li>Jika ada barang yang rusak/kurang: Ubah angka pada kolom <strong>Qty Diterima</strong> sesuai fisik riil yang layak konsumsi (Sistem otomatis mencatat <span class="text-rose-600 font-bold">Kurang X</span>).</li>
                         </ul>
                     </p>
-                    <p>4. Klik pratinjau scan <strong>Surat Jalan Fisik</strong> dari vendor untuk memastikan tanda tangan basah penerima training tercantum.</p>
-                    <p>5. Klik tombol hijau <strong>✓ Konfirmasi Diterima</strong>. Seketika itu juga, kuota PO terpotong riil dan nilai barang diterima (realisasi) langsung bertambah di Dashboard.</p>
+                    <p>4. Klik thumbnail scan <strong>Surat Jalan Fisik</strong> dari vendor untuk melihat pembesaran modal (*Lightbox Zoom*) dan memastikan tanda tangan penerima tercantum.</p>
+                    <p>5. Klik tombol hijau <strong>✓ Konfirmasi Diterima</strong>. Kuota PO otomatis terpotong riil dan nilai barang diterima (realisasi) seketika masuk ke Dashboard.</p>
                 </div>
             </div>
 
@@ -384,11 +488,12 @@
                     <p>2. Perhatikan kartu <strong>Pemeriksaan Validasi 3-Way Match</strong>:
                         <ul class="list-disc pl-5 mt-1 space-y-1">
                             <li><strong class="text-indigo-600">Pilar 1 (Kontrak PO):</strong> Memastikan harga satuan snack tidak dimark-up oleh vendor.</li>
-                            <li><strong class="text-emerald-600">Pilar 2 (Realisasi DO):</strong> Memastikan jumlah yang ditagihkan hanya barang yang telah dikonfirmasi diterima oleh SPV.</li>
-                            <li><strong class="text-purple-600">Pilar 3 (Invoice):</strong> Memastikan total nilai tagihan tidak melebihi hasil kali kuantitas diterima dengan harga kontrak.</li>
+                            <li><strong class="text-emerald-600">Pilar 2 (Realisasi DO):</strong> Memastikan kuantitas yang ditagihkan hanya barang yang telah dikonfirmasi diterima oleh Tim TC.</li>
+                            <li><strong class="text-purple-600">Pilar 3 (Invoice):</strong> Memastikan total nilai tagihan match dengan toleransi pembulatan wajar ($\le$ Rp 1.000).</li>
                         </ul>
                     </p>
-                    <p>3. Jika seluruh indikator valid, klik <strong>✓ Setujui Tagihan</strong>. Tagihan siap diajukan pencairannya ke bagian Finance.</p>
+                    <p>3. Periksa status <strong>Jatuh Tempo (TOP 14 Hari)</strong>. Jika invoice mendekati atau melewati tempo (<span class="text-rose-600 font-bold">Overdue</span>), prioritaskan proses verifikasi.</p>
+                    <p>4. Jika seluruh indikator valid, klik <strong>✓ Setujui Tagihan</strong>. Jika ada ketidaksesuaian yang signifikan, klik <strong>Tolak Tagihan</strong> dan cantumkan alasan agar vendor merevisi.</p>
                 </div>
             </div>
 
@@ -403,8 +508,8 @@
                     <p>2. Centang tagihan-tagihan vendor yang sudah disetujui, pilih nomor rekening bank tujuan vendor, dan tentukan nominal bayar.</p>
                     <p>3. Cetak lembar pengajuan PR untuk diserahkan ke Pejabat Otorisasi & Finance.</p>
                     <p>4. Setelah Finance mentransfer dana, buka menu <strong>Dokumen Posting SAP</strong> ➔ Klik <strong>+ Catat Posting SAP</strong>.</p>
-                    <p>5. Masukkan <strong>Nomor Dokumen SAP</strong> (misal: <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 font-mono text-purple-600">5100012345</code>), tanggal transfer, dan lampirkan bukti bayar kasir/voucher transfer.</p>
-                    <p>6. Klik Simpan. Tagihan otomatis berganti status menjadi <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800">Lunas</span>.</p>
+                    <p>5. Masukkan <strong>Nomor Dokumen SAP</strong> (misal: <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 font-mono text-purple-600">5100012345</code>), tanggal transfer, dan lampirkan bukti bayar transfer.</p>
+                    <p>6. Klik Simpan. Tagihan otomatis berganti status menjadi <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-100 text-emerald-800">Lunas (Paid)</span>.</p>
                 </div>
             </div>
         </div>
@@ -422,14 +527,14 @@
             <div>
                 <h3 class="font-bold text-emerald-950 dark:text-emerald-200 text-sm">Panduan Operasional untuk Rekanan Vendor & Katering</h3>
                 <p class="text-xs text-emerald-800/80 dark:text-emerald-300/80 mt-1 leading-relaxed">
-                    Panduan ringkas bagi penyedia jasa untuk memantau kuota kontrak, membuat Surat Jalan pengiriman menggunakan kamera smartphone, mengajukan tagihan, dan melacak status pembayaran secara transparan.
+                    Panduan ringkas bagi penyedia jasa untuk memantau kuota kontrak PO, membuat Surat Jalan pengiriman menggunakan kamera smartphone, mengajukan tagihan, dan melacak pembayaran hingga lunas.
                 </p>
             </div>
         </div>
 
         <!-- Step-by-Step Vendor Modules -->
         <div class="space-y-4">
-            <!-- Modul 1: Cek Kuota -->
+            <!-- Modul 1: Cek Kuota & Konfirmasi PO -->
             <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-slate-200 dark:border-zinc-800 shadow-xs space-y-3">
                 <div class="flex items-center gap-3">
                     <span class="flex size-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 font-bold text-xs">1</span>
@@ -440,12 +545,12 @@
                     <p>2. Pada halaman utama (Dashboard), periksa kartu:
                         <ul class="list-disc pl-5 mt-1 space-y-1">
                             <li><strong>Plafon PO:</strong> Total pesanan yang disepakati dengan Training Center.</li>
-                            <li><strong>Realisasi Diterima:</strong> Makanan yang sudah Anda kirim dan telah disetujui SPV.</li>
+                            <li><strong>Realisasi Diterima:</strong> Makanan yang sudah Anda kirim dan telah disetujui Tim TC.</li>
                             <li><strong>Sisa Kuota Belum Dikirim:</strong> Maksimal barang yang masih boleh Anda kirimkan.</li>
                         </ul>
                     </p>
-                    <div class="p-3 bg-rose-50 dark:bg-rose-950/40 rounded-lg border border-rose-200/60 dark:border-rose-900/40 text-rose-900 dark:text-rose-200 text-xs">
-                        <strong>⚠️ Peringatan:</strong> Jangan menyiapkan atau mengirim makanan melebihi sisa kuota PO aktif. Sistem akan menolak pembuatan Surat Jalan jika kuantitas melebihi sisa kuota kontrak.
+                    <div class="p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-lg border border-indigo-200/60 dark:border-indigo-900/40 text-indigo-900 dark:text-indigo-200 text-xs">
+                        <strong>💡 Catatan Konfirmasi PO:</strong> PO diterbitkan sebagai kontrak payung aktif. Pastikan Anda memeriksa rincian harga satuan flat dan plafon sebelum memulai produksi. Jika terdapat ketidaksesuaian kontrak, segera koordinasikan dengan Tim TC sebelum membuat Surat Jalan pertama.
                     </div>
                 </div>
             </div>
@@ -464,12 +569,12 @@
                     <p>5. Tuliskan <strong>Nama Training</strong> (misal: <em>Leadership Batch 2</em>) dan catatan varian (misal: <em>15 Box Rasa Ayam, 10 Box Manis</em>).</p>
                     <p>6. <strong>Memotret Surat Jalan Fisik (Kamera Langsung):</strong>
                         <ul class="list-disc pl-5 mt-1 space-y-1">
-                            <li>Klik tombol <strong>📸 Buka Kamera (Foto Fisik)</strong> dari browser HP driver/kurir Anda.</li>
+                            <li>Klik tombol <strong>📸 Buka Kamera (Foto Fisik)</strong> langsung dari browser HP driver/kurir Anda.</li>
                             <li>Arahkan kamera ke kertas Surat Jalan fisik yang <strong>sudah ditandatangani oleh penerima di TC</strong>.</li>
                             <li>Foto akan langsung tampil dalam pratinjau thumbnail lengkap dengan tombol periksa.</li>
                         </ul>
                     </p>
-                    <p>7. Klik <strong>Simpan & Ajukan Pengiriman</strong>. Status akan menjadi <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-800">Menunggu Verifikasi SPV</span>.</p>
+                    <p>7. Klik <strong>Simpan & Ajukan Pengiriman</strong>. Status akan menjadi <span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-800">Menunggu Verifikasi Tim TC</span>.</p>
                 </div>
             </div>
 
@@ -477,17 +582,18 @@
             <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 border border-slate-200 dark:border-zinc-800 shadow-xs space-y-3">
                 <div class="flex items-center gap-3">
                     <span class="flex size-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 font-bold text-xs">3</span>
-                    <h3 class="font-bold text-slate-900 dark:text-white text-base">Mengajukan Tagihan / Invoice</h3>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">Mengajukan Tagihan / Invoice & Ketentuan Jatuh Tempo</h3>
                 </div>
                 <div class="space-y-2 text-xs sm:text-sm text-slate-600 dark:text-zinc-400 pl-10">
                     <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg border border-emerald-200/60 dark:border-emerald-900/40 text-emerald-900 dark:text-emerald-200 text-xs mb-2">
-                        <strong>✅ Syarat Mutlak Tagihan:</strong> Pengiriman Anda harus sudah diverifikasi dan berstatus <span class="font-bold underline">Terkonfirmasi</span> oleh SPV TC. Surat Jalan yang belum diverifikasi tidak akan muncul di form tagihan.
+                        <strong>✅ Syarat Mutlak Tagihan:</strong> Pengiriman Anda harus sudah diverifikasi dan berstatus <span class="font-bold underline">Terkonfirmasi Tim TC</span>. Surat Jalan yang belum diverifikasi tidak akan muncul di form tagihan.
                     </div>
                     <p>1. Buka menu <strong>Tagihan (Invoice)</strong> lalu klik tombol <strong>+ Ajukan Tagihan Baru</strong>.</p>
                     <p>2. Centang item-item Surat Jalan yang sudah terkonfirmasi yang ingin Anda tagihkan.</p>
-                    <p>3. Masukkan <strong>Nomor Invoice Resmi Vendor</strong> (contoh: <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 font-mono text-emerald-600">INV-2026-0042</code>), tanggal invoice, dan tanggal jatuh tempo.</p>
-                    <p>4. Unggah foto atau file PDF berkas kwitansi / faktur tagihan resmi vendor.</p>
-                    <p>5. Klik <strong>Kirim Tagihan</strong>. Tagihan akan masuk ke antrean verifikasi Tim TC.</p>
+                    <p>3. Masukkan <strong>Nomor Invoice Resmi Vendor</strong> (contoh: <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-zinc-800 font-mono text-emerald-600">INV-2026-0042</code>) dan tanggal invoice.</p>
+                    <p>4. <strong>Jatuh Tempo Pembayaran:</strong> Sistem menerapkan standar Term of Payment (TOP) <strong>14 hari kalender</strong> sejak invoice diajukan.</p>
+                    <p>5. Unggah foto atau file PDF berkas kwitansi / faktur tagihan resmi vendor.</p>
+                    <p>6. Klik <strong>Kirim Tagihan</strong>. Tagihan akan masuk ke antrean verifikasi 3-way match Tim TC.</p>
                 </div>
             </div>
 
@@ -502,7 +608,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 pt-1">
                         <div class="p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200/60 text-xs">
                             <span class="font-bold text-amber-700 block">1. Diajukan</span>
-                            <span class="text-[11px] text-slate-500">Menunggu audit 3-way match TC</span>
+                            <span class="text-[11px] text-slate-500">Menunggu audit 3-way match Tim TC</span>
                         </div>
                         <div class="p-2.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200/60 text-xs">
                             <span class="font-bold text-indigo-700 block">2. Disetujui</span>
@@ -524,7 +630,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- TAB 4: FAQ & TROUBLESHOOTING               -->
+    <!-- TAB 4: FAQ & SOLUSI KENDALA               -->
     <!-- ========================================== -->
     <div x-show="activeTab === 'faq'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-4">
         <!-- Subheader -->
@@ -554,7 +660,7 @@
                     <flux:icon icon="chevron-down" class="size-4 text-slate-400 transition-transform duration-200" ::class="openFaq === 1 ? 'rotate-180' : ''" />
                 </button>
                 <div x-show="openFaq === 1" x-collapse class="px-4 pb-4 text-xs sm:text-sm text-slate-600 dark:text-zinc-400 space-y-2 border-t border-slate-100 dark:border-zinc-800/80 pt-3">
-                    <p>SPV TC cukup memasukkan angka riil barang yang layak diterima pada kolom <strong>Qty Diterima</strong>. Sistem secara otomatis menghitung selisih kuantitas dengan label <strong class="text-rose-600">Kurang [X]</strong>.</p>
+                    <p>Tim TC cukup memasukkan angka riil barang yang layak diterima pada kolom <strong>Qty Diterima</strong>. Sistem secara otomatis menghitung selisih kuantitas dengan label <strong class="text-rose-600">Kurang [X]</strong>.</p>
                     <p>Vendor <strong>hanya dapat menagihkan barang yang benar-benar diterima dalam kondisi layak</strong>. Sisa kuota PO tidak akan terpotong untuk barang yang rusak/kurang, sehingga vendor dapat mengirimkan penggantinya pada sesi berikutnya selama kuota PO masih ada.</p>
                 </div>
             </div>
@@ -573,8 +679,8 @@
                     <flux:icon icon="chevron-down" class="size-4 text-slate-400 transition-transform duration-200" ::class="openFaq === 2 ? 'rotate-180' : ''" />
                 </button>
                 <div x-show="openFaq === 2" x-collapse class="px-4 pb-4 text-xs sm:text-sm text-slate-600 dark:text-zinc-400 space-y-2 border-t border-slate-100 dark:border-zinc-800/80 pt-3">
-                    <p>Pengiriman (Surat Jalan DO) hanya bisa ditagihkan jika statusnya sudah <strong class="text-emerald-600">Terkonfirmasi</strong> oleh SPV Training Center.</p>
-                    <p>Jika pengiriman Anda masih berstatus <strong class="text-amber-600">Menunggu Verifikasi SPV</strong>, harap hubungi Tim Pengadaan atau SPV di lokasi pelatihan untuk segera melakukan konfirmasi penerimaan fisik di sistem.</p>
+                    <p>Pengiriman (Surat Jalan DO) hanya bisa ditagihkan jika statusnya sudah <strong class="text-emerald-600">Terkonfirmasi Tim TC</strong>.</p>
+                    <p>Jika pengiriman Anda masih berstatus <strong class="text-amber-600">Menunggu Verifikasi Tim TC</strong>, harap hubungi Tim TC di lokasi pelatihan untuk segera melakukan konfirmasi penerimaan fisik di sistem.</p>
                 </div>
             </div>
 
@@ -587,13 +693,13 @@
                 >
                     <span class="flex items-center gap-2">
                         <span class="size-2 rounded-full bg-indigo-500"></span>
-                        Mengapa Nilai Realisasi Barang Diterima di Dashboard sempat Rp 0 padahal DO sudah dibuat?
+                        Bagaimana jika invoice ditolak oleh Tim TC karena anomali selisih 3-Way Match?
                     </span>
                     <flux:icon icon="chevron-down" class="size-4 text-slate-400 transition-transform duration-200" ::class="openFaq === 3 ? 'rotate-180' : ''" />
                 </button>
                 <div x-show="openFaq === 3" x-collapse class="px-4 pb-4 text-xs sm:text-sm text-slate-600 dark:text-zinc-400 space-y-2 border-t border-slate-100 dark:border-zinc-800/80 pt-3">
-                    <p>Nilai Realisasi Barang Diterima di Dashboard hanya mengakui barang yang <strong>telah diverifikasi fisik dan dikonfirmasi</strong> oleh SPV TC. Pembuatan DO oleh vendor adalah sebatas klaim pengiriman.</p>
-                    <p>Segera setelah SPV mengklik tombol <strong>Konfirmasi Diterima</strong> pada detail DO, rumus otomatis $\text{Qty Diterima} \times \text{Harga Satuan PO}$ akan terhitung dan angka di Dashboard seketika ter-update.</p>
+                    <p>Ketika invoice ditolak, sistem mencatat alasan penolakan dan status invoice menjadi <strong class="text-rose-600">Ditolak</strong>. Seluruh item Surat Jalan yang ditagihkan otomatis kembali terbuka (*unlocked*).</p>
+                    <p>Vendor dapat membuka detail invoice untuk membaca alasan penolakan dari Tim TC, memperbaiki berkas/nilai tagihannya, lalu mengajukan ulang invoice baru dengan kuantitas yang benar.</p>
                 </div>
             </div>
 
@@ -606,13 +712,12 @@
                 >
                     <span class="flex items-center gap-2">
                         <span class="size-2 rounded-full bg-indigo-500"></span>
-                        Bagaimana cara kerja fitur Kamera Smartphone saat mengunggah Surat Jalan?
+                        Apakah sistem memiliki toleransi jika ada selisih pembulatan kas beberapa rupiah?
                     </span>
                     <flux:icon icon="chevron-down" class="size-4 text-slate-400 transition-transform duration-200" ::class="openFaq === 4 ? 'rotate-180' : ''" />
                 </button>
                 <div x-show="openFaq === 4" x-collapse class="px-4 pb-4 text-xs sm:text-sm text-slate-600 dark:text-zinc-400 space-y-2 border-t border-slate-100 dark:border-zinc-800/80 pt-3">
-                    <p>Pada form upload pengiriman, tersedia tombol <strong>📸 Buka Kamera (Foto Fisik)</strong>. Saat diklik di browser smartphone (Chrome, Safari, Edge), perangkat Anda langsung menyalakan kamera belakang.</p>
-                    <p>Pastikan browser memiliki izin akses kamera (*Camera Permission: Allow*). Setelah memotret, sistem langsung menampilkan pratinjau foto sebelum disimpan.</p>
+                    <p><strong>Ya.</strong> Sistem TC-Procure telah dilengkapi aturan toleransi pembulatan wajar hingga $\le$ <strong>Rp 1.000</strong> (<code class="font-mono text-indigo-600 font-bold">ROUNDING_TOLERANCE_RUPIAH</code>) dan presisi kuantitas desimal 0.001. Selisih receh akibat pembulatan bank atau rumus perpajakan tetap diperbolehkan lolos audit 3-way match.</p>
                 </div>
             </div>
 
@@ -625,13 +730,32 @@
                 >
                     <span class="flex items-center gap-2">
                         <span class="size-2 rounded-full bg-indigo-500"></span>
-                        Apakah Vendor bisa mengirim barang melebihi kuota PO yang sudah ditetapkan?
+                        Bagaimana aturan jatuh tempo pembayaran dan apa yang terjadi jika statusnya Overdue?
                     </span>
                     <flux:icon icon="chevron-down" class="size-4 text-slate-400 transition-transform duration-200" ::class="openFaq === 5 ? 'rotate-180' : ''" />
                 </button>
                 <div x-show="openFaq === 5" x-collapse class="px-4 pb-4 text-xs sm:text-sm text-slate-600 dark:text-zinc-400 space-y-2 border-t border-slate-100 dark:border-zinc-800/80 pt-3">
-                    <p><strong>Tidak bisa.</strong> Sistem TC-Procure membatasi secara ketat (*hard cap enforcement*). Jika kuota PO telah habis, vendor tidak dapat membuat DO baru untuk PO tersebut.</p>
-                    <p>Jika ada kebutuhan snack tambahan di luar PO, Tim TC harus menerbitkan PO Kontrak Baru atau melakukan addendum kontrak terlebih dahulu.</p>
+                    <p>Standar waktu jatuh tempo pembayaran (Term of Payment) adalah <strong>14 hari kalender</strong> sejak invoice diajukan oleh vendor. Jika invoice belum berstatus Lunas setelah melewati 14 hari, sistem akan menampilkan badge merah <strong class="text-rose-600">⚠️ Overdue [X] hari</strong>.</p>
+                    <p>Tagihan yang Overdue akan mendapat prioritas percepatan oleh Tim TC untuk segera dibuatkan berkas Payment Request (PR) ke bagian Finance.</p>
+                </div>
+            </div>
+
+            <!-- FAQ 6 -->
+            <div class="bg-white dark:bg-zinc-900 rounded-xl border border-slate-200 dark:border-zinc-800 shadow-xs overflow-hidden">
+                <button
+                    type="button"
+                    @click="toggleFaq(6)"
+                    class="w-full p-4 text-left font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center justify-between hover:bg-slate-50/80 dark:hover:bg-zinc-800/50 transition cursor-pointer"
+                >
+                    <span class="flex items-center gap-2">
+                        <span class="size-2 rounded-full bg-indigo-500"></span>
+                        Bagaimana cara kerja fitur Kamera Smartphone saat mengunggah Surat Jalan?
+                    </span>
+                    <flux:icon icon="chevron-down" class="size-4 text-slate-400 transition-transform duration-200" ::class="openFaq === 6 ? 'rotate-180' : ''" />
+                </button>
+                <div x-show="openFaq === 6" x-collapse class="px-4 pb-4 text-xs sm:text-sm text-slate-600 dark:text-zinc-400 space-y-2 border-t border-slate-100 dark:border-zinc-800/80 pt-3">
+                    <p>Pada form upload pengiriman, tersedia tombol <strong>📸 Buka Kamera (Foto Fisik)</strong>. Saat diklik di browser smartphone (Chrome, Safari, Edge), perangkat Anda langsung menyalakan kamera belakang.</p>
+                    <p>Pastikan browser memiliki izin akses kamera (*Camera Permission: Allow*). Setelah memotret, sistem langsung menampilkan pratinjau foto sebelum disimpan.</p>
                 </div>
             </div>
         </div>
@@ -644,7 +768,7 @@
                     Bantuan Tambahan & Kontak Administrator
                 </div>
                 <h4 class="text-base sm:text-lg font-bold">Memerlukan bantuan teknis atau koordinasi pengadaan?</h4>
-                <p class="text-xs text-indigo-200/80">Tim Pengadaan Training Center dan Tim IT siap melayani setiap hari kerja.</p>
+                <p class="text-xs text-indigo-200/80">Tim TC (Training Center) dan Tim IT siap melayani setiap hari kerja.</p>
             </div>
             <div class="flex items-center gap-3 shrink-0">
                 <div class="px-4 py-2.5 rounded-xl bg-white/10 border border-white/20 text-center">
@@ -655,4 +779,3 @@
         </div>
     </div>
 </div>
-

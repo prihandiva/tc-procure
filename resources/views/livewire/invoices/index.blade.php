@@ -8,7 +8,7 @@
                 </span>
             </div>
             <p class="text-xs text-slate-500 dark:text-zinc-400 mt-1">
-                {{ $isVendor ? 'Buat dan ajukan faktur tagihan dari pengiriman yang telah dikonfirmasi SPV, serta monitor status pembayaran.' : 'Verifikasi tagihan rekanan catering secara ketat melalui pencocokan 3-Way Match (PO-DO-Invoice).' }}
+                {{ $isVendor ? 'Buat dan ajukan faktur tagihan dari pengiriman yang telah dikonfirmasi Tim TC, serta monitor status pembayaran.' : 'Verifikasi tagihan rekanan catering secara ketat melalui pencocokan 3-Way Match (PO-DO-Invoice).' }}
             </p>
         </div>
         @can('create', App\Models\Invoice::class)
@@ -53,8 +53,8 @@
                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Status Tagihan</label>
                 <select wire:model.live="status" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl dark:bg-zinc-800 dark:border-zinc-700 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
                     <option value="all">Semua Status</option>
-                    <option value="submitted">Diajukan (Menunggu SPV)</option>
-                    <option value="approved">Disetujui SPV</option>
+                    <option value="submitted">Diajukan (Menunggu Tim TC)</option>
+                    <option value="approved">Disetujui Tim TC</option>
                     <option value="in_payment">Dalam Proses Bayar</option>
                     <option value="paid">Lunas (Paid)</option>
                     <option value="rejected">Ditolak</option>
@@ -110,7 +110,18 @@
                             @if (! $isVendor)
                                 <td class="px-6 py-4 font-semibold text-slate-800 dark:text-zinc-200">{{ $inv->vendor->name }}</td>
                             @endif
-                            <td class="px-6 py-4 text-xs text-slate-500 whitespace-nowrap">{{ $inv->invoice_date->format('d M Y') }}</td>
+                            <td class="px-6 py-4 text-xs whitespace-nowrap">
+                                <div class="font-medium text-slate-700 dark:text-zinc-300">{{ $inv->invoice_date->format('d M Y') }}</div>
+                                @if ($inv->isOverdue())
+                                    <span class="inline-flex items-center gap-1 mt-0.5 px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-700 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-200">
+                                        ⚠️ Overdue ({{ $inv->days_overdue }} hari)
+                                    </span>
+                                @elseif (! $inv->isPaid() && ! $inv->isVoid() && ! $inv->isRejected() && $inv->due_date)
+                                    <span class="text-[10px] text-slate-400 block mt-0.5">
+                                        Jatuh Tempo: {{ $inv->due_date->format('d M Y') }}
+                                    </span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4 text-right font-black text-slate-900 dark:text-white whitespace-nowrap">
                                 Rp {{ number_format($inv->total_amount, 0, ',', '.') }}
                             </td>

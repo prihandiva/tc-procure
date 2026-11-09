@@ -13,7 +13,7 @@
                     @if ($invoice->isApproved())
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/60">
                             <span class="size-1.5 rounded-full bg-indigo-500"></span>
-                            Disetujui SPV
+                            Disetujui Tim TC
                         </span>
                     @elseif ($invoice->isPaid())
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/60">
@@ -33,7 +33,7 @@
                     @else
                         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200/60">
                             <span class="size-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-                            Menunggu Verifikasi SPV
+                            Menunggu Verifikasi Tim TC
                         </span>
                     @endif
                 </div>
@@ -43,6 +43,15 @@
                     <span>Vendor: <strong class="text-slate-800 dark:text-zinc-200">{{ $invoice->vendor->name }}</strong></span>
                     <span class="text-slate-300 dark:text-zinc-700">&bull;</span>
                     <span>Tgl Invoice: <strong class="text-slate-800 dark:text-zinc-200">{{ $invoice->invoice_date->translatedFormat('d F Y') }}</strong></span>
+                    @if ($invoice->due_date)
+                        <span class="text-slate-300 dark:text-zinc-700">&bull;</span>
+                        <span>Jatuh Tempo: <strong class="text-slate-800 dark:text-zinc-200">{{ $invoice->due_date->translatedFormat('d F Y') }}</strong></span>
+                        @if ($invoice->isOverdue())
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-700 dark:bg-rose-950/80 dark:text-rose-300 border border-rose-200">
+                                ⚠️ Lewat Jatuh Tempo ({{ $invoice->days_overdue }} hari)
+                            </span>
+                        @endif
+                    @endif
                 </p>
             </div>
         </div>

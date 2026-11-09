@@ -100,6 +100,48 @@ class Invoice extends Model
     }
 
     /**
+     * Term of Payment (TOP) standard: 14 hari kalender
+     */
+    public const PAYMENT_TERMS_DAYS = 14;
+
+    /**
+     * Toleransi selisih pembulatan wajar (maksimal Rp 1.000)
+     */
+    public const ROUNDING_TOLERANCE_RUPIAH = 1000;
+
+    /**
+     * Tanggal jatuh tempo invoice (invoice_date + TOP)
+     */
+    public function getDueDateAttribute(): ?\Carbon\CarbonInterface
+    {
+        return $this->invoice_date ? $this->invoice_date->copy()->addDays(self::PAYMENT_TERMS_DAYS) : null;
+    }
+
+    /**
+     * Cek apakah invoice telah melewati jatuh tempo pembayaran (Overdue)
+     */
+    public function isOverdue(): bool
+    {
+        if ($this->isPaid() || $this->isVoid() || $this->isRejected() || ! $this->due_date) {
+            return false;
+        }
+
+        return $this->due_date->endOfDay()->isPast();
+    }
+
+    /**
+     * Jumlah hari keterlambatan pembayaran
+     */
+    public function getDaysOverdueAttribute(): int
+    {
+        if (! $this->isOverdue() || ! $this->due_date) {
+            return 0;
+        }
+
+        return (int) abs(now()->startOfDay()->diffInDays($this->due_date->startOfDay()));
+    }
+
+    /**
      * Check if this vendor has another invoice with the same number (excluding void)
      */
     public function hasDuplicateNumber(): bool
@@ -113,13 +155,13 @@ class Invoice extends Model
     }
 
     /**
-     * 3-Way Match Check 1: Unit prices match PO locked prices
+     * 3-Way Match Check 1: Unit prices match PO locked prices (dengan toleransi pembulatan pecahan)
      */
     public function checkPriceMatch(): bool
     {
         foreach ($this->invoiceLines as $line) {
             $poPrice = $line->deliveryItem->poItem->unit_price ?? null;
-            if ($poPrice === null || $line->unit_price !== $poPrice) {
+            if ($poPrice === null || abs($line->unit_price - $poPrice) > 1) {
                 return false;
             }
         }
@@ -129,12 +171,13 @@ class Invoice extends Model
 
     /**
      * 3-Way Match Check 2: Billed quantities match confirmed physically received quantities
+     * Menggunakan toleransi floating-point 0.001 untuk menghindari kendala pembulatan desimal
      */
     public function checkQuantityMatch(): bool
     {
         foreach ($this->invoiceLines as $line) {
             $qtyReceived = $line->deliveryItem->qty_received;
-            if ($qtyReceived === null || (float) $line->qty !== (float) $qtyReceived) {
+            if ($qtyReceived === null || abs((float) $line->qty - (float) $qtyReceived) > 0.001) {
                 return false;
             }
         }
