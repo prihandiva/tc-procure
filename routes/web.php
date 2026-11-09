@@ -5,6 +5,7 @@ use App\Livewire\Dashboard\Dashboard;
 use App\Livewire\Deliveries\Create as DeliveryCreate;
 use App\Livewire\Deliveries\Index as DeliveriesIndex;
 use App\Livewire\Deliveries\Show as DeliveryShow;
+use App\Livewire\Help\Index as HelpIndex;
 use App\Livewire\Invoices\Create as InvoiceCreate;
 use App\Livewire\Invoices\Index as InvoicesIndex;
 use App\Livewire\Invoices\Show as InvoiceShow;
@@ -58,6 +59,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('vendors', VendorsIndex::class)->name('vendors.index');
     Route::get('items', ItemsIndex::class)->name('items.index');
     Route::get('payment-stages', PaymentStagesIndex::class)->name('payment-stages.index');
+
+    // Bantuan & Panduan
+    Route::get('help', HelpIndex::class)->name('help');
 
     // Private Documents
     Route::get('documents/{document}', [DocumentController::class, 'show'])->name('documents.show');

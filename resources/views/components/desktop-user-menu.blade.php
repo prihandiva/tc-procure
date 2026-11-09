@@ -25,6 +25,9 @@
         </div>
 
         <flux:menu.radio.group>
+            <flux:menu.item :href="route('help')" icon="question-mark-circle" wire:navigate>
+                {{ __('Bantuan & Panduan') }}
+            </flux:menu.item>
             <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
                 {{ __('Settings') }}
             </flux:menu.item>

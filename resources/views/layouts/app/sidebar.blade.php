@@ -61,6 +61,12 @@
                         </flux:sidebar.item>
                     </flux:sidebar.group>
                 @endif
+
+                <flux:sidebar.group heading="Informasi & Bantuan" class="grid mt-2">
+                    <flux:sidebar.item icon="question-mark-circle" :href="route('help')" :current="request()->routeIs('help')" wire:navigate>
+                        Bantuan & Panduan
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
             </flux:sidebar.nav>
 
             <flux:spacer />
@@ -112,6 +118,9 @@
                     </div>
 
                     <flux:menu.radio.group>
+                        <flux:menu.item :href="route('help')" icon="question-mark-circle" wire:navigate>
+                            {{ __('Bantuan & Panduan') }}
+                        </flux:menu.item>
                         <flux:menu.item :href="route('profile.edit')" icon="cog" wire:navigate>
                             {{ __('Settings') }}
                         </flux:menu.item>
