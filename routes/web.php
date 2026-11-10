@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ReportExportController;
 use App\Livewire\Dashboard\Dashboard;
 use App\Livewire\Deliveries\Create as DeliveryCreate;
 use App\Livewire\Deliveries\Index as DeliveriesIndex;
@@ -21,6 +22,7 @@ use App\Livewire\PurchaseOrders\Create as PurchaseOrderCreate;
 use App\Livewire\PurchaseOrders\Edit as PurchaseOrderEdit;
 use App\Livewire\PurchaseOrders\Index as PurchaseOrdersIndex;
 use App\Livewire\PurchaseOrders\Show as PurchaseOrderShow;
+use App\Livewire\Reports\Index as ReportsIndex;
 use App\Livewire\Vendors\Index as VendorsIndex;
 use Illuminate\Support\Facades\Route;
 
@@ -62,6 +64,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Bantuan & Panduan
     Route::get('help', HelpIndex::class)->name('help');
+
+    // Laporan & Ekspor (Excel & PDF)
+    Route::get('reports', ReportsIndex::class)->name('reports.index');
+    Route::match(['get', 'post'], 'reports/export', [ReportExportController::class, 'export'])->name('reports.export');
 
     // Private Documents
     Route::get('documents/{document}', [DocumentController::class, 'show'])->name('documents.show');

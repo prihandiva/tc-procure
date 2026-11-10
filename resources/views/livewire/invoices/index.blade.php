@@ -11,12 +11,15 @@
                 {{ $isVendor ? 'Buat dan ajukan faktur tagihan dari pengiriman yang telah dikonfirmasi Tim TC, serta monitor status pembayaran.' : 'Verifikasi tagihan rekanan catering secara ketat melalui pencocokan 3-Way Match (PO-DO-Invoice).' }}
             </p>
         </div>
-        @can('create', App\Models\Invoice::class)
-            <a href="{{ route('invoices.create') }}" wire:navigate class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/30 transition transform active:scale-95 w-full sm:w-auto">
-                <flux:icon icon="plus" class="size-4" />
-                <span>Buat Tagihan Baru</span>
-            </a>
-        @endcan
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+            <x-report-export-modal default-type="invoices" button-label="Ekspor Laporan" />
+            @can('create', App\Models\Invoice::class)
+                <a href="{{ route('invoices.create') }}" wire:navigate class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/30 transition transform active:scale-95 w-full sm:w-auto">
+                    <flux:icon icon="plus" class="size-4" />
+                    <span>Buat Tagihan Baru</span>
+                </a>
+            @endcan
+        </div>
     </div>
 
     @if (session()->has('success'))

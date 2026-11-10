@@ -18,5 +18,20 @@ enum PoStatus: string
             self::CANCELLED => 'Dibatalkan',
         };
     }
+
+    public function color(): string
+    {
+        return match ($this) {
+            self::DRAFT => 'zinc',
+            self::ACTIVE => 'emerald',
+            self::COMPLETED => 'indigo',
+            self::CANCELLED => 'rose',
+        };
+    }
+
+    public function badgeColor(): string
+    {
+        return $this->color();
+    }
 }
 

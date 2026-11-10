@@ -13,14 +13,15 @@
             </p>
         </div>
 
-        @if ($isSpv)
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+            <x-report-export-modal default-type="postings" button-label="Ekspor Laporan" />
+            @if ($isSpv)
                 <a href="{{ route('postings.create') }}" wire:navigate class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/30 transition transform active:scale-95 w-full sm:w-auto">
                     <flux:icon icon="plus" class="size-4" />
                     <span>Catat Posting Baru</span>
                 </a>
-            </div>
-        @endif
+            @endif
+        </div>
     </div>
 
     {{-- Filter Bar --}}

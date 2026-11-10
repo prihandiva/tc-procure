@@ -11,12 +11,15 @@
                 {{ $isVendor ? 'Input pengiriman harian makanan/snack pelatihan berdasarkan alokasi PO Anda.' : 'Pencatatan pengiriman vendor catering dan verifikasi penerimaan fisik Surat Jalan (DO).' }}
             </p>
         </div>
-        @can('create', App\Models\Delivery::class)
-            <a href="{{ route('deliveries.create') }}" wire:navigate class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-600/30 transition transform active:scale-95 w-full sm:w-auto">
-                <flux:icon icon="plus" class="size-4" />
-                <span>Input Pengiriman Baru</span>
-            </a>
-        @endcan
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+            <x-report-export-modal default-type="deliveries" button-label="Ekspor Laporan" />
+            @can('create', App\Models\Delivery::class)
+                <a href="{{ route('deliveries.create') }}" wire:navigate class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-600/30 transition transform active:scale-95 w-full sm:w-auto">
+                    <flux:icon icon="plus" class="size-4" />
+                    <span>Input Pengiriman Baru</span>
+                </a>
+            @endcan
+        </div>
     </div>
 
     @if (session()->has('success'))

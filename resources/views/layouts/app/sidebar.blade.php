@@ -44,6 +44,10 @@
                     <flux:sidebar.item icon="check-badge" :href="route('postings.index')" :current="request()->routeIs('postings.*')" wire:navigate>
                         Dokumen Posting SAP
                     </flux:sidebar.item>
+
+                    <flux:sidebar.item icon="document-chart-bar" :href="route('reports.index')" :current="request()->routeIs('reports.*')" wire:navigate>
+                        Laporan & Ekspor
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
 
                 @if (auth()->user()->isSuperAdmin() || auth()->user()->isSpv())

@@ -11,12 +11,15 @@
                 {{ $isVendor ? 'Pantau alokasi kuota PO, sisa pengiriman makanan, dan status penagihan vendor Anda.' : 'Kelola penerbitan kontrak PO snack & catering, batas plafon anggaran, dan realisasi kuota.' }}
             </p>
         </div>
-        @can('create', App\Models\PurchaseOrder::class)
-            <a href="{{ route('purchase-orders.create') }}" wire:navigate class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/30 transition transform active:scale-95 w-full sm:w-auto">
-                <flux:icon icon="plus" class="size-4" />
-                <span>Terbitkan PO Baru</span>
-            </a>
-        @endcan
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+            <x-report-export-modal default-type="po" button-label="Ekspor Laporan" />
+            @can('create', App\Models\PurchaseOrder::class)
+                <a href="{{ route('purchase-orders.create') }}" wire:navigate class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/30 transition transform active:scale-95 w-full sm:w-auto">
+                    <flux:icon icon="plus" class="size-4" />
+                    <span>Terbitkan PO Baru</span>
+                </a>
+            @endcan
+        </div>
     </div>
 
     @if (session()->has('success'))
