@@ -247,3 +247,90 @@ test('critical state changes generate structured audit logs', function () {
         ->and($log->new_values['po_number'])->toBe('PO-AUDIT-001');
 });
 
+test('sidebar displays master data menu strictly for superadmin and hides it from spv and vendor', function () {
+    $superadmin = User::factory()->superadmin()->create();
+    $spv = User::factory()->spv()->create();
+    $vendor = Vendor::factory()->create();
+    $vendorUser = User::factory()->vendor($vendor->id)->create();
+
+    // 1. Superadmin sees Master Data group & items
+    $this->actingAs($superadmin)
+        ->get(route('dashboard'))
+        ->assertOk()
+        ->assertSee('Master Data & Konfigurasi')
+        ->assertSee('Master Vendor')
+        ->assertSee('Master Item Snack')
+        ->assertSee('Tahapan Pembayaran');
+
+    // 2. SPV does NOT see Master Data group in sidebar
+    $this->actingAs($spv)
+        ->get(route('dashboard'))
+        ->assertOk()
+        ->assertDontSee('Master Data & Konfigurasi')
+        ->assertDontSee('Master Vendor')
+        ->assertDontSee('Master Item Snack')
+        ->assertDontSee('Tahapan Pembayaran');
+
+    // 3. Vendor does NOT see Master Data group in sidebar
+    $this->actingAs($vendorUser)
+        ->get(route('dashboard'))
+        ->assertOk()
+        ->assertDontSee('Master Data & Konfigurasi')
+        ->assertDontSee('Master Vendor')
+        ->assertDontSee('Master Item Snack')
+        ->assertDontSee('Tahapan Pembayaran');
+});
+
+test('header contains indonesian live server clock with wib timestamp', function () {
+    $user = User::factory()->spv()->create();
+
+    $response = $this->actingAs($user)->get(route('dashboard'));
+
+    $response->assertOk();
+    $response->assertSee('liveServerClock');
+    $response->assertSee('WIB');
+    $response->assertSee('Asia/Jakarta');
+});
+
+test('unauthorized action buttons are strictly hidden for vendor across all pages', function () {
+    $vendorA = Vendor::factory()->create(['name' => 'Katering Berkah']);
+    $vendorUserA = User::factory()->vendor($vendorA->id)->create();
+
+    $poA = PurchaseOrder::factory()->create(['vendor_id' => $vendorA->id, 'status' => PoStatus::ACTIVE]);
+    $delivA = Delivery::factory()->create(['vendor_id' => $vendorA->id, 'purchase_order_id' => $poA->id, 'status' => DeliveryStatus::SUBMITTED]);
+    $invA = Invoice::factory()->create(['vendor_id' => $vendorA->id, 'purchase_order_id' => $poA->id, 'status' => InvoiceStatus::SUBMITTED]);
+
+    // 1. PO Index: Vendor cannot see "Terbitkan PO Baru" button
+    $this->actingAs($vendorUserA)
+        ->get(route('purchase-orders.index'))
+        ->assertOk()
+        ->assertDontSee('Terbitkan PO Baru');
+
+    // 2. DO Show: Vendor cannot see "Konfirmasi Diterima" or "Tolak Pengiriman" buttons
+    $this->actingAs($vendorUserA)
+        ->get(route('deliveries.show', $delivA))
+        ->assertOk()
+        ->assertDontSee('Konfirmasi Diterima')
+        ->assertDontSee('Tolak Pengiriman');
+
+    // 3. Invoice Show: Vendor cannot see "Setujui Tagihan" or "Tolak Tagihan" buttons
+    $this->actingAs($vendorUserA)
+        ->get(route('invoices.show', $invA))
+        ->assertOk()
+        ->assertDontSee('Setujui Tagihan')
+        ->assertDontSee('Tolak Tagihan (Kembalikan ke Vendor)');
+
+    // 4. Payment Requests Index: Vendor cannot see "Buat PR Baru" button
+    $this->actingAs($vendorUserA)
+        ->get(route('payment-requests.index'))
+        ->assertOk()
+        ->assertDontSee('Buat PR Baru');
+
+    // 5. Postings Index: Vendor cannot see "Catat Posting Baru" button
+    $this->actingAs($vendorUserA)
+        ->get(route('postings.index'))
+        ->assertOk()
+        ->assertDontSee('Catat Posting Baru');
+});
+
+

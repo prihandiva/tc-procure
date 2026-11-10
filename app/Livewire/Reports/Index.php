@@ -110,18 +110,20 @@ class Index extends Component
             'status' => $this->status,
         ];
 
-        // Overall summary statistics
+        // Overall summary statistics (Strictly scoped if vendor)
         $stats = [
             'total_po_value' => (int) PurchaseOrder::where('status', PoStatus::ACTIVE)->sum('total_amount'),
             'total_delivered_value' => (int) PurchaseOrder::where('status', PoStatus::ACTIVE)->get()->sum(fn ($p) => (int) $p->total_amount_delivered),
             'total_invoiced_value' => (int) Invoice::whereIn('status', [InvoiceStatus::SUBMITTED, InvoiceStatus::APPROVED, InvoiceStatus::IN_PAYMENT, InvoiceStatus::PAID])->sum('total_amount'),
-            'total_paid_value' => (int) Posting::sum('total_paid'),
+            'total_paid_value' => $isVendor
+                ? (int) Invoice::where('vendor_id', $user->vendor_id)->where('status', InvoiceStatus::PAID)->sum('total_amount')
+                : (int) Posting::sum('total_paid'),
         ];
 
         // Query preview dataset
         $data = $exportService->queryData($this->reportType, $filters, $user);
 
-        $vendors = Vendor::active()->orderBy('name')->get();
+        $vendors = $isVendor ? collect([$user->vendor]) : Vendor::active()->orderBy('name')->get();
 
         return view('livewire.reports.index', [
             'data' => $data,

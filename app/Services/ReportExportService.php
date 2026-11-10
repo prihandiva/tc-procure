@@ -43,7 +43,7 @@ class ReportExportService
             'po' => $this->queryPurchaseOrders($dateFrom, $dateTo, $vendorId, $status),
             'deliveries' => $this->queryDeliveries($dateFrom, $dateTo, $vendorId, $status),
             'invoices' => $this->queryInvoices($dateFrom, $dateTo, $vendorId, $status),
-            'postings' => $this->queryPostings($dateFrom, $dateTo),
+            'postings' => $this->queryPostings($dateFrom, $dateTo, $vendorId),
             'vendor_balances' => $this->queryVendorBalances($vendorId),
             default => collect(),
         };
@@ -85,9 +85,10 @@ class ReportExportService
             ->get();
     }
 
-    private function queryPostings(?Carbon $from, ?Carbon $to): Collection
+    private function queryPostings(?Carbon $from, ?Carbon $to, ?int $vendorId = null): Collection
     {
         return Posting::with(['paymentRequests.invoices.vendor', 'paymentRequests.invoices.purchaseOrder'])
+            ->when($vendorId, fn ($q) => $q->whereHas('paymentRequests.invoices', fn ($inv) => $inv->where('vendor_id', $vendorId)))
             ->when($from, fn ($q) => $q->whereDate('posting_date', '>=', $from))
             ->when($to, fn ($q) => $q->whereDate('posting_date', '<=', $to))
             ->latest('posting_date')

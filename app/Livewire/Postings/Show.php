@@ -77,11 +77,14 @@ class Show extends Component
             ->unique('id');
 
         $vendors = $invoices->pluck('vendor')->unique('id')->filter();
+        $totalPaid = $user->isVendor() ? (int) $invoices->sum('total_amount') : (int) $this->posting->total_paid;
 
         return view('livewire.postings.show', [
             'invoices' => $invoices,
             'vendors' => $vendors,
+            'totalPaid' => $totalPaid,
             'isSpv' => $user->isSuperAdmin() || $user->isSpv(),
+            'isVendor' => $user->isVendor(),
         ]);
     }
 }

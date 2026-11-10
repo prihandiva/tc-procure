@@ -35,7 +35,7 @@
         <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 p-5 shadow-xs">
             <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Total Nominal Dibayar</span>
             <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-2 tracking-tight">
-                Rp {{ number_format($posting->total_paid, 0, ',', '.') }}
+                Rp {{ number_format($totalPaid, 0, ',', '.') }}
             </div>
             <p class="text-xs text-slate-400 mt-1">Nilai pelunasan di kasir/SAP</p>
         </div>
@@ -184,7 +184,7 @@
                     </div>
                     <div>
                         <span class="text-slate-400 block mb-0.5">Total Nominal Dibayar:</span>
-                        <span class="font-black text-emerald-600 dark:text-emerald-400 text-sm">Rp {{ number_format($posting->total_paid, 0, ',', '.') }}</span>
+                        <span class="font-black text-emerald-600 dark:text-emerald-400 text-sm">Rp {{ number_format($totalPaid, 0, ',', '.') }}</span>
                     </div>
                     <div>
                         <span class="text-slate-400 block mb-0.5">Dicatat Oleh:</span>

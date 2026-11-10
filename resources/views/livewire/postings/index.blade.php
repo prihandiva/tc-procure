@@ -74,7 +74,12 @@
                                 {{ $posting->posting_date?->format('d/m/Y') }}
                             </td>
                             <td class="px-6 py-4 text-right font-black text-emerald-600 dark:text-emerald-400">
-                                Rp {{ number_format($posting->total_paid, 0, ',', '.') }}
+                                @php
+                                    $amountToDisplay = $isVendor
+                                        ? (int) $posting->paymentRequests->flatMap->invoices->where('vendor_id', auth()->user()->vendor_id)->sum('total_amount')
+                                        : (int) $posting->total_paid;
+                                @endphp
+                                Rp {{ number_format($amountToDisplay, 0, ',', '.') }}
                             </td>
                             <td class="px-6 py-4">
                                 <div class="space-y-1">

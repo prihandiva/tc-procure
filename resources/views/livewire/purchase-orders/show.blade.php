@@ -49,6 +49,13 @@
                     <span>Ubah PO</span>
                 </a>
             @endif
+
+            @if ($isVendor && $purchaseOrder->status->value === 'active' && $purchaseOrder->total_qty_remaining > 0)
+                <a href="{{ route('deliveries.create', ['po_id' => $purchaseOrder->id]) }}" wire:navigate class="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 rounded-xl shadow-xs transition transform active:scale-95">
+                    <flux:icon icon="truck" class="size-3.5" />
+                    <span>Kirim Makanan (Buat DO)</span>
+                </a>
+            @endif
         </div>
     </div>
 
