@@ -1,6 +1,7 @@
 @props([
     'defaultType' => 'po',
     'triggerClass' => null,
+    'wrapperClass' => null,
     'buttonLabel' => 'Ekspor Laporan',
     'showTrigger' => true,
 ])
@@ -73,14 +74,14 @@
             }
         }
     }"
-    class="inline-block"
+    class="{{ $wrapperClass ?? 'inline-block' }}"
 >
     <!-- Optional Trigger Button -->
     @if ($showTrigger)
         <button
             type="button"
             @click="open = true"
-            class="{{ $triggerClass ?? 'inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-200 text-xs font-bold hover:bg-slate-50 dark:hover:bg-zinc-700/60 shadow-2xs transition transform active:scale-95 cursor-pointer' }}"
+            class="{{ $triggerClass ?? 'w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-200 text-xs font-bold hover:bg-slate-50 dark:hover:bg-zinc-700/60 shadow-2xs transition transform active:scale-95 cursor-pointer whitespace-nowrap' }}"
             title="Buka Menu Ekspor Laporan Excel / PDF"
         >
             <flux:icon icon="arrow-down-tray" class="size-4 text-indigo-600 dark:text-indigo-400" />
