@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -27,6 +28,8 @@ class Create extends Component
 
     public ?int $purchase_order_id = null;
     public string $invoice_number = '';
+    #[Locked]
+    public string $auto_filled_number = '';
     public string $invoice_date = '';
     public $document_file = null;
 
@@ -57,15 +60,31 @@ class Create extends Component
         $this->selected_item_ids = [];
 
         if (! $this->purchase_order_id) {
+            if (trim($this->invoice_number) === $this->auto_filled_number) {
+                $this->invoice_number = '';
+            }
+            $this->auto_filled_number = '';
+
             return;
         }
 
         $po = PurchaseOrder::find($this->purchase_order_id);
         if (! $po) {
+            if (trim($this->invoice_number) === $this->auto_filled_number) {
+                $this->invoice_number = '';
+            }
+            $this->auto_filled_number = '';
+
             return;
         }
 
         Gate::authorize('view', $po);
+
+        $suggested = Invoice::suggestNumberForPo($po);
+        if (trim($this->invoice_number) === '' || trim($this->invoice_number) === $this->auto_filled_number) {
+            $this->invoice_number = $suggested;
+        }
+        $this->auto_filled_number = $suggested;
 
         $items = DeliveryItem::query()
             ->where('is_invoiced', false)
@@ -135,6 +154,7 @@ class Create extends Component
     public function save()
     {
         Gate::authorize('create', Invoice::class);
+        $this->invoice_number = trim($this->invoice_number);
         $this->validate();
 
         return DB::transaction(function () {

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\InvoiceStatus;
+use App\Support\DocumentNumberSuggester;
 use App\Traits\BelongsToVendor;
 use App\Traits\HasAuditTrail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -183,6 +184,20 @@ class Invoice extends Model
         }
 
         return true;
+    }
+
+    /**
+     * Suggest default invoice number pre-filled from the Purchase Order number.
+     */
+    public static function suggestNumberForPo(PurchaseOrder $po): string
+    {
+        return DocumentNumberSuggester::fromPo(
+            $po,
+            fn (string $candidate) => static::withoutGlobalScopes()
+                ->where('vendor_id', $po->vendor_id)
+                ->where('invoice_number', $candidate)
+                ->exists()
+        );
     }
 
     /**

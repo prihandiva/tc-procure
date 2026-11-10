@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -26,6 +27,8 @@ class Create extends Component
 
     public ?int $purchase_order_id = null;
     public string $code = '';
+    #[Locked]
+    public string $auto_filled_code = '';
     public string $delivery_date = '';
     public string $vendor_do_number = '';
     public string $notes = '';
@@ -58,7 +61,10 @@ class Create extends Component
         $this->items = [];
 
         if (! $this->purchase_order_id) {
-            $this->code = '';
+            if (trim($this->code) === $this->auto_filled_code) {
+                $this->code = '';
+            }
+            $this->auto_filled_code = '';
 
             return;
         }
@@ -66,14 +72,21 @@ class Create extends Component
         $po = PurchaseOrder::with('poItems.deliveryItems.delivery')->find($this->purchase_order_id);
 
         if (! $po) {
-            $this->code = '';
+            if (trim($this->code) === $this->auto_filled_code) {
+                $this->code = '';
+            }
+            $this->auto_filled_code = '';
 
             return;
         }
 
         Gate::authorize('view', $po);
 
-        $this->code = Delivery::suggestCodeForPo($po);
+        $suggested = Delivery::suggestCodeForPo($po);
+        if (trim($this->code) === '' || trim($this->code) === $this->auto_filled_code) {
+            $this->code = $suggested;
+        }
+        $this->auto_filled_code = $suggested;
 
         foreach ($po->poItems as $poItem) {
             $remaining = $poItem->qty_remaining;

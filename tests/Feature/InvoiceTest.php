@@ -293,3 +293,46 @@ test('vendor a cannot access vendor b invoice', function () {
         ->assertNotFound();
 });
 
+test('invoice number is auto-filled from po number, editable, and suggests suffix if already used by vendor', function () {
+    $vendor = Vendor::factory()->create();
+    $vendorUser = User::factory()->vendor($vendor->id)->create();
+
+    $po = PurchaseOrder::factory()->create([
+        'vendor_id' => $vendor->id,
+        'po_number' => '47158801',
+    ]);
+    $poItem = PoItem::factory()->create(['purchase_order_id' => $po->id, 'qty_ordered' => 20, 'unit_price' => 5000]);
+
+    $deliv1 = Delivery::factory()->confirmed()->create(['purchase_order_id' => $po->id, 'vendor_id' => $vendor->id]);
+    $delivItem1 = DeliveryItem::factory()->create([
+        'delivery_id' => $deliv1->id,
+        'po_item_id' => $poItem->id,
+        'qty_sent' => 10,
+        'qty_received' => 10,
+        'is_invoiced' => false,
+    ]);
+
+    $this->actingAs($vendorUser);
+
+    // 1. Selecting PO auto-fills invoice_number with PO number and is editable
+    Livewire::test(InvoiceCreate::class)
+        ->set('purchase_order_id', $po->id)
+        ->assertSet('invoice_number', '47158801')
+        ->set('invoice_number', 'INV-COMP-8801')
+        ->set('selected_item_ids', [$delivItem1->id])
+        ->call('save')
+        ->assertHasNoErrors();
+
+    expect(Invoice::where('invoice_number', 'INV-COMP-8801')->exists())->toBeTrue();
+
+    // 2. Existing invoice using PO number triggers -2 suggestion for subsequent invoice
+    Invoice::factory()->create([
+        'vendor_id' => $vendor->id,
+        'purchase_order_id' => $po->id,
+        'invoice_number' => '47158801',
+    ]);
+
+    Livewire::test(InvoiceCreate::class, ['po_id' => $po->id])
+        ->assertSet('invoice_number', '47158801-2');
+});
+

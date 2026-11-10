@@ -20,8 +20,8 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Nomor Payment Request *</label>
-                    <input type="text" wire:model="number" placeholder="contoh: TC/PC/10-X/2025/509" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono">
-                    <p class="text-[11px] text-zinc-400 mt-1">Format internal penomoran pengajuan departemen Training Center.</p>
+                    <input type="text" wire:model="number" placeholder="Otomatis terisi Nomor PO invoice terpilih (dapat diubah)" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 focus:outline-none font-mono font-semibold">
+                    <p class="text-[11px] text-zinc-400 mt-1">Otomatis terisi mengikuti Nomor PO dari invoice terpilih &amp; bebas diedit sesuai aturan penomoran perusahaan.</p>
                     @error('number') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                 </div>
 

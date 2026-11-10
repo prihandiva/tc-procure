@@ -33,7 +33,8 @@
 
                 <div>
                     <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Nomor Invoice / Faktur *</label>
-                    <input type="text" wire:model="invoice_number" placeholder="contoh: INV-2026/XI/001" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    <input type="text" wire:model="invoice_number" placeholder="Otomatis terisi Nomor PO (dapat diubah)" class="w-full px-3 py-2 text-sm font-mono font-semibold border border-zinc-300 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    <p class="text-[11px] text-zinc-400 mt-1">Otomatis terisi mengikuti Nomor PO &amp; bebas disesuaikan dengan aturan penomoran invoice perusahaan.</p>
                     @error('invoice_number') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                 </div>
             </div>

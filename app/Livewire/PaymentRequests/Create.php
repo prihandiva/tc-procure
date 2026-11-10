@@ -13,12 +13,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 #[Layout('layouts.app')]
 class Create extends Component
 {
     public string $number = '';
+    #[Locked]
+    public string $auto_filled_number = '';
     public ?int $current_stage_id = null;
     public string $notes = '';
 
@@ -36,19 +39,32 @@ class Create extends Component
         if ($firstStage) {
             $this->current_stage_id = $firstStage->id;
         }
-
-        // Suggest a default PR number based on date: TC/PC/D-M_ROMAN/YYYY/SEQ
-        $day = date('d');
-        $year = date('Y');
-        $monthRoman = $this->getRomanMonth((int) date('m'));
-        $this->number = "TC/PC/{$day}-{$monthRoman}/{$year}/";
     }
 
-    private function getRomanMonth(int $month): string
+    public function updatedSelectedInvoiceIds(): void
     {
-        $romans = [1 => 'I', 2 => 'II', 3 => 'III', 4 => 'IV', 5 => 'V', 6 => 'VI', 7 => 'VII', 8 => 'VIII', 9 => 'IX', 10 => 'X', 11 => 'XI', 12 => 'XII'];
+        if (empty($this->selected_invoice_ids)) {
+            if (trim($this->number) === $this->auto_filled_number) {
+                $this->number = '';
+            }
+            $this->auto_filled_number = '';
 
-        return $romans[$month] ?? 'I';
+            return;
+        }
+
+        $firstId = reset($this->selected_invoice_ids);
+        $firstInvoice = Invoice::with('purchaseOrder')->find($firstId)
+            ?? Invoice::with('purchaseOrder')->whereIn('id', $this->selected_invoice_ids)->first();
+
+        if (! $firstInvoice?->purchaseOrder) {
+            return;
+        }
+
+        $suggested = PaymentRequest::suggestNumberForPo($firstInvoice->purchaseOrder);
+        if (trim($this->number) === '' || trim($this->number) === $this->auto_filled_number) {
+            $this->number = $suggested;
+        }
+        $this->auto_filled_number = $suggested;
     }
 
     public function getTotalAmountProperty(): int
@@ -84,6 +100,7 @@ class Create extends Component
     public function save()
     {
         Gate::authorize('create', PaymentRequest::class);
+        $this->number = trim($this->number);
         $this->validate();
 
         return DB::transaction(function () {

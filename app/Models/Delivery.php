@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\DeliveryStatus;
+use App\Support\DocumentNumberSuggester;
 use App\Traits\BelongsToVendor;
 use App\Traits\HasAuditTrail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -124,23 +125,13 @@ class Delivery extends Model
      */
     public static function suggestCodeForPo(PurchaseOrder $po): string
     {
-        $baseCode = trim($po->po_number);
-
-        $existsQuery = fn (string $candidate) => static::withoutGlobalScopes()
-            ->withTrashed()
-            ->where('code', $candidate)
-            ->exists();
-
-        if (! $existsQuery($baseCode)) {
-            return $baseCode;
-        }
-
-        $counter = 2;
-        while ($existsQuery("{$baseCode}-{$counter}")) {
-            $counter++;
-        }
-
-        return "{$baseCode}-{$counter}";
+        return DocumentNumberSuggester::fromPo(
+            $po,
+            fn (string $candidate) => static::withoutGlobalScopes()
+                ->withTrashed()
+                ->where('code', $candidate)
+                ->exists()
+        );
     }
 
     /**

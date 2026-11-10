@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\DocumentNumberSuggester;
 use App\Traits\HasAuditTrail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -81,6 +82,19 @@ class PaymentRequest extends Model
     public function scopeUnposted($query)
     {
         return $query->whereNull('posting_id');
+    }
+
+    /**
+     * Suggest default Payment Request number pre-filled from the Purchase Order number.
+     */
+    public static function suggestNumberForPo(PurchaseOrder $po): string
+    {
+        return DocumentNumberSuggester::fromPo(
+            $po,
+            fn (string $candidate) => static::withTrashed()
+                ->where('number', $candidate)
+                ->exists()
+        );
     }
 }
 

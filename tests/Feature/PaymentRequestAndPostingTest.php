@@ -22,7 +22,10 @@ use Livewire\Livewire;
 test('spv can create payment request bundling multiple approved invoices', function () {
     $spv = User::factory()->spv()->create();
     $vendor = Vendor::factory()->create();
-    $po = PurchaseOrder::factory()->create(['vendor_id' => $vendor->id]);
+    $po = PurchaseOrder::factory()->create([
+        'vendor_id' => $vendor->id,
+        'po_number' => '47159901',
+    ]);
 
     $stage1 = PaymentStage::factory()->create(['name' => 'Proses ACC', 'sort_order' => 1]);
     $stage2 = PaymentStage::factory()->create(['name' => 'Proses Finance', 'sort_order' => 2]);
@@ -43,7 +46,9 @@ test('spv can create payment request bundling multiple approved invoices', funct
 
     Livewire::actingAs($spv)
         ->test(PaymentRequestCreate::class)
+        ->assertSet('number', '')
         ->set('selected_invoice_ids', [$invoice1->id, $invoice2->id])
+        ->assertSet('number', '47159901')
         ->set('current_stage_id', $stage1->id)
         ->set('notes', 'Pengajuan berkas catering periode 1-15 November')
         ->call('save')
@@ -52,7 +57,7 @@ test('spv can create payment request bundling multiple approved invoices', funct
 
     $pr = PaymentRequest::latest('id')->first();
     expect($pr)->not->toBeNull()
-        ->and($pr->number)->toContain('TC/PC/')
+        ->and($pr->number)->toBe('47159901')
         ->and($pr->current_stage_id)->toBe($stage1->id)
         ->and($pr->invoices)->toHaveCount(2)
         ->and($pr->total_amount)->toBe(400000)
@@ -244,5 +249,53 @@ test('spv can upload supporting document to payment request', function () {
     expect($pr->documents)->toHaveCount(1)
         ->and($pr->documents->first()->type)->toBe(\App\Enums\DocumentType::PAYMENT_REQUEST)
         ->and($pr->documents->first()->original_name)->toBe('tanda_terima_berkas.pdf');
+});
+
+test('payment request number allows custom company format without forced system prefix and suggests unique suffix', function () {
+    $spv = User::factory()->spv()->create();
+    $vendor = Vendor::factory()->create();
+    $stage = PaymentStage::factory()->create(['name' => 'Proses ACC', 'sort_order' => 1]);
+
+    $po = PurchaseOrder::factory()->create(['vendor_id' => $vendor->id, 'po_number' => '47159902']);
+    $inv1 = Invoice::factory()->approved()->create([
+        'vendor_id' => $vendor->id,
+        'purchase_order_id' => $po->id,
+        'total_amount' => 100000,
+    ]);
+    $inv2 = Invoice::factory()->approved()->create([
+        'vendor_id' => $vendor->id,
+        'purchase_order_id' => $po->id,
+        'total_amount' => 200000,
+    ]);
+
+    // 1. User types custom company format; selecting additional invoices must NOT overwrite it
+    Livewire::actingAs($spv)
+        ->test(PaymentRequestCreate::class)
+        ->set('selected_invoice_ids', [$inv1->id])
+        ->assertSet('number', '47159902')
+        ->set('number', 'PR/FIN/COMP/2026/01')
+        ->set('selected_invoice_ids', [$inv1->id, $inv2->id])
+        ->assertSet('number', 'PR/FIN/COMP/2026/01')
+        ->set('current_stage_id', $stage->id)
+        ->call('save')
+        ->assertHasNoErrors();
+
+    expect(PaymentRequest::where('number', 'PR/FIN/COMP/2026/01')->exists())->toBeTrue();
+
+    // 2. If PO number is already used as a PR number, next PR for that PO suggests -2
+    $inv3 = Invoice::factory()->approved()->create([
+        'vendor_id' => $vendor->id,
+        'purchase_order_id' => $po->id,
+        'total_amount' => 50000,
+    ]);
+    PaymentRequest::factory()->create([
+        'number' => '47159902',
+        'current_stage_id' => $stage->id,
+    ]);
+
+    Livewire::actingAs($spv)
+        ->test(PaymentRequestCreate::class)
+        ->set('selected_invoice_ids', [$inv3->id])
+        ->assertSet('number', '47159902-2');
 });
 
