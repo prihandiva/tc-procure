@@ -1,4 +1,4 @@
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-6 max-w-7xl mx-auto w-full min-w-0">
     {{-- Header & Navigation --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div class="flex items-center gap-3">
@@ -133,7 +133,7 @@
     {{-- Main Content Grid: Invoices & Stage History --}}
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {{-- Left 2 cols: Invoices included --}}
-        <div class="space-y-6 lg:col-span-2">
+        <div class="space-y-6 lg:col-span-2 min-w-0">
             {{-- Invoices Table Card --}}
             <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
                 <div class="p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between bg-slate-50/50 dark:bg-zinc-900/50">
@@ -146,7 +146,7 @@
                     </span>
                 </div>
 
-                <div class="overflow-x-auto -mx-3 sm:mx-0">
+                <div class="w-full max-w-full overflow-x-auto">
                     <table class="min-w-[650px] w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800 whitespace-nowrap">
                         <thead class="bg-slate-50/80 dark:bg-zinc-800/60 text-[11px] uppercase font-bold text-slate-500 dark:text-zinc-400 tracking-wider">
                             <tr>

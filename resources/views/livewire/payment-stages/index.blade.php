@@ -1,10 +1,10 @@
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-6 max-w-7xl mx-auto w-full min-w-0">
     {{-- Header --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <div class="flex items-center gap-2.5">
-                <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Master Tahapan Pembayaran</h1>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/60">
+        <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+                <h1 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">Master Tahapan Pembayaran</h1>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/60 whitespace-nowrap shrink-0">
                     {{ $stages->count() }} Tahap
                 </span>
             </div>
@@ -32,8 +32,8 @@
     @endif
 
     {{-- Stages Table --}}
-    <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
-        <div class="overflow-x-auto -mx-3 sm:mx-0">
+    <div class="w-full max-w-full rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
+        <div class="w-full max-w-full overflow-x-auto">
             <table class="min-w-[620px] w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800 whitespace-nowrap">
                 <thead class="bg-slate-50/80 dark:bg-zinc-800/60 text-[11px] uppercase font-bold text-slate-500 dark:text-zinc-400 tracking-wider">
                     <tr>

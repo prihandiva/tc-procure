@@ -1,13 +1,13 @@
-<div class="space-y-6 max-w-7xl mx-auto pb-12">
+<div class="space-y-6 max-w-7xl mx-auto pb-12 w-full min-w-0">
     <!-- Header Hero Banner -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <div class="flex items-center gap-2.5">
-                <div class="flex size-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white shadow-md shadow-indigo-600/20">
+        <div class="min-w-0">
+            <div class="flex items-start sm:items-center gap-2.5 sm:gap-3">
+                <div class="flex size-10 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white shadow-md shadow-indigo-600/20 shrink-0">
                     <flux:icon icon="document-chart-bar" class="size-5 text-white" />
                 </div>
-                <div>
-                    <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Pusat Laporan & Ekspor</h1>
+                <div class="min-w-0 flex-1">
+                    <h1 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">Pusat Laporan & Ekspor</h1>
                     <p class="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">
                         Cetak dan unduh rekapitulasi data pengadaan ke format Excel (.xlsx) dan PDF resmi ber-tata letak rapi.
                     </p>
@@ -15,12 +15,13 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 w-full sm:w-auto">
             <!-- Modal Pop-Up Filter Trigger -->
             <x-report-export-modal
                 :default-type="$reportType"
                 button-label="Filter & Unduh Pop-up"
-                trigger-class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md shadow-indigo-600/30 transition transform active:scale-95 cursor-pointer"
+                wrapper-class="w-full sm:w-auto"
+                trigger-class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md shadow-indigo-600/30 transition transform active:scale-95 cursor-pointer"
             />
         </div>
     </div>
@@ -269,7 +270,7 @@
             <span class="text-xs text-slate-400">Menampilkan data sesuai filter yang dipilih</span>
         </div>
 
-        <div class="overflow-x-auto">
+        <div class="w-full max-w-full overflow-x-auto">
             <!-- 1. PO Preview Table -->
             @if ($reportType === 'po')
                 <table class="w-full text-left text-xs">

@@ -1,4 +1,4 @@
-<div class="space-y-6 max-w-6xl mx-auto">
+<div class="space-y-6 max-w-6xl mx-auto w-full min-w-0">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Terbitkan Purchase Order (PO) Baru</h1>
@@ -84,7 +84,7 @@
 
             @error('items') <div class="text-xs text-red-600">{{ $message }}</div> @enderror
 
-            <div class="overflow-x-auto -mx-3 sm:mx-0">
+            <div class="w-full max-w-full overflow-x-auto">
                 <table class="min-w-[700px] w-full text-left text-sm text-zinc-700 dark:text-zinc-300 whitespace-nowrap">
                     <thead class="bg-zinc-50 dark:bg-zinc-800/60 text-xs font-semibold text-zinc-600 dark:text-zinc-300">
                         <tr>

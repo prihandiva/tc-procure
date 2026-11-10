@@ -1,4 +1,4 @@
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-6 max-w-7xl mx-auto w-full min-w-0">
     <!-- Breadcrumb & Back -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div class="flex items-center gap-3">
@@ -154,7 +154,7 @@
     </div>
 
     <!-- Navigation Tabs -->
-    <div class="border-b border-slate-200 dark:border-zinc-800 flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-0.5 -mx-3 sm:mx-0 px-3 sm:px-0">
+    <div class="border-b border-slate-200 dark:border-zinc-800 flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-0.5 w-full max-w-full">
         <button wire:click="$set('activeTab', 'items')" class="flex items-center gap-2 px-4 py-3 text-xs font-bold border-b-2 transition shrink-0 {{ $activeTab === 'items' ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
             <flux:icon icon="cube" class="size-4" />
             <span>Daftar Item PO</span>
@@ -188,7 +188,7 @@
     <!-- Tab 1: Item PO -->
     @if ($activeTab === 'items')
         <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
-            <div class="overflow-x-auto -mx-3 sm:mx-0">
+            <div class="w-full max-w-full overflow-x-auto">
                 <table class="min-w-[640px] w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800 whitespace-nowrap">
                     <thead class="bg-slate-50/80 dark:bg-zinc-800/60 font-bold text-slate-500 dark:text-zinc-400 text-[11px] uppercase tracking-wider">
                         <tr>
@@ -235,7 +235,7 @@
                     Belum ada riwayat pengiriman untuk PO ini.
                 </div>
             @else
-                <div class="overflow-x-auto -mx-3 sm:mx-0">
+                <div class="w-full max-w-full overflow-x-auto">
                     <table class="min-w-[640px] w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800 whitespace-nowrap">
                         <thead class="bg-slate-50/80 dark:bg-zinc-800/60 font-bold text-slate-500 dark:text-zinc-400 text-[11px] uppercase tracking-wider">
                             <tr>
@@ -281,7 +281,7 @@
                     Belum ada tagihan/invoice yang diajukan untuk PO ini.
                 </div>
             @else
-                <div class="overflow-x-auto -mx-3 sm:mx-0">
+                <div class="w-full max-w-full overflow-x-auto">
                     <table class="min-w-[640px] w-full text-left text-sm text-slate-700 dark:text-zinc-300 divide-y divide-slate-100 dark:divide-zinc-800 whitespace-nowrap">
                         <thead class="bg-slate-50/80 dark:bg-zinc-800/60 font-bold text-slate-500 dark:text-zinc-400 text-[11px] uppercase tracking-wider">
                             <tr>

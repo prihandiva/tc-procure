@@ -1,4 +1,4 @@
-<div class="space-y-6">
+<div class="space-y-6 w-full max-w-full min-w-0">
     {{-- Header --}}
     <div class="flex items-center gap-3">
         <flux:button variant="subtle" icon="arrow-left" href="{{ route('postings.index') }}" wire:navigate>
@@ -27,7 +27,7 @@
     <form wire:submit="save" class="space-y-6">
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
             {{-- Left 2 cols: PR Selection --}}
-            <div class="space-y-6 lg:col-span-2">
+            <div class="space-y-6 lg:col-span-2 min-w-0">
                 <flux:card class="space-y-4">
                     <div class="flex items-center justify-between">
                         <div>
@@ -44,7 +44,7 @@
                     @enderror
 
                     @if ($unpostedPrs->isNotEmpty())
-                        <div class="overflow-x-auto -mx-3 sm:mx-0 rounded-lg border border-zinc-200 dark:border-zinc-700">
+                        <div class="w-full max-w-full overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-700">
                             <table class="min-w-[620px] w-full divide-y divide-zinc-200 text-left text-sm dark:divide-zinc-700 whitespace-nowrap">
                                 <thead class="bg-zinc-50 dark:bg-zinc-800/60 text-xs uppercase font-medium text-zinc-500">
                                     <tr>
@@ -101,7 +101,7 @@
             </div>
 
             {{-- Right 1 col: SAP Posting Details --}}
-            <div class="space-y-6">
+            <div class="space-y-6 w-full max-w-full min-w-0">
                 <flux:card class="space-y-4">
                     <flux:heading size="lg" class="font-bold">Detail Dokumen SAP</flux:heading>
 

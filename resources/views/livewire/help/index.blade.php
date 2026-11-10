@@ -1,4 +1,4 @@
-<div class="space-y-6 pb-12" x-data="{
+<div class="space-y-6 pb-12 w-full max-w-full min-w-0" x-data="{
     activeTab: @entangle('tab'),
     searchQuery: @entangle('search'),
     openFaq: null,

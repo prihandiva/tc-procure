@@ -1,4 +1,4 @@
-<div class="space-y-6 max-w-5xl mx-auto">
+<div class="space-y-6 max-w-5xl mx-auto w-full min-w-0">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Buat Payment Request Baru</h1>

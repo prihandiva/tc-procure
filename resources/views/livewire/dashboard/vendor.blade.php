@@ -1,4 +1,4 @@
-<div class="space-y-6">
+<div class="space-y-6 w-full max-w-full min-w-0">
     {{-- Header & Quick Actions (Vendor Hero Banner) --}}
     <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 sm:p-8 text-white shadow-lg border border-slate-800">
         <div class="absolute -right-12 -top-12 size-64 rounded-full bg-emerald-500/15 blur-3xl pointer-events-none"></div>
@@ -166,7 +166,7 @@
             </span>
         </div>
 
-        <div class="overflow-x-auto -mx-3 sm:mx-0">
+        <div class="w-full max-w-full overflow-x-auto">
             <table class="min-w-[700px] w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800 whitespace-nowrap">
                 <thead class="bg-slate-50/80 dark:bg-zinc-800/60 text-[11px] uppercase font-bold text-slate-500 dark:text-zinc-400 tracking-wider">
                     <tr>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark w-full max-w-full overflow-x-clip">
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-slate-50/70 text-slate-900 dark:bg-zinc-950 dark:text-zinc-100 antialiased selection:bg-indigo-500 selection:text-white font-sans overflow-x-hidden">
+    <body class="min-h-screen w-full max-w-full bg-slate-50/70 text-slate-900 dark:bg-zinc-950 dark:text-zinc-100 antialiased selection:bg-indigo-500 selection:text-white font-sans overflow-x-clip">
         <flux:sidebar sticky collapsible="mobile" class="border-e border-slate-200/80 bg-white dark:border-zinc-800 dark:bg-zinc-900 shadow-xs">
             <flux:sidebar.header class="pb-2">
                 <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
@@ -91,15 +91,15 @@
         </flux:sidebar>
 
         <!-- Top Application Header with Live Indonesian Server Clock & User Dropdown -->
-        <flux:header class="border-b border-slate-200/80 bg-white/95 dark:border-zinc-800 dark:bg-zinc-900/95 backdrop-blur-md sticky top-0 z-40 px-2.5 sm:px-6 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-3">
+        <flux:header class="border-b border-slate-200/80 bg-white/95 dark:border-zinc-800 dark:bg-zinc-900/95 backdrop-blur-md sticky top-0 z-40 w-full max-w-full !px-2.5 sm:!px-6 lg:!px-8 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-3 min-w-0">
             <!-- Left: Mobile Toggle & Branding / Desktop Subtitle -->
-            <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-                <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
-                <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-1.5 sm:gap-2 lg:hidden">
+            <div class="flex items-center gap-1.5 sm:gap-2.5 min-w-0 shrink">
+                <flux:sidebar.toggle class="lg:hidden shrink-0" icon="bars-2" inset="left" />
+                <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-1.5 sm:gap-2 lg:hidden min-w-0">
                     <div class="flex size-7 items-center justify-center rounded-lg bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white shadow-xs shrink-0">
                         <x-app-logo-icon class="size-3.5 text-white" />
                     </div>
-                    <span class="font-extrabold text-xs sm:text-sm tracking-tight text-slate-900 dark:text-white truncate max-w-[85px] xs:max-w-none">TC-Procure</span>
+                    <span class="font-extrabold text-xs sm:text-sm tracking-tight text-slate-900 dark:text-white truncate max-w-[80px] sm:max-w-none">TC-Procure</span>
                 </a>
 
                 <div class="hidden lg:flex items-center gap-2">
@@ -132,7 +132,7 @@
                         <div class="flex size-7 items-center justify-center rounded-lg bg-indigo-600 font-bold text-white text-xs shadow-xs shrink-0">
                             {{ auth()->user()->initials() }}
                         </div>
-                        <flux:icon icon="chevron-down" class="size-3 text-slate-400" />
+                        <flux:icon icon="chevron-down" class="size-3 text-slate-400 shrink-0" />
                     </div>
 
                     <flux:menu class="w-56">

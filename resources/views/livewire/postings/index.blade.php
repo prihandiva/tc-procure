@@ -1,10 +1,10 @@
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-6 max-w-7xl mx-auto w-full min-w-0">
     {{-- Header --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-            <div class="flex items-center gap-2.5">
-                <h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Dokumen Posting SAP</h1>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/60">
+        <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+                <h1 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">Dokumen Posting SAP</h1>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/60 whitespace-nowrap shrink-0">
                     {{ $postings->total() }} Total
                 </span>
             </div>
@@ -13,10 +13,10 @@
             </p>
         </div>
 
-        <div class="flex items-center gap-2 w-full sm:w-auto">
-            <x-report-export-modal default-type="postings" button-label="Ekspor Laporan" wrapper-class="flex-1 sm:flex-initial" trigger-class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-200 text-xs font-bold hover:bg-slate-50 dark:hover:bg-zinc-700/60 shadow-2xs transition transform active:scale-95 cursor-pointer whitespace-nowrap" />
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+            <x-report-export-modal default-type="postings" button-label="Ekspor Laporan" wrapper-class="w-full sm:w-auto" trigger-class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl border border-slate-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-slate-700 dark:text-zinc-200 text-xs font-bold hover:bg-slate-50 dark:hover:bg-zinc-700/60 shadow-2xs transition transform active:scale-95 cursor-pointer whitespace-nowrap" />
             @if ($isSpv)
-                <a href="{{ route('postings.create') }}" wire:navigate class="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/30 transition transform active:scale-95 whitespace-nowrap">
+                <a href="{{ route('postings.create') }}" wire:navigate class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/30 transition transform active:scale-95 whitespace-nowrap">
                     <flux:icon icon="plus" class="size-4 shrink-0" />
                     <span>Catat Posting Baru</span>
                 </a>
@@ -48,8 +48,8 @@
     </div>
 
     {{-- Table of Postings --}}
-    <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
-        <div class="overflow-x-auto -mx-3 sm:mx-0">
+    <div class="w-full max-w-full rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
+        <div class="w-full max-w-full overflow-x-auto">
             <table class="min-w-[720px] w-full divide-y divide-slate-100 text-left text-sm dark:divide-zinc-800 whitespace-nowrap">
                 <thead class="bg-slate-50/80 dark:bg-zinc-800/60 text-[11px] uppercase font-bold text-slate-500 dark:text-zinc-400 tracking-wider">
                     <tr>
