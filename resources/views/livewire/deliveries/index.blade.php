@@ -35,7 +35,7 @@
             <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Pencarian</label>
                 <div class="relative">
-                    <input type="text" wire:model.live.debounce.300ms="search" placeholder="Kode DLV, No DO, PO, training..." class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl dark:bg-zinc-800 dark:border-zinc-700 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
+                    <input type="text" wire:model.live.debounce.300ms="search" placeholder="Nomor DO, SJ Vendor, PO, training..." class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-xl dark:bg-zinc-800 dark:border-zinc-700 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
                     <flux:icon icon="magnifying-glass" class="size-4 text-slate-400 absolute left-3 top-2.5" />
                 </div>
             </div>

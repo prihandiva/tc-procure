@@ -40,9 +40,16 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div>
+                    <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Nomor Surat Pengiriman (DO) *</label>
+                    <input type="text" wire:model="code" placeholder="Otomatis terisi Nomor PO acuan (dapat diubah)" class="w-full px-3 py-2 text-sm font-mono font-semibold border border-zinc-300 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    <p class="text-[11px] text-zinc-400 mt-1">Otomatis terisi mengikuti Nomor PO acuan &amp; tetap dapat diedit sesuai kebutuhan (misal: akhiran -2 untuk pengiriman bertahap).</p>
+                    @error('code') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
                     <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Nomor Surat Jalan Fisik Vendor (Opsional)</label>
                     <input type="text" wire:model="vendor_do_number" placeholder="contoh: DO-10294 atau nomor kwitansi vendor" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                    <p class="text-[11px] text-zinc-400 mt-1">Sistem akan membuat kode pengiriman unik otomatis (format DLV-2026-xxxxx).</p>
+                    <p class="text-[11px] text-zinc-400 mt-1">Nomor referensi dari kertas surat jalan fisik rekanan (jika ada).</p>
                     @error('vendor_do_number') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                 </div>
 
@@ -80,7 +87,7 @@
 
                 <div class="space-y-4">
                     @foreach ($items as $index => $item)
-                        <div class="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 space-y-3">
+                        <div wire:key="delivery-po-item-{{ $item['po_item_id'] }}" class="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 space-y-3">
                             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-zinc-200/60 dark:border-zinc-800 pb-2">
                                 <div>
                                     <span class="font-bold text-zinc-900 dark:text-zinc-100">{{ $item['item_name'] }}</span>

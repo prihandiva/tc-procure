@@ -13,6 +13,7 @@ use App\Models\Vendor;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -32,9 +33,13 @@ class Edit extends Component
     public $document_file = null;
 
     /**
-     * @var array<int, array{id: int|null, item_id: int|null, item_name: string, unit: string, qty_ordered: float|int, unit_price: int, subtotal: int}>
+     * @var array<int, array{_key?: string, id: int|null, item_id: int|null, item_name: string, unit: string, qty_ordered: float|int|string, unit_price: int|string, subtotal: int}>
      */
     public array $items = [];
+
+    protected array $manuallyEditedNameRows = [];
+    protected array $manuallyEditedUnitRows = [];
+    protected array $manuallyEditedPriceRows = [];
 
     public function mount(PurchaseOrder $purchaseOrder): void
     {
@@ -53,6 +58,7 @@ class Edit extends Component
 
         foreach ($purchaseOrder->poItems as $item) {
             $this->items[] = [
+                '_key' => 'db-' . $item->id,
                 'id' => $item->id,
                 'item_id' => $item->item_id,
                 'item_name' => $item->item_name,
@@ -67,6 +73,7 @@ class Edit extends Component
     public function addItem(): void
     {
         $this->items[] = [
+            '_key' => Str::random(8),
             'id' => null,
             'item_id' => null,
             'item_name' => '',
@@ -85,24 +92,51 @@ class Edit extends Component
         }
     }
 
-    public function updatedItems($value, $key): void
+    public function updatingItems($value, $key): void
     {
-        $parts = explode('.', $key);
+        $parts = explode('.', (string) $key);
         if (count($parts) === 2) {
             $index = (int) $parts[0];
             $field = $parts[1];
 
+            if ($field === 'item_name') {
+                $this->manuallyEditedNameRows[$index] = true;
+            } elseif ($field === 'unit') {
+                $this->manuallyEditedUnitRows[$index] = true;
+            } elseif ($field === 'unit_price') {
+                $this->manuallyEditedPriceRows[$index] = true;
+            }
+        }
+    }
+
+    public function updatedItems($value, $key): void
+    {
+        $parts = explode('.', (string) $key);
+        if (count($parts) === 2) {
+            $index = (int) $parts[0];
+            $field = $parts[1];
+
+            if (! isset($this->items[$index])) {
+                return;
+            }
+
             if ($field === 'item_id' && ! empty($value)) {
                 $masterItem = Item::find($value);
                 if ($masterItem) {
-                    $this->items[$index]['item_name'] = $masterItem->name;
-                    $this->items[$index]['unit'] = $masterItem->unit;
-                    $this->items[$index]['unit_price'] = (int) ($masterItem->default_price ?? 0);
+                    if (empty($this->manuallyEditedNameRows[$index])) {
+                        $this->items[$index]['item_name'] = $masterItem->name;
+                    }
+                    if (empty($this->manuallyEditedUnitRows[$index])) {
+                        $this->items[$index]['unit'] = $masterItem->unit;
+                    }
+                    if (empty($this->manuallyEditedPriceRows[$index])) {
+                        $this->items[$index]['unit_price'] = (int) ($masterItem->default_price ?? 0);
+                    }
                 }
             }
 
-            $qty = (float) ($this->items[$index]['qty_ordered'] ?? 0);
-            $price = (int) ($this->items[$index]['unit_price'] ?? 0);
+            $qty = is_numeric($this->items[$index]['qty_ordered'] ?? null) ? (float) $this->items[$index]['qty_ordered'] : 0;
+            $price = is_numeric($this->items[$index]['unit_price'] ?? null) ? (int) $this->items[$index]['unit_price'] : 0;
             $this->items[$index]['subtotal'] = (int) round($qty * $price);
         }
     }
@@ -110,9 +144,10 @@ class Edit extends Component
     public function getTotalAmountProperty(): int
     {
         return (int) collect($this->items)->sum(function ($item) {
-            $val = $item['subtotal'] ?? 0;
+            $qty = is_numeric($item['qty_ordered'] ?? null) ? (float) $item['qty_ordered'] : 0;
+            $price = is_numeric($item['unit_price'] ?? null) ? (int) $item['unit_price'] : 0;
 
-            return is_numeric($val) ? (int) $val : 0;
+            return (int) round($qty * $price);
         });
     }
 
@@ -157,29 +192,26 @@ class Edit extends Component
             // Sync PO Items: delete missing, update existing, insert new
             $keptIds = [];
             foreach ($this->items as $itemData) {
+                $payload = [
+                    'item_id' => ! empty($itemData['item_id']) ? (int) $itemData['item_id'] : null,
+                    'item_name' => trim($itemData['item_name']),
+                    'unit' => trim($itemData['unit']),
+                    'qty_ordered' => (float) $itemData['qty_ordered'],
+                    'unit_price' => (int) $itemData['unit_price'],
+                ];
+
                 if (! empty($itemData['id'])) {
                     $item = PoItem::where('purchase_order_id', $this->purchaseOrder->id)->find($itemData['id']);
                     if ($item) {
-                        $item->update([
-                            'item_id' => $itemData['item_id'] ?: null,
-                            'item_name' => $itemData['item_name'],
-                            'unit' => $itemData['unit'],
-                            'qty_ordered' => $itemData['qty_ordered'],
-                            'unit_price' => $itemData['unit_price'],
-                        ]);
+                        $item->update($payload);
                         $keptIds[] = $item->id;
                         continue;
                     }
                 }
 
-                $newItem = PoItem::create([
+                $newItem = PoItem::create(array_merge($payload, [
                     'purchase_order_id' => $this->purchaseOrder->id,
-                    'item_id' => $itemData['item_id'] ?: null,
-                    'item_name' => $itemData['item_name'],
-                    'unit' => $itemData['unit'],
-                    'qty_ordered' => $itemData['qty_ordered'],
-                    'unit_price' => $itemData['unit_price'],
-                ]);
+                ]));
                 $keptIds[] = $newItem->id;
             }
 
@@ -215,10 +247,18 @@ class Edit extends Component
     {
         $vendors = Vendor::active()->orderBy('name')->get();
         $masterItems = Item::active()->orderBy('name')->get();
+        $catalogMap = $masterItems->mapWithKeys(fn (Item $item) => [
+            $item->id => [
+                'name' => $item->name,
+                'unit' => $item->unit,
+                'default_price' => (int) ($item->default_price ?? 0),
+            ],
+        ])->all();
 
         return view('livewire.purchase-orders.edit', [
             'vendors' => $vendors,
             'masterItems' => $masterItems,
+            'catalogMap' => $catalogMap,
         ]);
     }
 }

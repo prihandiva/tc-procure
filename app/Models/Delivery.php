@@ -119,6 +119,31 @@ class Delivery extends Model
     }
 
     /**
+     * Suggest default delivery/DO code pre-filled from the Purchase Order number.
+     * Falls back to `{po_number}-2`, `-3`, ... when partial deliveries already exist.
+     */
+    public static function suggestCodeForPo(PurchaseOrder $po): string
+    {
+        $baseCode = trim($po->po_number);
+
+        $existsQuery = fn (string $candidate) => static::withoutGlobalScopes()
+            ->withTrashed()
+            ->where('code', $candidate)
+            ->exists();
+
+        if (! $existsQuery($baseCode)) {
+            return $baseCode;
+        }
+
+        $counter = 2;
+        while ($existsQuery("{$baseCode}-{$counter}")) {
+            $counter++;
+        }
+
+        return "{$baseCode}-{$counter}";
+    }
+
+    /**
      * Generate unique sequential delivery code: DLV-YYYY-XXXXX
      */
     public static function generateCode(?int $year = null): string

@@ -16,7 +16,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 
-test('vendor can input delivery with auto-generated code and attached do document', function () {
+test('vendor can input delivery with code auto-filled from po number and attached do document', function () {
     Storage::fake('local');
 
     $vendor = Vendor::factory()->create(['name' => 'CV Yulia Catering']);
@@ -80,7 +80,7 @@ test('vendor can input delivery with auto-generated code and attached do documen
 
     $delivery = Delivery::where('vendor_do_number', 'DO-YULIA-001')->first();
     expect($delivery)->not->toBeNull()
-        ->and($delivery->code)->toStartWith('DLV-2026-')
+        ->and($delivery->code)->toBe('47157028')
         ->and($delivery->status)->toBe(DeliveryStatus::SUBMITTED)
         ->and($delivery->deliveryItems)->toHaveCount(2)
         ->and($delivery->documents)->toHaveCount(1)
@@ -346,4 +346,42 @@ test('delivery show dynamically displays discrepancy difference when received qu
         // When SPV inputs 18 (short delivery of 2) -> shows "Kurang 2,00"
         ->set("receivedQuantities.{$item->id}", 18)
         ->assertSee('Kurang 2,00');
+});
+
+test('delivery code is auto-filled from po number, editable, and suggests suffix for subsequent partial deliveries', function () {
+    $vendor = Vendor::factory()->create();
+    $vendorUser = User::factory()->vendor($vendor->id)->create();
+
+    $po = PurchaseOrder::factory()->create([
+        'vendor_id' => $vendor->id,
+        'po_number' => '47157099',
+        'status' => PoStatus::ACTIVE,
+    ]);
+    $poItem = PoItem::factory()->create([
+        'purchase_order_id' => $po->id,
+        'qty_ordered' => 50,
+    ]);
+
+    $this->actingAs($vendorUser);
+
+    // 1. Selecting PO auto-fills `code` with PO number, user can keep or edit it
+    Livewire::test(DeliveryCreate::class)
+        ->set('purchase_order_id', $po->id)
+        ->assertSet('code', '47157099')
+        ->set('code', 'DO-47157099-CUSTOM')
+        ->set('items.0.qty_sent', 20)
+        ->call('save')
+        ->assertHasNoErrors();
+
+    expect(Delivery::where('code', 'DO-47157099-CUSTOM')->exists())->toBeTrue();
+
+    // 2. If PO number is already taken by an existing delivery, next delivery suggests -2
+    Delivery::factory()->create([
+        'purchase_order_id' => $po->id,
+        'vendor_id' => $vendor->id,
+        'code' => '47157099',
+    ]);
+
+    Livewire::test(DeliveryCreate::class, ['po_id' => $po->id])
+        ->assertSet('code', '47157099-2');
 });

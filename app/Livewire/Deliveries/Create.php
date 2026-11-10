@@ -25,6 +25,7 @@ class Create extends Component
     use WithFileUploads;
 
     public ?int $purchase_order_id = null;
+    public string $code = '';
     public string $delivery_date = '';
     public string $vendor_do_number = '';
     public string $notes = '';
@@ -57,16 +58,22 @@ class Create extends Component
         $this->items = [];
 
         if (! $this->purchase_order_id) {
+            $this->code = '';
+
             return;
         }
 
         $po = PurchaseOrder::with('poItems.deliveryItems.delivery')->find($this->purchase_order_id);
 
         if (! $po) {
+            $this->code = '';
+
             return;
         }
 
         Gate::authorize('view', $po);
+
+        $this->code = Delivery::suggestCodeForPo($po);
 
         foreach ($po->poItems as $poItem) {
             $remaining = $poItem->qty_remaining;
@@ -97,6 +104,7 @@ class Create extends Component
     {
         return [
             'purchase_order_id' => 'required|exists:purchase_orders,id',
+            'code' => 'required|string|max:100|unique:deliveries,code',
             'delivery_date' => 'required|date',
             'vendor_do_number' => 'nullable|string|max:100',
             'notes' => 'nullable|string|max:1000',
@@ -113,6 +121,8 @@ class Create extends Component
     {
         return [
             'purchase_order_id.required' => 'Silakan pilih Purchase Order terlebih dahulu.',
+            'code.required' => 'Nomor surat pengiriman (DO) wajib diisi.',
+            'code.unique' => 'Nomor surat pengiriman (DO) ini sudah digunakan. Silakan ubah atau tambahkan akhiran (misal: -2) untuk pengiriman bertahap.',
             'delivery_date.required' => 'Tanggal pengiriman wajib diisi.',
             'document_file.mimes' => 'Format file dokumen DO harus PDF, JPG, JPEG, atau PNG.',
             'document_file.max' => 'Ukuran file dokumen maksimal 5 MB.',
@@ -122,6 +132,15 @@ class Create extends Component
     public function save()
     {
         Gate::authorize('create', Delivery::class);
+
+        if ($this->purchase_order_id
+            && ! PurchaseOrder::where('id', $this->purchase_order_id)->exists()
+            && PurchaseOrder::withoutGlobalScopes()->where('id', $this->purchase_order_id)->exists()
+        ) {
+            abort(404);
+        }
+
+        $this->code = trim($this->code);
         $this->validate();
 
         // Check that at least one item is being sent
@@ -158,11 +177,8 @@ class Create extends Component
                 }
             }
 
-            // Generate unique sequential code
-            $code = Delivery::generateCode();
-
             $delivery = Delivery::create([
-                'code' => $code,
+                'code' => trim($this->code),
                 'purchase_order_id' => $po->id,
                 'vendor_id' => $po->vendor_id,
                 'delivery_date' => $this->delivery_date,

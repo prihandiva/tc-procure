@@ -235,3 +235,56 @@ test('private documents cannot be downloaded by unauthorized vendors', function 
     $this->actingAs($vendorUserB);
     $this->get(route('documents.show', $doc))->assertForbidden();
 });
+
+test('catalog selection auto-fills unit price from database and allows custom price override', function () {
+    $spv = User::factory()->spv()->create();
+    $vendor = Vendor::factory()->create();
+    $catalogItem = Item::factory()->create([
+        'name' => 'Snack Box',
+        'unit' => 'box',
+        'default_price' => 15000,
+    ]);
+
+    $this->actingAs($spv);
+
+    // 1. Selecting catalog item auto-fills DB price, and overriding unit_price keeps custom value
+    Livewire::test(PurchaseOrderCreate::class)
+        ->set('po_number', 'PO-CUSTOM-PRICE-01')
+        ->set('vendor_id', $vendor->id)
+        ->set('po_date', '2026-11-10')
+        ->set('items.0.item_id', $catalogItem->id)
+        ->assertSet('items.0.item_name', 'Snack Box')
+        ->assertSet('items.0.unit', 'box')
+        ->assertSet('items.0.unit_price', 15000)
+        ->set('items.0.qty_ordered', 1)
+        ->set('items.0.unit_price', 16000)
+        ->assertSet('items.0.subtotal', 16000)
+        ->call('save')
+        ->assertHasNoErrors();
+
+    $po = PurchaseOrder::where('po_number', 'PO-CUSTOM-PRICE-01')->first();
+    expect($po)->not->toBeNull()
+        ->and($po->poItems->first()->unit_price)->toBe(16000)
+        ->and($po->total_amount)->toBe(16000);
+
+    // 2. Simultaneous batch update of item_id + custom unit_price (like deferred wire:model on save) must NOT revert price to DB default
+    Livewire::test(PurchaseOrderCreate::class)
+        ->set('po_number', 'PO-CUSTOM-PRICE-02')
+        ->set('vendor_id', $vendor->id)
+        ->set('po_date', '2026-11-10')
+        ->set([
+            'items.0.item_id' => $catalogItem->id,
+            'items.0.item_name' => 'Snack Box Custom',
+            'items.0.unit' => 'box',
+            'items.0.qty_ordered' => 2,
+            'items.0.unit_price' => 16000,
+        ])
+        ->call('save')
+        ->assertHasNoErrors();
+
+    $po2 = PurchaseOrder::where('po_number', 'PO-CUSTOM-PRICE-02')->first();
+    expect($po2)->not->toBeNull()
+        ->and($po2->poItems->first()->item_name)->toBe('Snack Box Custom')
+        ->and($po2->poItems->first()->unit_price)->toBe(16000)
+        ->and($po2->total_amount)->toBe(32000);
+});
