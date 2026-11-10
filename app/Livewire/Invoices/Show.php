@@ -61,6 +61,7 @@ class Show extends Component
         });
 
         $this->invoice->refresh();
+        $this->dispatch('refresh-notifications');
     }
 
     public function rejectInvoice(): void
@@ -103,6 +104,7 @@ class Show extends Component
 
         $this->showRejectModal = false;
         $this->invoice->refresh();
+        $this->dispatch('refresh-notifications');
     }
 
     public function render()

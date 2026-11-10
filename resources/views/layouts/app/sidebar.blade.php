@@ -85,21 +85,33 @@
                 </a>
             </div>
 
-            <div class="p-2">
+            <div class="p-2 space-y-2">
                 <x-desktop-user-menu :name="auth()->user()->name" />
+
+                <form method="POST" action="{{ route('logout') }}" class="w-full">
+                    @csrf
+                    <button
+                        type="submit"
+                        class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-50/80 hover:bg-rose-100 dark:bg-rose-950/30 dark:hover:bg-rose-950/60 border border-rose-200/70 dark:border-rose-900/50 transition cursor-pointer"
+                        data-test="sidebar-logout-button"
+                    >
+                        <flux:icon icon="arrow-right-start-on-rectangle" class="size-4 shrink-0" />
+                        <span>Keluar (Log out)</span>
+                    </button>
+                </form>
             </div>
         </flux:sidebar>
 
-        <!-- Top Application Header with Live Indonesian Server Clock & User Dropdown -->
-        <flux:header class="border-b border-slate-200/80 bg-white/95 dark:border-zinc-800 dark:bg-zinc-900/95 backdrop-blur-md sticky top-0 z-40 w-full max-w-full !px-2.5 sm:!px-6 lg:!px-8 py-2 sm:py-2.5 flex items-center justify-between gap-1.5 sm:gap-3 min-w-0">
+        <!-- Top Application Header with Live Indonesian Server Clock, Notifications & Logout -->
+        <flux:header class="border-b border-slate-200/80 bg-white/95 dark:border-zinc-800 dark:bg-zinc-900/95 backdrop-blur-md sticky top-0 z-40 w-full max-w-full !px-2 sm:!px-6 lg:!px-8 py-2 sm:py-2.5 flex items-center justify-between gap-1 sm:gap-3 min-w-0">
             <!-- Left: Mobile Toggle & Branding / Desktop Subtitle -->
-            <div class="flex items-center gap-1.5 sm:gap-2.5 min-w-0 shrink">
+            <div class="flex items-center gap-1 sm:gap-2.5 min-w-0 shrink">
                 <flux:sidebar.toggle class="lg:hidden shrink-0" icon="bars-2" inset="left" />
                 <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-1.5 sm:gap-2 lg:hidden min-w-0">
                     <div class="flex size-7 items-center justify-center rounded-lg bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white shadow-xs shrink-0">
                         <x-app-logo-icon class="size-3.5 text-white" />
                     </div>
-                    <span class="font-extrabold text-xs sm:text-sm tracking-tight text-slate-900 dark:text-white truncate max-w-[80px] sm:max-w-none">TC-Procure</span>
+                    <span class="font-extrabold text-[11px] sm:text-sm tracking-tight text-slate-900 dark:text-white truncate max-w-[68px] sm:max-w-none">TC-Procure</span>
                 </a>
 
                 <div class="hidden lg:flex items-center gap-2">
@@ -116,9 +128,9 @@
                 <x-live-server-clock />
             </div>
 
-            <!-- Right: Role Context & User Profile Menu -->
-            <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
-                <div class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold {{ auth()->user()->isVendor() ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/60' : (auth()->user()->isSuperAdmin() ? 'bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200/60' : 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/60') }}">
+            <!-- Right: Role Context, Notification Bell, User Profile & Direct Logout -->
+            <div class="flex items-center gap-1 sm:gap-2.5 shrink-0">
+                <div class="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold {{ auth()->user()->isVendor() ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/60' : (auth()->user()->isSuperAdmin() ? 'bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200/60' : 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/60') }}">
                     <span class="size-1.5 rounded-full {{ auth()->user()->isVendor() ? 'bg-emerald-500' : (auth()->user()->isSuperAdmin() ? 'bg-purple-500' : 'bg-indigo-500') }}"></span>
                     <span>{{ auth()->user()->role?->label() }}</span>
                     @if (auth()->user()->isVendor() && auth()->user()->vendor)
@@ -127,12 +139,15 @@
                     @endif
                 </div>
 
+                <!-- Header Notification Bell (PO, DO & Invoice Queue) -->
+                <livewire:components.header-notifications />
+
                 <flux:dropdown position="top" align="end">
                     <div class="flex items-center gap-1 cursor-pointer p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-zinc-800 transition">
                         <div class="flex size-7 items-center justify-center rounded-lg bg-indigo-600 font-bold text-white text-xs shadow-xs shrink-0">
                             {{ auth()->user()->initials() }}
                         </div>
-                        <flux:icon icon="chevron-down" class="size-3 text-slate-400 shrink-0" />
+                        <flux:icon icon="chevron-down" class="size-3 text-slate-400 shrink-0 hidden sm:block" />
                     </div>
 
                     <flux:menu class="w-56">
@@ -171,6 +186,20 @@
                         </form>
                     </flux:menu>
                 </flux:dropdown>
+
+                <!-- Directly Visible Logout Button -->
+                <form method="POST" action="{{ route('logout') }}" class="inline-flex shrink-0">
+                    @csrf
+                    <button
+                        type="submit"
+                        title="Keluar dari Aplikasi (Log out)"
+                        class="inline-flex items-center justify-center gap-1.5 h-8 sm:h-9 px-2 sm:px-2.5 rounded-lg text-xs font-bold text-rose-600 dark:text-rose-400 bg-rose-50/90 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-950/70 border border-rose-200/70 dark:border-rose-900/50 transition cursor-pointer shrink-0"
+                        data-test="header-logout-button"
+                    >
+                        <flux:icon icon="arrow-right-start-on-rectangle" class="size-3.5 sm:size-4 shrink-0" />
+                        <span class="hidden sm:inline">Keluar</span>
+                    </button>
+                </form>
             </div>
         </flux:header>
 

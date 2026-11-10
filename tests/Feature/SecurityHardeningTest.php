@@ -4,6 +4,7 @@ use App\Enums\DeliveryStatus;
 use App\Enums\DocumentType;
 use App\Enums\InvoiceStatus;
 use App\Enums\PoStatus;
+use App\Livewire\Components\HeaderNotifications;
 use App\Livewire\Deliveries\Show as DeliveryShow;
 use App\Livewire\Invoices\Show as InvoiceShow;
 use App\Livewire\Items\Index as ItemsIndex;
@@ -332,5 +333,99 @@ test('unauthorized action buttons are strictly hidden for vendor across all page
         ->assertOk()
         ->assertDontSee('Catat Posting Baru');
 });
+
+test('visible logout buttons and notification bell appear in layout header and sidebar', function () {
+    $spv = User::factory()->spv()->create();
+
+    $response = $this->actingAs($spv)->get(route('dashboard'));
+
+    $response->assertOk()
+        ->assertSee('header-logout-button', false)
+        ->assertSee('sidebar-logout-button', false)
+        ->assertSee('header-notifications-button', false)
+        ->assertSee('Keluar (Log out)');
+});
+
+test('delivery, invoice, and payment request pages display pending action queue cards with strict vendor isolation', function () {
+    $spv = User::factory()->spv()->create();
+    $vendorA = Vendor::factory()->create(['name' => 'Vendor Alpha']);
+    $vendorB = Vendor::factory()->create(['name' => 'Vendor Beta']);
+    $vendorUserA = User::factory()->vendor($vendorA->id)->create();
+
+    // PO for Vendor A (remaining quota -> ready for DO) & confirmed DO (ready for Invoice) & approved invoice (ready for PR)
+    $poA = PurchaseOrder::factory()->create(['vendor_id' => $vendorA->id, 'po_number' => 'PO-ALPHA-99', 'status' => PoStatus::ACTIVE]);
+    $poItemA = PoItem::factory()->create(['purchase_order_id' => $poA->id, 'qty_ordered' => 50, 'unit_price' => 10000]);
+    $confirmedDelivA = Delivery::factory()->confirmed()->create(['vendor_id' => $vendorA->id, 'purchase_order_id' => $poA->id, 'code' => 'DO-ALPHA-CONF']);
+    DeliveryItem::factory()->create(['delivery_id' => $confirmedDelivA->id, 'po_item_id' => $poItemA->id, 'qty_sent' => 20, 'qty_received' => 20, 'is_invoiced' => false]);
+    $submittedDelivA = Delivery::factory()->create(['vendor_id' => $vendorA->id, 'purchase_order_id' => $poA->id, 'code' => 'DO-ALPHA-SUB', 'status' => DeliveryStatus::SUBMITTED]);
+
+    $invApprovedA = Invoice::factory()->approved()->create(['vendor_id' => $vendorA->id, 'purchase_order_id' => $poA->id, 'invoice_number' => 'INV-ALPHA-APP', 'total_amount' => 100000]);
+
+    // PO & DO & Invoice for Vendor B (MUST NOT leak to Vendor A!)
+    $poB = PurchaseOrder::factory()->create(['vendor_id' => $vendorB->id, 'po_number' => 'PO-BETA-88', 'status' => PoStatus::ACTIVE]);
+    $poItemB = PoItem::factory()->create(['purchase_order_id' => $poB->id, 'qty_ordered' => 40, 'unit_price' => 10000]);
+    $confirmedDelivB = Delivery::factory()->confirmed()->create(['vendor_id' => $vendorB->id, 'purchase_order_id' => $poB->id, 'code' => 'DO-BETA-CONF']);
+    DeliveryItem::factory()->create(['delivery_id' => $confirmedDelivB->id, 'po_item_id' => $poItemB->id, 'qty_sent' => 10, 'qty_received' => 10, 'is_invoiced' => false]);
+    $invApprovedB = Invoice::factory()->approved()->create(['vendor_id' => $vendorB->id, 'purchase_order_id' => $poB->id, 'invoice_number' => 'INV-BETA-APP', 'total_amount' => 100000]);
+
+    // 1. Vendor A sees ONLY Vendor A's queues on DO & Invoice pages, and does NOT see PR creation queue
+    $this->actingAs($vendorUserA)
+        ->get(route('deliveries.index'))
+        ->assertOk()
+        ->assertSee('PO Aktif Siap Dibuatkan Surat Jalan (DO)')
+        ->assertSee('PO-ALPHA-99')
+        ->assertDontSee('PO-BETA-88');
+
+    $this->actingAs($vendorUserA)
+        ->get(route('invoices.index'))
+        ->assertOk()
+        ->assertSee('DO Terkonfirmasi Siap Dibuatkan Invoice')
+        ->assertSee('DO-ALPHA-CONF')
+        ->assertDontSee('DO-BETA-CONF');
+
+    $this->actingAs($vendorUserA)
+        ->get(route('payment-requests.index'))
+        ->assertOk()
+        ->assertDontSee('Invoice Approved Siap Dibuatkan Payment Request (PR)')
+        ->assertDontSee('INV-BETA-APP');
+
+    // 2. SPV sees both vendors' queues + verification banners + PR queue
+    $this->actingAs($spv)
+        ->get(route('deliveries.index'))
+        ->assertOk()
+        ->assertSee('Surat Jalan (DO) Masuk Menunggu Verifikasi')
+        ->assertSee('DO-ALPHA-SUB')
+        ->assertSee('PO-ALPHA-99')
+        ->assertSee('PO-BETA-88');
+
+    $this->actingAs($spv)
+        ->get(route('payment-requests.index'))
+        ->assertOk()
+        ->assertSee('Invoice Approved Siap Dibuatkan Payment Request (PR)')
+        ->assertSee('INV-ALPHA-APP')
+        ->assertSee('INV-BETA-APP');
+
+    // 3. Header notification component respects vendor isolation
+    Livewire::actingAs($vendorUserA)
+        ->test(HeaderNotifications::class)
+        ->assertSee('PO-ALPHA-99')
+        ->assertSee('DO-ALPHA-SUB')
+        ->assertDontSee('PO-BETA-88')
+        ->assertDontSee('INV-BETA-APP');
+
+    Livewire::actingAs($spv)
+        ->test(HeaderNotifications::class)
+        ->assertSee('PO-ALPHA-99')
+        ->assertSee('PO-BETA-88')
+        ->assertSee('DO-ALPHA-SUB')
+        ->assertSee('INV-ALPHA-APP');
+
+    // 4. Pre-selecting invoice via query parameter ?invoice_id=... in PaymentRequests\Create
+    Livewire::actingAs($spv)
+        ->test(PaymentRequestCreate::class, ['invoice_id' => $invApprovedA->id])
+        ->assertSet('selected_invoice_ids', [$invApprovedA->id])
+        ->assertSet('number', 'PO-ALPHA-99');
+});
+
 
 

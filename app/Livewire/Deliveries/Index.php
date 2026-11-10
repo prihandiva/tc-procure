@@ -5,6 +5,7 @@ namespace App\Livewire\Deliveries;
 use App\Enums\DeliveryStatus;
 use App\Models\Delivery;
 use App\Models\Vendor;
+use App\Services\ProcurementQueueService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Layout;
@@ -37,11 +38,12 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function render()
+    public function render(ProcurementQueueService $queue)
     {
         Gate::authorize('viewAny', Delivery::class);
 
         $user = Auth::user();
+        $isSpv = $user->isSpv() || $user->isSuperAdmin();
 
         $deliveries = Delivery::query()
             ->with(['purchaseOrder', 'vendor', 'deliveryItems.poItem', 'submitter'])
@@ -68,7 +70,9 @@ class Index extends Component
             'deliveries' => $deliveries,
             'vendors' => $vendors,
             'isVendor' => $user->isVendor(),
-            'isSpv' => $user->isSpv() || $user->isSuperAdmin(),
+            'isSpv' => $isSpv,
+            'readyForDeliveryPos' => $user->can('create', Delivery::class) ? $queue->readyForDeliveryPos($user) : collect(),
+            'pendingVerificationDeliveries' => $isSpv ? $queue->pendingVerificationDeliveries($user) : collect(),
         ]);
     }
 }

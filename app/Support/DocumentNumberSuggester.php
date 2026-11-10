@@ -28,3 +28,4 @@ class DocumentNumberSuggester
         return "{$base}-{$counter}";
     }
 }
+

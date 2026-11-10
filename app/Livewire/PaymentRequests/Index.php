@@ -4,6 +4,7 @@ namespace App\Livewire\PaymentRequests;
 
 use App\Models\PaymentRequest;
 use App\Models\PaymentStage;
+use App\Services\ProcurementQueueService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Layout;
@@ -36,11 +37,12 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function render()
+    public function render(ProcurementQueueService $queue)
     {
         Gate::authorize('viewAny', PaymentRequest::class);
 
         $user = Auth::user();
+        $isSpv = $user->isSuperAdmin() || $user->isSpv();
 
         $paymentRequests = PaymentRequest::query()
             ->with(['currentStage', 'posting', 'invoices.vendor', 'invoices.purchaseOrder'])
@@ -68,8 +70,9 @@ class Index extends Component
         return view('livewire.payment-requests.index', [
             'paymentRequests' => $paymentRequests,
             'stages' => $stages,
-            'isSpv' => $user->isSuperAdmin() || $user->isSpv(),
+            'isSpv' => $isSpv,
             'isVendor' => $user->isVendor(),
+            'readyForPrInvoices' => $user->can('create', PaymentRequest::class) ? $queue->readyForPaymentRequestInvoices($user) : collect(),
         ]);
     }
 }

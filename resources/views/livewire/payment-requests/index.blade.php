@@ -26,6 +26,71 @@
         </div>
     @endif
 
+    <!-- Card Daftar Invoice Approved Siap Dibuatkan PR -->
+    @if ($isSpv && $readyForPrInvoices->isNotEmpty())
+        <div x-data="{ showAll: false }" class="rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/25 border border-indigo-200/80 dark:border-indigo-900/50 p-4 shadow-xs space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div class="flex items-start sm:items-center gap-2.5">
+                    <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
+                        <flux:icon icon="banknotes" class="size-4.5" />
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h2 class="text-sm font-bold text-indigo-950 dark:text-indigo-100">Invoice Approved Siap Dibuatkan Payment Request (PR)</h2>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-indigo-600 text-white">
+                                {{ $readyForPrInvoices->count() }} Invoice
+                            </span>
+                            <span class="text-xs font-black text-indigo-700 dark:text-indigo-300">
+                                Total: Rp {{ number_format($readyForPrInvoices->sum('total_amount'), 0, ',', '.') }}
+                            </span>
+                        </div>
+                        <p class="text-xs text-indigo-800/80 dark:text-indigo-300/80 mt-0.5">Invoice berikut telah lolos verifikasi 3-Way Match dan belum masuk ke PR. Klik <strong>Buat PR</strong> untuk mengajukan pembayaran.</p>
+                    </div>
+                </div>
+                @if ($readyForPrInvoices->count() > 3)
+                    <button type="button" @click="showAll = !showAll" class="text-xs font-bold text-indigo-700 dark:text-indigo-300 hover:underline shrink-0 self-start sm:self-auto cursor-pointer">
+                        <span x-text="showAll ? 'Tampilkan Lebih Sedikit' : 'Lihat Semua ({{ $readyForPrInvoices->count() }})'"></span>
+                    </button>
+                @endif
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                @foreach ($readyForPrInvoices as $idx => $inv)
+                    <div
+                        wire:key="ready-pr-inv-{{ $inv->id }}"
+                        @if ($idx >= 3) x-show="showAll" x-cloak @endif
+                        class="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-indigo-200/70 dark:border-zinc-800 shadow-2xs hover:border-indigo-400 dark:hover:border-indigo-700 transition"
+                    >
+                        <div class="min-w-0 space-y-1">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <a href="{{ route('invoices.show', $inv) }}" wire:navigate class="font-mono font-bold text-xs text-slate-900 dark:text-white hover:text-indigo-600 hover:underline truncate">
+                                    {{ $inv->invoice_number }}
+                                </a>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/60">
+                                    Approved
+                                </span>
+                            </div>
+                            <div class="text-[11px] font-medium text-slate-600 dark:text-zinc-300 truncate">{{ $inv->vendor->name }}</div>
+                            <div class="text-[11px] text-slate-400 truncate">
+                                PO: <span class="font-mono text-slate-600 dark:text-zinc-300">{{ $inv->purchaseOrder->po_number ?? '-' }}</span>
+                                <span class="mx-1">&bull;</span>
+                                <span>{{ $inv->invoice_date->format('d M Y') }}</span>
+                            </div>
+                            <div class="text-xs font-black text-indigo-600 dark:text-indigo-400">
+                                Rp {{ number_format($inv->total_amount, 0, ',', '.') }}
+                            </div>
+                        </div>
+
+                        <a href="{{ route('payment-requests.create', ['invoice_id' => $inv->id]) }}" wire:navigate class="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-xs transition shrink-0 whitespace-nowrap">
+                            <flux:icon icon="plus" class="size-3.5" />
+                            <span>Buat PR</span>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
     <!-- Filter & Search -->
     <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 p-4 shadow-xs">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">

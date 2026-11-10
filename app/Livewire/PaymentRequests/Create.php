@@ -30,7 +30,7 @@ class Create extends Component
      */
     public array $selected_invoice_ids = [];
 
-    public function mount(): void
+    public function mount(?int $invoice_id = null): void
     {
         Gate::authorize('create', PaymentRequest::class);
 
@@ -38,6 +38,19 @@ class Create extends Component
         $firstStage = PaymentStage::active()->ordered()->first();
         if ($firstStage) {
             $this->current_stage_id = $firstStage->id;
+        }
+
+        $targetInvoiceId = $invoice_id ?? (request()->filled('invoice_id') ? request()->integer('invoice_id') : null);
+        if ($targetInvoiceId) {
+            $eligible = Invoice::where('id', $targetInvoiceId)
+                ->where('status', InvoiceStatus::APPROVED->value)
+                ->whereDoesntHave('paymentRequests')
+                ->exists();
+
+            if ($eligible) {
+                $this->selected_invoice_ids = [$targetInvoiceId];
+                $this->updatedSelectedInvoiceIds();
+            }
         }
     }
 

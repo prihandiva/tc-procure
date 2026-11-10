@@ -91,6 +91,7 @@ class Show extends Component
         });
 
         $this->delivery->refresh();
+        $this->dispatch('refresh-notifications');
     }
 
     public function rejectDelivery(): void
@@ -137,6 +138,7 @@ class Show extends Component
 
         $this->showRejectModal = false;
         $this->delivery->refresh();
+        $this->dispatch('refresh-notifications');
     }
 
     public function render()

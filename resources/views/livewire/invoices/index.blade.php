@@ -29,6 +29,105 @@
         </div>
     @endif
 
+    <!-- Card Invoice Menunggu Verifikasi SPV -->
+    @if ($isSpv && $pendingVerificationInvoices->isNotEmpty())
+        <div class="rounded-2xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/60 p-4 shadow-xs space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div class="flex items-center gap-2.5">
+                    <div class="flex size-8 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-white shadow-2xs">
+                        <flux:icon icon="shield-check" class="size-4" />
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h2 class="text-sm font-bold text-amber-950 dark:text-amber-200">Invoice Masuk Menunggu Verifikasi (3-Way Match)</h2>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-500 text-white">
+                                {{ $pendingVerificationInvoices->count() }} Menunggu
+                            </span>
+                        </div>
+                        <p class="text-xs text-amber-800/80 dark:text-amber-300/80">Faktur tagihan dari rekanan yang perlu diverifikasi kecocokannya dengan PO &amp; DO.</p>
+                    </div>
+                </div>
+                <button type="button" wire:click="$set('status', 'submitted')" class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition shadow-2xs shrink-0 self-start sm:self-auto cursor-pointer">
+                    <span>Filter Menunggu Verifikasi</span>
+                </button>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                @foreach ($pendingVerificationInvoices->take(6) as $pendingInv)
+                    <a href="{{ route('invoices.show', $pendingInv) }}" wire:navigate class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-900 border border-amber-200 dark:border-amber-800/70 hover:border-amber-400 text-xs transition shadow-2xs">
+                        <span class="font-mono font-bold text-amber-700 dark:text-amber-300">{{ $pendingInv->invoice_number }}</span>
+                        <span class="text-slate-400">&bull;</span>
+                        <span class="font-bold text-slate-800 dark:text-zinc-200">Rp {{ number_format($pendingInv->total_amount, 0, ',', '.') }}</span>
+                        <span class="text-[11px] font-bold text-amber-600 dark:text-amber-400">Verifikasi &rarr;</span>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    <!-- Card Daftar DO Terkonfirmasi Siap Dibuatkan Invoice -->
+    @if ($readyForInvoicingPos->isNotEmpty())
+        <div x-data="{ showAll: false }" class="rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/25 border border-indigo-200/80 dark:border-indigo-900/50 p-4 shadow-xs space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div class="flex items-start sm:items-center gap-2.5">
+                    <div class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-xs">
+                        <flux:icon icon="document-plus" class="size-4.5" />
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h2 class="text-sm font-bold text-indigo-950 dark:text-indigo-100">DO Terkonfirmasi Siap Dibuatkan Invoice</h2>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-indigo-600 text-white">
+                                {{ $readyForInvoicingPos->count() }} PO Siap Tagih
+                            </span>
+                        </div>
+                        <p class="text-xs text-indigo-800/80 dark:text-indigo-300/80 mt-0.5">Pengiriman berikut sudah dikonfirmasi Tim TC dan belum memiliki faktur tagihan. Klik <strong>Buat Invoice</strong> untuk langsung menagih.</p>
+                    </div>
+                </div>
+                @if ($readyForInvoicingPos->count() > 3)
+                    <button type="button" @click="showAll = !showAll" class="text-xs font-bold text-indigo-700 dark:text-indigo-300 hover:underline shrink-0 self-start sm:self-auto cursor-pointer">
+                        <span x-text="showAll ? 'Tampilkan Lebih Sedikit' : 'Lihat Semua ({{ $readyForInvoicingPos->count() }})'"></span>
+                    </button>
+                @endif
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                @foreach ($readyForInvoicingPos as $idx => $entry)
+                    @php
+                        $po = $entry['po'];
+                        $doSummary = implode(', ', array_slice($entry['delivery_codes'], 0, 2)) . (count($entry['delivery_codes']) > 2 ? ' +' . (count($entry['delivery_codes']) - 2) . ' DO' : '');
+                    @endphp
+                    <div
+                        wire:key="ready-inv-po-{{ $po->id }}"
+                        @if ($idx >= 3) x-show="showAll" x-cloak @endif
+                        class="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-white dark:bg-zinc-900 border border-indigo-200/70 dark:border-zinc-800 shadow-2xs hover:border-indigo-400 dark:hover:border-indigo-700 transition"
+                    >
+                        <div class="min-w-0 space-y-1">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="font-mono font-bold text-xs text-slate-900 dark:text-white truncate">PO {{ $po->po_number }}</span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/60">
+                                    {{ $entry['deliveries_count'] }} DO
+                                </span>
+                            </div>
+                            @if (! $isVendor)
+                                <div class="text-[11px] font-medium text-slate-600 dark:text-zinc-300 truncate">{{ $po->vendor->name }}</div>
+                            @endif
+                            <div class="text-[11px] text-slate-400 truncate">
+                                DO: <span class="font-mono text-slate-600 dark:text-zinc-300">{{ $doSummary }}</span> ({{ $entry['items_count'] }} item)
+                            </div>
+                            <div class="text-xs font-black text-indigo-600 dark:text-indigo-400">
+                                Rp {{ number_format($entry['estimated_amount'], 0, ',', '.') }}
+                            </div>
+                        </div>
+
+                        <a href="{{ route('invoices.create', ['po_id' => $po->id]) }}" wire:navigate class="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-xs transition shrink-0 whitespace-nowrap">
+                            <flux:icon icon="plus" class="size-3.5" />
+                            <span>Buat Invoice</span>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
     <!-- Filter & Search -->
     <div class="rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 p-4 shadow-xs">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">

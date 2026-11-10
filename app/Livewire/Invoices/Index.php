@@ -5,6 +5,7 @@ namespace App\Livewire\Invoices;
 use App\Enums\InvoiceStatus;
 use App\Models\Invoice;
 use App\Models\Vendor;
+use App\Services\ProcurementQueueService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Layout;
@@ -37,11 +38,12 @@ class Index extends Component
         $this->resetPage();
     }
 
-    public function render()
+    public function render(ProcurementQueueService $queue)
     {
         Gate::authorize('viewAny', Invoice::class);
 
         $user = Auth::user();
+        $isSpv = $user->isSpv() || $user->isSuperAdmin();
 
         $invoices = Invoice::query()
             ->with(['purchaseOrder', 'vendor', 'invoiceLines.deliveryItem.delivery', 'invoiceLines.deliveryItem.poItem'])
@@ -66,7 +68,9 @@ class Index extends Component
             'invoices' => $invoices,
             'vendors' => $vendors,
             'isVendor' => $user->isVendor(),
-            'isSpv' => $user->isSpv() || $user->isSuperAdmin(),
+            'isSpv' => $isSpv,
+            'readyForInvoicingPos' => $user->can('create', Invoice::class) ? $queue->readyForInvoicingPos($user) : collect(),
+            'pendingVerificationInvoices' => $isSpv ? $queue->pendingVerificationInvoices($user) : collect(),
         ]);
     }
 }
