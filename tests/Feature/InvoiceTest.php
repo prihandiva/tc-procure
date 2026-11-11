@@ -336,3 +336,28 @@ test('invoice number is auto-filled from po number, editable, and suggests suffi
         ->assertSet('invoice_number', '47158801-2');
 });
 
+test('invoice create renders searchable po dropdown with po number and search input', function () {
+    $vendor = Vendor::factory()->create(['name' => 'CV Search Invoice']);
+    $vendorUser = User::factory()->vendor($vendor->id)->create();
+
+    $po = PurchaseOrder::factory()->create([
+        'vendor_id' => $vendor->id,
+        'po_number' => '47158899',
+    ]);
+    $poItem = PoItem::factory()->create(['purchase_order_id' => $po->id, 'qty_ordered' => 10, 'unit_price' => 5000]);
+    $deliv = Delivery::factory()->confirmed()->create(['purchase_order_id' => $po->id, 'vendor_id' => $vendor->id]);
+    DeliveryItem::factory()->create([
+        'delivery_id' => $deliv->id,
+        'po_item_id' => $poItem->id,
+        'qty_sent' => 10,
+        'qty_received' => 10,
+        'is_invoiced' => false,
+    ]);
+
+    Livewire::actingAs($vendorUser)
+        ->test(InvoiceCreate::class)
+        ->assertSee('Ketik nomor PO atau nama vendor...')
+        ->assertSee('47158899')
+        ->assertSee('CV Search Invoice');
+});
+

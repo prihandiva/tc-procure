@@ -20,14 +20,17 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="sm:col-span-2">
                     <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Pilih Purchase Order (PO) *</label>
-                    <select wire:model.live="purchase_order_id" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        <option value="">-- Pilih Purchase Order dengan Pengiriman Selesai --</option>
-                        @foreach ($availablePos as $p)
-                            <option value="{{ $p->id }}">
-                                {{ $p->po_number }} &bull; {{ $p->vendor->name }} (PO Tgl: {{ $p->po_date->format('d/m/Y') }})
-                            </option>
-                        @endforeach
-                    </select>
+                    <x-searchable-select
+                        wire-model="purchase_order_id"
+                        :live="true"
+                        placeholder="-- Pilih Purchase Order dengan Pengiriman Selesai --"
+                        search-placeholder="Ketik nomor PO atau nama vendor..."
+                        :options="$availablePos->map(fn ($p) => [
+                            'value' => $p->id,
+                            'label' => $p->po_number,
+                            'sublabel' => $p->vendor->name . ' (PO Tgl: ' . $p->po_date->format('d/m/Y') . ')',
+                        ])->values()->all()"
+                    />
                     @error('purchase_order_id') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                 </div>
 

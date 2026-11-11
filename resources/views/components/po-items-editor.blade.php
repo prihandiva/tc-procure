@@ -85,16 +85,20 @@
                 @foreach ($items as $index => $item)
                     <tr wire:key="po-item-{{ $item['_key'] ?? $index }}" class="align-top">
                         <td class="p-2">
-                            <select
-                                wire:model="items.{{ $index }}.item_id"
-                                @change="applyCatalog({{ $index }}, $event.target.value)"
-                                class="w-full px-2 py-1.5 text-xs border border-zinc-300 rounded dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                            >
-                                <option value="">-- Pilih Katalog --</option>
-                                @foreach ($masterItems as $mItem)
-                                    <option value="{{ $mItem->id }}">{{ $mItem->name }} ({{ $mItem->unit }}) - Rp {{ number_format($mItem->default_price, 0, ',', '.') }}</option>
-                                @endforeach
-                            </select>
+                            <div @option-selected="applyCatalog({{ $index }}, $event.detail.value)">
+                                <x-searchable-select
+                                    wire-model="items.{{ $index }}.item_id"
+                                    :live="false"
+                                    size="xs"
+                                    placeholder="-- Pilih Katalog --"
+                                    search-placeholder="Cari item katalog..."
+                                    :options="$masterItems->map(fn ($mItem) => [
+                                        'value' => $mItem->id,
+                                        'label' => $mItem->name . ' (' . $mItem->unit . ')',
+                                        'sublabel' => 'Rp ' . number_format($mItem->default_price, 0, ',', '.'),
+                                    ])->values()->all()"
+                                />
+                            </div>
                         </td>
                         <td class="p-2">
                             <input

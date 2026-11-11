@@ -106,7 +106,7 @@
                 x-transition:leave="transition ease-in duration-150"
                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                 x-transition:leave-end="opacity-0 scale-95 translate-y-2"
-                @click.outside="open = false"
+                @click.outside="if (!$event.target.closest('[data-searchable-panel]')) open = false"
                 class="relative w-full max-w-xl rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-2xl overflow-hidden"
             >
                 <!-- Form Native Submission to ReportExportController -->
@@ -259,15 +259,16 @@
                                 <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-zinc-300 mb-1.5">
                                     3. Filter Rekanan Vendor
                                 </label>
-                                <select
-                                    x-model="vendorId"
-                                    class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl dark:bg-zinc-800 dark:border-zinc-700 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
-                                >
-                                    <option value="all">Semua Rekanan Vendor (Tanpa Filter Vendor)</option>
-                                    @foreach ($vendors as $v)
-                                        <option value="{{ $v->id }}">{{ $v->name }}</option>
-                                    @endforeach
-                                </select>
+                                <x-searchable-select
+                                    alpine-model="vendorId"
+                                    empty-value="all"
+                                    placeholder="Semua Rekanan Vendor (Tanpa Filter Vendor)"
+                                    search-placeholder="Ketik nama vendor..."
+                                    :options="$vendors->map(fn ($v) => [
+                                        'value' => $v->id,
+                                        'label' => $v->name,
+                                    ])->values()->all()"
+                                />
                             </div>
                         @else
                             <div class="pt-1 border-t border-slate-100 dark:border-zinc-800 text-xs text-slate-500 dark:text-zinc-400">

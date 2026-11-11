@@ -385,3 +385,24 @@ test('delivery code is auto-filled from po number, editable, and suggests suffix
     Livewire::test(DeliveryCreate::class, ['po_id' => $po->id])
         ->assertSet('code', '47157099-2');
 });
+
+test('delivery create renders searchable po dropdown with po number and search input', function () {
+    $vendor = Vendor::factory()->create(['name' => 'CV Search Catering']);
+    $vendorUser = User::factory()->vendor($vendor->id)->create();
+
+    $po = PurchaseOrder::factory()->create([
+        'vendor_id' => $vendor->id,
+        'po_number' => '47159999',
+        'status' => PoStatus::ACTIVE,
+    ]);
+    PoItem::factory()->create([
+        'purchase_order_id' => $po->id,
+        'qty_ordered' => 10,
+    ]);
+
+    Livewire::actingAs($vendorUser)
+        ->test(DeliveryCreate::class)
+        ->assertSee('Ketik nomor PO atau nama vendor...')
+        ->assertSee('47159999')
+        ->assertSee('CV Search Catering');
+});

@@ -140,12 +140,17 @@
             @if (! $isVendor)
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Vendor</label>
-                    <select wire:model.live="vendor_id" class="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl dark:bg-zinc-800 dark:border-zinc-700 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-hidden">
-                        <option value="all">Semua Rekanan</option>
-                        @foreach ($vendors as $v)
-                            <option value="{{ $v->id }}">{{ $v->name }}</option>
-                        @endforeach
-                    </select>
+                    <x-searchable-select
+                        wire-model="vendor_id"
+                        :live="true"
+                        empty-value="all"
+                        placeholder="Semua Rekanan"
+                        search-placeholder="Cari vendor..."
+                        :options="$vendors->map(fn ($v) => [
+                            'value' => $v->id,
+                            'label' => $v->name,
+                        ])->values()->all()"
+                    />
                 </div>
             @endif
 

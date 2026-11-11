@@ -36,12 +36,16 @@
 
                 <div>
                     <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Vendor Catering *</label>
-                    <select wire:model="vendor_id" class="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-100 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                        <option value="">-- Pilih Vendor --</option>
-                        @foreach ($vendors as $v)
-                            <option value="{{ $v->id }}">{{ $v->name }}</option>
-                        @endforeach
-                    </select>
+                    <x-searchable-select
+                        wire-model="vendor_id"
+                        :live="false"
+                        placeholder="-- Pilih Vendor --"
+                        search-placeholder="Ketik nama vendor..."
+                        :options="$vendors->map(fn ($v) => [
+                            'value' => $v->id,
+                            'label' => $v->name,
+                        ])->values()->all()"
+                    />
                     @error('vendor_id') <span class="text-xs text-red-600">{{ $message }}</span> @enderror
                 </div>
 
