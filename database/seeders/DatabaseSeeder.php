@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'admin@tcprocure.test'],
             [
                 'username' => 'superadmin',
-                'name' => 'Super Administrator',
+                'name' => 'Super Administrator',    
                 'role' => \App\Enums\UserRole::SUPERADMIN,
                 'password' => \Illuminate\Support\Facades\Hash::make('password'),
                 'is_active' => true,

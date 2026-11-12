@@ -54,3 +54,4 @@ class HeaderNotifications extends Component
         ]);
     }
 }
+

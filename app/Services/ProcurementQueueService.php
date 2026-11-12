@@ -139,3 +139,4 @@ class ProcurementQueueService
         return $limit ? $query->take($limit)->get() : $query->get();
     }
 }
+
